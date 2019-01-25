@@ -10,4 +10,10 @@
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\Microsoft.CodeAnalysis\" />
+    <Folder Include="Refactorings\EncapsulateFieldsForWPF\" />
+    <Folder Include="Refactorings\InvertAssignmentDirection\" />
+  </ItemGroup>
+
 </Project>

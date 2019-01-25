@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CodeRefactoringsForVisualStudio
+namespace CodeRefactoringsForVisualStudio.Refactorings
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(CodeRefactoringsForVisualStudioCodeRefactoringProvider)), Shared]
     internal class CodeRefactoringsForVisualStudioCodeRefactoringProvider :CodeRefactoringProvider
