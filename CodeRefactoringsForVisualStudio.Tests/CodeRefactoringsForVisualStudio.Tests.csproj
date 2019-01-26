@@ -7,9 +7,46 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertSelectedSingleAssignment.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertSelectedSingleAssignment_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertSelectedTwoAssignments.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertSelectedTwoAssignments_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia_expected.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertSelectedSingleAssignment.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertSelectedSingleAssignment_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertSelectedTwoAssignments.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertSelectedTwoAssignments_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia_expected.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="2.10.0" />
     <PackageReference Include="nunit" Version="3.10.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="RoslynNUnitLight.NetStandard" Version="1.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeRefactoringsForVisualStudio\CodeRefactoringsForVisualStudio.csproj" />
   </ItemGroup>
 
 </Project>
