@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Extensions\Microsoft.CodeAnalysis\" />
-    <Folder Include="Refactorings\EncapsulateFieldForWPF\" />
     <Folder Include="Refactorings\InvertAssignmentDirection\" />
   </ItemGroup>
 

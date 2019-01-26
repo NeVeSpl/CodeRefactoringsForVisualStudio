@@ -18,8 +18,8 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 {
-    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(EncapsulateFieldsForWPFRefactoringProvider)), Shared]
-    public class EncapsulateFieldsForWPFRefactoringProvider :CodeRefactoringProvider
+    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(EncapsulateFieldForWPFRefactoringProvider)), Shared]
+    public class EncapsulateFieldForWPFRefactoringProvider :CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {

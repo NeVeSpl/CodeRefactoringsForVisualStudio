@@ -3,3 +3,5 @@ CodeRefactoringsForVisualStudio.Vsix/bin/
 CodeRefactoringsForVisualStudio/bin/
 CodeRefactoringsForVisualStudio.Vsix/obj/
 .vs/
+CodeRefactoringsForVisualStudio.Tests/obj/
+CodeRefactoringsForVisualStudio.Tests/bin/
