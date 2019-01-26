@@ -16,7 +16,7 @@ using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldsForWPF
+namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(EncapsulateFieldsForWPFRefactoringProvider)), Shared]
     public class EncapsulateFieldsForWPFRefactoringProvider :CodeRefactoringProvider
@@ -28,7 +28,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldsForWPF
 
             if (selectedFieldDeclarations.Any())
             {
-                var action = CodeAction.Create("Encapsulate fields (WPF)", cancellationToken => EncapsulateFields(context.Document, selectedFieldDeclarations, cancellationToken));
+                var action = CodeAction.Create("Encapsulate field (WPF)", cancellationToken => EncapsulateFields(context.Document, selectedFieldDeclarations, cancellationToken));
                 context.RegisterRefactoring(action);
             }
         }

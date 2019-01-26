@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldsForWPF
+namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 {
     public static class PropertyNameGenerator
     {
