@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle_expected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnIdentifier.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnIdentifier_expected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnTypeName.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnTypeName_expected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenWholeFieldDeclarationIsSelected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenWholeFieldDeclarationIsSelected_expected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
@@ -22,6 +34,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnTypeName.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnIdentifier.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenWholeFieldDeclarationIsSelected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnTypeName_expected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnIdentifier_expected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle_expected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenWholeFieldDeclarationIsSelected_expected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected_expected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine.cs" />
+    <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
