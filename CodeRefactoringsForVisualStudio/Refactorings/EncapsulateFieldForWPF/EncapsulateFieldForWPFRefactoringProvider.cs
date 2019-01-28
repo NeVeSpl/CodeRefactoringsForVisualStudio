@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
@@ -38,23 +40,25 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
         {          
             var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
 
-            List<SyntaxNode> createdProperties = CreateProperties(fieldDeclarations, syntaxGenerator);
-
-            cancellationToken.ThrowIfCancellationRequested();
-
             var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
-            SyntaxNode insertAfterThis = FindNodeAfterWhichCreatedPropertiesWillBeInserted(fieldDeclarations);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            string methodNameToNotifyThatPropertyWasChanged = await DetermineMethodNameUsedToNotifyThatPropertyWasChanged(semanticModel, typeNode, document.Project.Solution).ConfigureAwait(false);
+            List<SyntaxNode> createdProperties = CreateProperties(fieldDeclarations, syntaxGenerator, methodNameToNotifyThatPropertyWasChanged);
+
+            cancellationToken.ThrowIfCancellationRequested();
+        
+            SyntaxNode insertAfterThisNode = FindNodeAfterWhichCreatedPropertiesWillBeInserted(fieldDeclarations);
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            TypeDeclarationSyntax newClassNode = typeNode.InsertNodesAfter(insertAfterThis, createdProperties);
+            TypeDeclarationSyntax newTypeNode = typeNode.InsertNodesAfter(insertAfterThisNode, createdProperties);
 
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            rootNode = rootNode.ReplaceNode(typeNode, newClassNode);
+            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
             return document.WithSyntaxRoot(rootNode);
         }
 
-        private List<SyntaxNode> CreateProperties(IEnumerable<FieldDeclarationSyntax> fieldDeclarations, SyntaxGenerator syntaxGenerator)
+        private List<SyntaxNode> CreateProperties(IEnumerable<FieldDeclarationSyntax> fieldDeclarations, SyntaxGenerator syntaxGenerator, string methodNameToNotifyThatPropertyWasChanged)
         {
             var createdProperties = new List<SyntaxNode>();
 
@@ -76,7 +80,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
                        //SyntaxFactory.ParseStatement($"OnPropertyChanged();")
                        //SyntaxFactory.ParseStatement($"{fieldName} = value;").WithTrailingTrivia(new[] { SyntaxFactory.ElasticCarriageReturn }),
                        SyntaxFactory.ExpressionStatement(SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, SyntaxFactory.IdentifierName(fieldName), SyntaxFactory.IdentifierName("value") )).WithTrailingTrivia(new[] { SyntaxFactory.ElasticCarriageReturn }),
-                       SyntaxFactory.ExpressionStatement(SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName("OnPropertyChanged")))
+                       SyntaxFactory.ExpressionStatement(SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(methodNameToNotifyThatPropertyWasChanged)))
                     };
 
                     SyntaxNode newProperty = syntaxGenerator.PropertyDeclaration(propertyName,
@@ -109,6 +113,42 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
             }
 
             return lastMember;
+        }
+
+        private async Task<string> DetermineMethodNameUsedToNotifyThatPropertyWasChanged(SemanticModel semanticModel, TypeDeclarationSyntax typeNode, Solution solution)
+        {
+            String result = "OnPropertyChanged";          
+           
+            INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+            IAssemblySymbol assemblySymbol = typeSymbol.ContainingAssembly;
+
+            var typesInInheritanceHierarchy = new HashSet<INamedTypeSymbol>();
+
+            var currentType = typeSymbol;
+            while (currentType != null)
+            {
+                typesInInheritanceHierarchy.Add(currentType);
+                currentType = currentType.BaseType;
+            }
+
+            foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.AllInterfaces)
+            {
+                if (interfaceSymbol.Name == "INotifyPropertyChanged" && String.Equals(interfaceSymbol?.ContainingNamespace.ToString(), "System.ComponentModel"))
+                {
+                    ISymbol propertyChangedEventSymbol = interfaceSymbol.GetMembers("PropertyChanged").First();
+                    IEnumerable<SymbolCallerInfo> callers = await SymbolFinder.FindCallersAsync(propertyChangedEventSymbol, solution).ConfigureAwait(false);
+
+                    foreach (SymbolCallerInfo caller in callers)
+                    {
+                        if (typesInInheritanceHierarchy.Contains(caller.CallingSymbol.ContainingType))
+                        {
+                            result = caller.CallingSymbol.Name;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
