@@ -68,26 +68,8 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
                 {
                     string fieldName = variableDeclarator.Identifier.ValueText;
                     string propertyName = PropertyNameGenerator.FromFieldName(fieldName);
-
-                    var getAccessorStatements = new List<StatementSyntax>()
-                    {
-                        //SyntaxFactory.ParseStatement($"return {fieldName};")
-                        SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName(fieldName))
-                    };
-
-                    var setAccessorStatements = new List<StatementSyntax>()
-                    {
-                       //SyntaxFactory.ParseStatement($"OnPropertyChanged();")
-                       //SyntaxFactory.ParseStatement($"{fieldName} = value;").WithTrailingTrivia(new[] { SyntaxFactory.ElasticCarriageReturn }),
-                       SyntaxFactory.ExpressionStatement(SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, SyntaxFactory.IdentifierName(fieldName), SyntaxFactory.IdentifierName("value") )).WithTrailingTrivia(new[] { SyntaxFactory.ElasticCarriageReturn }),
-                       SyntaxFactory.ExpressionStatement(SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(methodNameToNotifyThatPropertyWasChanged)))
-                    };
-
-                    SyntaxNode newProperty = syntaxGenerator.PropertyDeclaration(propertyName,
-                                                                                 fieldDeclaration.Declaration.Type,
-                                                                                 Accessibility.Public,
-                                                                                 getAccessorStatements: getAccessorStatements,
-                                                                                 setAccessorStatements: setAccessorStatements).WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());
+                   
+                    SyntaxNode newProperty = syntaxGenerator.FullPropertyDeclaration(propertyName, fieldDeclaration.Declaration.Type, fieldName, methodNameToNotifyThatPropertyWasChanged).WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());        
 
                     createdProperties.Add(newProperty);
                 }
@@ -98,13 +80,13 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
         private SyntaxNode FindNodeAfterWhichCreatedPropertiesWillBeInserted(IEnumerable<FieldDeclarationSyntax> fieldDeclarations)
         {
-            var classNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
+            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
           
             //var descendantTokens = fieldDeclarations.SelectMany(x => x.DescendantTokens().OfType<SyntaxToken>().Where(y => y.Kind() == SyntaxKind.IdentifierToken));
 
             MemberDeclarationSyntax lastMember = fieldDeclarations.Last();
 
-            foreach (MemberDeclarationSyntax member in classNode.Members)
+            foreach (MemberDeclarationSyntax member in typeNode.Members)
             {
                 if (member is PropertyDeclarationSyntax)
                 {
