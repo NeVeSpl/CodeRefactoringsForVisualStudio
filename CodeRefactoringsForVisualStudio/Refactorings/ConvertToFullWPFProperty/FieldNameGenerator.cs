@@ -6,11 +6,11 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
 {
     public static class FieldNameGenerator
     {
-        public static string Generate(string name, char? prefix)
+        public static string Generate(string name, char? prefix = null)
         {
             string result = string.Empty;
 
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 if (prefix.HasValue)
                 {                   

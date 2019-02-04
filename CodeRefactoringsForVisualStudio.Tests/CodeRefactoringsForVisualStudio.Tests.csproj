@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EncapsulateFieldForWPF\Data\Class1.cs" />
+    <Compile Remove="EncapsulateFieldForWPF\Data\Class1_expected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsInTheMiddle_expected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateFieldWhenCursorIsOnIdentifier.cs" />
@@ -19,6 +21,8 @@
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\Class1.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\Class1_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
@@ -71,6 +75,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeRefactoringsForVisualStudio\CodeRefactoringsForVisualStudio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ConvertToFullWPFProperty\Data\" />
   </ItemGroup>
 
 </Project>

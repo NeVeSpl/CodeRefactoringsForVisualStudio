@@ -4,7 +4,7 @@ using System.Text;
 using CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF;
 using NUnit.Framework;
 
-namespace CodeRefactoringsForVisualStudio.Test.EncapsulateFieldForWPF
+namespace CodeRefactoringsForVisualStudio.Tests.EncapsulateFieldForWPF
 {
     public class PropertyNameGeneratorTests
     {

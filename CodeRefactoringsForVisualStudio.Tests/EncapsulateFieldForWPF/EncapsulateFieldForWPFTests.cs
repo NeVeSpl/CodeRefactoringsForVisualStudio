@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using NUnit.Framework;
 using RoslynNUnitLight;
 
-namespace CodeRefactoringsForVisualStudio.Test.EncapsulateFieldForWPF
+namespace CodeRefactoringsForVisualStudio.Tests.EncapsulateFieldForWPF
 {
     public class EncapsulateFieldForWPFTests : BaseCodeRefactoringTestFixture
     {
