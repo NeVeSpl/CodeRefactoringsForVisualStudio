@@ -1,9 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.FindSymbols;
+﻿using Microsoft.CodeAnalysis.FindSymbols;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.CodeAnalysis
@@ -13,7 +12,7 @@ namespace Microsoft.CodeAnalysis
         public static async Task<string> DetermineMethodNameUsedToNotifyThatPropertyWasChanged(this INamedTypeSymbol typeSymbol, Solution solution)
         {
             String result = "OnPropertyChanged";
-         
+
             IAssemblySymbol assemblySymbol = typeSymbol.ContainingAssembly;
 
             var typesInInheritanceHierarchy = new HashSet<INamedTypeSymbol>();
@@ -39,6 +38,24 @@ namespace Microsoft.CodeAnalysis
                             result = caller.CallingSymbol.Name;
                         }
                     }
+                }
+            }
+
+            return result;
+        }
+
+        public static char? DetermineBackingFiledPrefix(this INamedTypeSymbol typeSymbol)
+        {
+            char? result = null;
+
+            IEnumerable<ISymbol> backingFileds = typeSymbol.GetMembers().Where(x => x.Kind == SymbolKind.Field).Where(x => x.IsImplicitlyDeclared == false);
+
+            if(backingFileds.Any())
+            {
+                char aspirantPrefix = backingFileds.First().Name[0];
+                if(backingFileds.All(x => x.Name[0] == aspirantPrefix))
+                {
+                    result = aspirantPrefix;
                 }
             }
 

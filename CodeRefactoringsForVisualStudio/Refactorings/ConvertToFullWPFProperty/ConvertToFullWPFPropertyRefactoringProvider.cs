@@ -41,22 +41,31 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
             var typeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
             INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
-            
+            char? backingFiledPrefix = typeSymbol.DetermineBackingFiledPrefix();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
             List<SyntaxNode> createdBackingFields = new List<SyntaxNode>();
             SyntaxNode newTypeNode = typeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, CreateFullProperty);
 
             SyntaxNode CreateFullProperty(PropertyDeclarationSyntax property, PropertyDeclarationSyntax _)
             {
                 string propertyName = property.Identifier.ValueText;
-                string fieldName = FieldNameGenerator.Generate(propertyName, '_');
+                string fieldName = FieldNameGenerator.Generate(propertyName, backingFiledPrefix);
                 var createdField = syntaxGenerator.FieldDeclaration(fieldName, property.Type, Accessibility.Private);
                 createdBackingFields.Add(createdField);
 
                 return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
             }
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             newTypeNode = InsertCreatedBackingFields(newTypeNode, createdBackingFields);
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);

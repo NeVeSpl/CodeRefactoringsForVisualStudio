@@ -43,7 +43,12 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
             var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;            
             INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
             string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             List<SyntaxNode> createdProperties = CreateProperties(fieldDeclarations, syntaxGenerator, methodNameToNotifyThatPropertyWasChanged);
 
