@@ -30,7 +30,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNamePrefixed(string name)
+        private static bool IsNamePrefixed(string name)
         {
             return (name.Length > 1) 
                    && (char.IsLower(name[0]) || (name[0] =='_'))

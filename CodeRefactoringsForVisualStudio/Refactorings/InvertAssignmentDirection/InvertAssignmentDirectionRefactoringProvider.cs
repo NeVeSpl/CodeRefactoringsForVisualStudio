@@ -32,12 +32,11 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.InvertAssignmentDirection
             }
         }
 
+
         private async Task<Document> InvertAssignments(Document document, IEnumerable<AssignmentExpressionSyntax> assignmentExpressions, CancellationToken cancellationToken)
         {
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            rootNode = rootNode.ReplaceNodes(assignmentExpressions, InvertAssignmentExpression);              
-
+            rootNode = rootNode.ReplaceNodes(assignmentExpressions, InvertAssignmentExpression); 
             return document.WithSyntaxRoot(rootNode);
         }
 

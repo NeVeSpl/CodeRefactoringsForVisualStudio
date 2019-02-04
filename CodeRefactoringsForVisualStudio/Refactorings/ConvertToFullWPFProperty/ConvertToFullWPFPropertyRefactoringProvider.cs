@@ -23,7 +23,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             SyntaxNode rootNode = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var selectedAutoPropertyDeclarationSyntaxes = rootNode.ExtractSelectedNodesOfType<PropertyDeclarationSyntax>(context.Span).Where(x => IsAutoProperty(x));
+            var selectedAutoPropertyDeclarationSyntaxes = rootNode.ExtractSelectedNodesOfType<PropertyDeclarationSyntax>(context.Span).Where(x => x.IsAutoProperty());
 
             if (selectedAutoPropertyDeclarationSyntaxes.Any())
             {
@@ -31,44 +31,55 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
                 context.RegisterRefactoring(action);
             }
         }
-
-        private bool IsAutoProperty(PropertyDeclarationSyntax property)
-        {
-            return property.AccessorList.Accessors.All(x => x.Body == null);
-        }
+      
 
         private async Task<Document> ConvertToFullWPFProperty(Document document, IEnumerable<PropertyDeclarationSyntax> selectedAutoPropertyDeclarationSyntaxes, CancellationToken cancellationToken)
         {
-            var syntaxGenerator = SyntaxGenerator.GetGenerator(document);          
-            var typeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
+            var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
+            var semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
+            var typeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
+            INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+
+            string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
+            
             List<SyntaxNode> createdBackingFields = new List<SyntaxNode>();
             SyntaxNode newTypeNode = typeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, CreateFullProperty);
 
             SyntaxNode CreateFullProperty(PropertyDeclarationSyntax property, PropertyDeclarationSyntax _)
             {
                 string propertyName = property.Identifier.ValueText;
-                string fieldName = "_" + propertyName;
+                string fieldName = FieldNameGenerator.Generate(propertyName, '_');
                 var createdField = syntaxGenerator.FieldDeclaration(fieldName, property.Type, Accessibility.Private);
                 createdBackingFields.Add(createdField);
 
-                return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, "OnPropertyChanged");
+                return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
             }
 
-            MemberDeclarationSyntax insertAfterThisNode = newTypeNode.DescendantNodes().OfType<FieldDeclarationSyntax>().Last();
-            if (insertAfterThisNode != null)
-            {
-                newTypeNode = newTypeNode.InsertNodesAfter(insertAfterThisNode, createdBackingFields);
-            }
-            else
-            {
-                MemberDeclarationSyntax insertBeforeThisNode = typeNode.DescendantNodes().OfType<PropertyDeclarationSyntax>().First();
-                newTypeNode = newTypeNode.InsertNodesBefore(insertBeforeThisNode, createdBackingFields);
-            }
+            newTypeNode = InsertCreatedBackingFields(newTypeNode, createdBackingFields);
 
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
             return document.WithSyntaxRoot(rootNode);
+        }
+
+
+        private SyntaxNode InsertCreatedBackingFields(SyntaxNode typeNode, List<SyntaxNode> createdBackingFields)
+        {
+            SyntaxNode result = typeNode;
+
+            MemberDeclarationSyntax insertAfterThisNode = result.DescendantNodes().OfType<FieldDeclarationSyntax>().Last();
+            if (insertAfterThisNode != null)
+            {
+                result = result.InsertNodesAfter(insertAfterThisNode, createdBackingFields);
+            }
+            else
+            {
+                MemberDeclarationSyntax insertBeforeThisNode = typeNode.DescendantNodes().OfType<PropertyDeclarationSyntax>().First();
+                result = result.InsertNodesBefore(insertBeforeThisNode, createdBackingFields);
+            }
+
+            return result;
         }
     }
 }
