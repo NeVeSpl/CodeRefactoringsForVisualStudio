@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,9 +9,6 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
 {
@@ -36,7 +31,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
         private async Task<Document> ConvertToFullWPFProperty(Document document, IEnumerable<PropertyDeclarationSyntax> selectedAutoPropertyDeclarationSyntaxes, CancellationToken cancellationToken)
         {
             var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
-            var semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var typeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
             INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
@@ -47,32 +42,41 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
             char? backingFiledPrefix = typeSymbol.DetermineBackingFiledPrefix();
 
             cancellationToken.ThrowIfCancellationRequested();
+            
+            SyntaxNode newTypeNode = typeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, (x, _) => CreateFullProperty(x, backingFiledPrefix, methodNameToNotifyThatPropertyWasChanged, syntaxGenerator));            
 
-            List<SyntaxNode> createdBackingFields = new List<SyntaxNode>();
-            SyntaxNode newTypeNode = typeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, CreateFullProperty);
+            cancellationToken.ThrowIfCancellationRequested();
 
-            SyntaxNode CreateFullProperty(PropertyDeclarationSyntax property, PropertyDeclarationSyntax _)
+            List<SyntaxNode> createdBackingFields = CreateBackingFields(selectedAutoPropertyDeclarationSyntaxes, backingFiledPrefix, syntaxGenerator);
+            newTypeNode = InsertCreatedBackingFields(newTypeNode, createdBackingFields);
+
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            Document newDocument = await CreateNewDocument(document, typeNode, newTypeNode, cancellationToken).ConfigureAwait(false);
+            return newDocument;
+        }
+
+        private SyntaxNode CreateFullProperty(PropertyDeclarationSyntax property, char? backingFiledPrefix, string methodNameToNotifyThatPropertyWasChanged, SyntaxGenerator syntaxGenerator)
+        {
+            string propertyName = property.Identifier.ValueText;
+            string fieldName = FieldNameGenerator.Generate(propertyName, backingFiledPrefix);
+
+            return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
+        }
+        private List<SyntaxNode> CreateBackingFields(IEnumerable<PropertyDeclarationSyntax> properties, char? backingFiledPrefix, SyntaxGenerator syntaxGenerator)
+        {
+            var createdBackingFields = new List<SyntaxNode>();
+
+            foreach(PropertyDeclarationSyntax property in properties)
             {
                 string propertyName = property.Identifier.ValueText;
                 string fieldName = FieldNameGenerator.Generate(propertyName, backingFiledPrefix);
                 var createdField = syntaxGenerator.FieldDeclaration(fieldName, property.Type, Accessibility.Private);
                 createdBackingFields.Add(createdField);
-
-                return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
             }
 
-            cancellationToken.ThrowIfCancellationRequested();
-
-            newTypeNode = InsertCreatedBackingFields(newTypeNode, createdBackingFields);
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
-            return document.WithSyntaxRoot(rootNode);
+            return createdBackingFields;
         }
-
-
         private SyntaxNode InsertCreatedBackingFields(SyntaxNode typeNode, List<SyntaxNode> createdBackingFields)
         {
             SyntaxNode result = typeNode;
@@ -89,6 +93,12 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
             }
 
             return result;
+        }
+        private async Task<Document> CreateNewDocument(Document document, TypeDeclarationSyntax typeNode, SyntaxNode newTypeNode, CancellationToken cancellationToken)
+        {
+            SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
+            return document.WithSyntaxRoot(rootNode);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.FindSymbols;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +12,7 @@ namespace Microsoft.CodeAnalysis
         {
             String result = "OnPropertyChanged";
 
-            IAssemblySymbol assemblySymbol = typeSymbol.ContainingAssembly;
+            //IAssemblySymbol assemblySymbol = typeSymbol.ContainingAssembly;
 
             var typesInInheritanceHierarchy = new HashSet<INamedTypeSymbol>();
 
@@ -50,12 +49,12 @@ namespace Microsoft.CodeAnalysis
 
             IEnumerable<ISymbol> backingFileds = typeSymbol.GetMembers().Where(x => x.Kind == SymbolKind.Field).Where(x => x.IsImplicitlyDeclared == false);
 
-            if(backingFileds.Any())
+            if (backingFileds.Any())
             {
-                char aspirantPrefix = backingFileds.First().Name[0];
-                if(backingFileds.All(x => x.Name[0] == aspirantPrefix))
+                char candidateForPrefix = backingFileds.First().Name[0];
+                if(backingFileds.All(x => x.Name[0] == candidateForPrefix))
                 {
-                    result = aspirantPrefix;
+                    result = candidateForPrefix;
                 }
             }
 

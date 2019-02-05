@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -12,10 +9,6 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 
 namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
@@ -37,12 +30,12 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
 
         private async Task<Document> EncapsulateFields(Document document, IEnumerable<FieldDeclarationSyntax> fieldDeclarations, CancellationToken cancellationToken)
-        {          
+        {
             var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
-            var semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;            
-            INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
+            var typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -53,17 +46,15 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
             List<SyntaxNode> createdProperties = CreateProperties(fieldDeclarations, syntaxGenerator, methodNameToNotifyThatPropertyWasChanged);
 
             cancellationToken.ThrowIfCancellationRequested();
-        
+
             SyntaxNode insertAfterThisNode = FindNodeAfterWhichCreatedPropertiesWillBeInserted(fieldDeclarations);
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            TypeDeclarationSyntax newTypeNode = typeNode.InsertNodesAfter(insertAfterThisNode, createdProperties);
-            SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
-            return document.WithSyntaxRoot(rootNode);
+            Document newDocument = await CreateNewDocument(document, typeNode, createdProperties, insertAfterThisNode, cancellationToken).ConfigureAwait(false);
+            return newDocument;
         }
-
+      
         private List<SyntaxNode> CreateProperties(IEnumerable<FieldDeclarationSyntax> fieldDeclarations, SyntaxGenerator syntaxGenerator, string methodNameToNotifyThatPropertyWasChanged)
         {
             var createdProperties = new List<SyntaxNode>();
@@ -83,12 +74,9 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
             return createdProperties;
         }
-
         private SyntaxNode FindNodeAfterWhichCreatedPropertiesWillBeInserted(IEnumerable<FieldDeclarationSyntax> fieldDeclarations)
         {
-            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
-          
-            //var descendantTokens = fieldDeclarations.SelectMany(x => x.DescendantTokens().OfType<SyntaxToken>().Where(y => y.Kind() == SyntaxKind.IdentifierToken));
+            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax; 
 
             MemberDeclarationSyntax lastMember = fieldDeclarations.Last();
 
@@ -100,7 +88,18 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
                 }
             }
 
+            // TODO : Right now the newly created property is added after the last property in the containing type,
+            //        though it would be nice to insert it in a place that will preserve the same order for fields and properties 
+
             return lastMember;
         }
+        private async Task<Document> CreateNewDocument(Document document, TypeDeclarationSyntax typeNode, List<SyntaxNode> createdProperties, SyntaxNode insertAfterThisNode, CancellationToken cancellationToken)
+        {
+            TypeDeclarationSyntax newTypeNode = typeNode.InsertNodesAfter(insertAfterThisNode, createdProperties);
+            SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
+            return document.WithSyntaxRoot(rootNode);
+        }
+
     }
 }
