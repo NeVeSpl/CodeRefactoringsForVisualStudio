@@ -22,6 +22,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.EncapsulateFieldForWPF
         [TestCase("ShouldEncapsulateFieldWhenCursorIsOnTypeName")]
         [TestCase("ShouldEncapsulateFieldWhenWholeFieldDeclarationIsSelected")]  
         [TestCase("ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine")]
+        [TestCase("ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected")]
         public void Should(string caseName)
         {
             TestCodeRefactoring("EncapsulateFieldForWPF.Data", caseName);

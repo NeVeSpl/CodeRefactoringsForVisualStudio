@@ -8,6 +8,6 @@ namespace CodeRefactoringsForVisualStudio.Test.EncapsulateFieldsForWPF.Data
     {
         [|int mFoo;
 
-         string _Bar|];
+        string _Bar|];
     }
 }

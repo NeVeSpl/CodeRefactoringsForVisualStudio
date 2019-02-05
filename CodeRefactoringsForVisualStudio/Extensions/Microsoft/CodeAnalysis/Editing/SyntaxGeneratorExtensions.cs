@@ -15,16 +15,28 @@ namespace Microsoft.CodeAnalysis.Editing
             };
 
             var setAccessorStatements = new List<StatementSyntax>()
-            {                
+            {
                 SyntaxFactory.ExpressionStatement(SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, SyntaxFactory.IdentifierName(fieldName), SyntaxFactory.IdentifierName("value") )),
                 SyntaxFactory.ExpressionStatement(SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName(methodNameToNotifyThatPropertyWasChanged)))
             };
 
-            var createdProperty = syntaxGenerator.PropertyDeclaration(propertyName,
-                                                                         propertyType,
-                                                                         Accessibility.Public,
-                                                                         getAccessorStatements: getAccessorStatements,
-                                                                         setAccessorStatements: setAccessorStatements) as PropertyDeclarationSyntax;            
+            //var createdProperty = syntaxGenerator.PropertyDeclaration(propertyName,
+            //                                                             propertyType,
+            //                                                             Accessibility.Public,
+            //                                                             getAccessorStatements: getAccessorStatements,
+            //                                                             setAccessorStatements: setAccessorStatements) as PropertyDeclarationSyntax;
+            var accessors = new List<AccessorDeclarationSyntax>();
+
+            accessors.Add(SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, SyntaxFactory.Block(getAccessorStatements)).WithoutTrivia());
+            accessors.Add(SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, SyntaxFactory.Block(setAccessorStatements)).WithoutTrivia());
+
+            var createdProperty = SyntaxFactory.PropertyDeclaration(
+                default,
+                SyntaxFactory.TokenList(new SyntaxToken[]{ SyntaxFactory.Token(SyntaxKind.PublicKeyword)}),
+                (TypeSyntax)propertyType,
+                default,
+                SyntaxFactory.Identifier(propertyName),
+                SyntaxFactory.AccessorList(SyntaxFactory.List(accessors))).WithoutTrivia();
 
             return createdProperty;
         }

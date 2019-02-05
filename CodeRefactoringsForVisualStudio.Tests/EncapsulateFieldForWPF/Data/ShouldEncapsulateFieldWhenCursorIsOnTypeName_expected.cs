@@ -13,7 +13,6 @@ namespace CodeRefactoringsForVisualStudio.Test.EncapsulateFieldsForWPF.Data
             {
                 return mFoo;
             }
-
             set
             {
                 mFoo = value;

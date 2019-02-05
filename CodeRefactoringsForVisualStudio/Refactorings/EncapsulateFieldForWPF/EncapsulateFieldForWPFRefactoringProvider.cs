@@ -31,7 +31,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
         private async Task<Document> EncapsulateFields(Document document, IEnumerable<FieldDeclarationSyntax> fieldDeclarations, CancellationToken cancellationToken)
         {
-            var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
+            var syntaxGenerator = SyntaxGenerator.GetGenerator(document.Project);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
@@ -66,8 +66,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
                     string fieldName = variableDeclarator.Identifier.ValueText;
                     string propertyName = PropertyNameGenerator.FromFieldName(fieldName);
                    
-                    SyntaxNode newProperty = syntaxGenerator.FullPropertyDeclaration(propertyName, fieldDeclaration.Declaration.Type, fieldName, methodNameToNotifyThatPropertyWasChanged).WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());        
-
+                    SyntaxNode newProperty = syntaxGenerator.FullPropertyDeclaration(propertyName, fieldDeclaration.Declaration.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
                     createdProperties.Add(newProperty);
                 }
             }

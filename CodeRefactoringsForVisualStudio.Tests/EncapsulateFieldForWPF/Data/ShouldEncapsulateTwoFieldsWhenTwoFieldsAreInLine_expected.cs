@@ -13,21 +13,18 @@ namespace CodeRefactoringsForVisualStudio.Test.EncapsulateFieldsForWPF.Data
             {
                 return mFoo;
             }
-
             set
             {
                 mFoo = value;
                 OnPropertyChanged();
             }
         }
-
         public int Bar
         {
             get
             {
                 return _Bar;
             }
-
             set
             {
                 _Bar = value;
