@@ -1,3 +1,5 @@
+You can download it as Visual Studio Extension from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.CodeRefactoringsForVisualStudio).
+
 #### Convert to full WPF Property
 <img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="871">
 
