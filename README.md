@@ -1,9 +1,9 @@
 #### ConvertToFullWPFProperty
-![Invert Assignment Direction sample usecase](Documentation/ConvertToFullWPFProperty.sampleusecase.gif)
+<img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="871">
 
 #### EncapsulateFieldForWPF
-![Invert Assignment Direction sample usecase](Documentation/EncapsulateFieldForWPF.sampleusecase.gif)
+<img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="871">
 
 #### InvertAssignmentDirection
-![Invert Assignment Direction sample usecase](Documentation/InvertAssignmentDirection.sampleusecase.gif)
+<img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="871">
 
