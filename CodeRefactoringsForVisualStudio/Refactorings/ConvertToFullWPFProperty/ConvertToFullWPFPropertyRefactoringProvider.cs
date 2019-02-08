@@ -77,19 +77,19 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
 
             return createdBackingFields;
         }
-        private SyntaxNode InsertCreatedBackingFields(SyntaxNode typeNode, List<SyntaxNode> createdBackingFields)
+        private SyntaxNode InsertCreatedBackingFields(SyntaxNode typeNode, IEnumerable<SyntaxNode> backingFields)
         {
             SyntaxNode result = typeNode;
 
             MemberDeclarationSyntax insertAfterThisNode = result.DescendantNodes().OfType<FieldDeclarationSyntax>().Last();
             if (insertAfterThisNode != null)
             {
-                result = result.InsertNodesAfter(insertAfterThisNode, createdBackingFields);
+                result = result.InsertNodesAfter(insertAfterThisNode, backingFields);
             }
             else
             {
                 MemberDeclarationSyntax insertBeforeThisNode = typeNode.DescendantNodes().OfType<PropertyDeclarationSyntax>().First();
-                result = result.InsertNodesBefore(insertBeforeThisNode, createdBackingFields);
+                result = result.InsertNodesBefore(insertBeforeThisNode, backingFields);
             }
 
             return result;

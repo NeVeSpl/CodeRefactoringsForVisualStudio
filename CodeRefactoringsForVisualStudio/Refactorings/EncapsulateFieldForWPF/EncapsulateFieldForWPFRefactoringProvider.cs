@@ -92,7 +92,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
 
             return lastMember;
         }
-        private async Task<Document> CreateNewDocument(Document document, TypeDeclarationSyntax typeNode, List<SyntaxNode> createdProperties, SyntaxNode insertAfterThisNode, CancellationToken cancellationToken)
+        private async Task<Document> CreateNewDocument(Document document, TypeDeclarationSyntax typeNode, IEnumerable<SyntaxNode> createdProperties, SyntaxNode insertAfterThisNode, CancellationToken cancellationToken)
         {
             TypeDeclarationSyntax newTypeNode = typeNode.InsertNodesAfter(insertAfterThisNode, createdProperties);
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
