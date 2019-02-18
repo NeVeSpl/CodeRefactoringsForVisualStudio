@@ -81,7 +81,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
         {
             SyntaxNode result = typeNode;
 
-            MemberDeclarationSyntax insertAfterThisNode = result.DescendantNodes().OfType<FieldDeclarationSyntax>().Last();
+            MemberDeclarationSyntax insertAfterThisNode = result.DescendantNodes().OfType<FieldDeclarationSyntax>().LastOrDefault();
             if (insertAfterThisNode != null)
             {
                 result = result.InsertNodesAfter(insertAfterThisNode, backingFields);

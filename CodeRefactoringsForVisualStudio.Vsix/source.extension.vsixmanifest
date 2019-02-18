@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="CodeRefactoringsForVisualStudio..82908fd1-8ac5-44a3-aa94-52af322e851a" Version="1.0" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="CodeRefactoringsForVisualStudio..82908fd1-8ac5-44a3-aa94-52af322e851a" Version="1.1" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>CodeRefactoringsForVisualStudio</DisplayName>
         <Description xml:space="preserve">Roslyn based, set of code refactorings for Visual Studio </Description>
     </Metadata>
