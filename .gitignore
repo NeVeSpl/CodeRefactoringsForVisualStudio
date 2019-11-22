@@ -5,3 +5,9 @@ CodeRefactoringsForVisualStudio.Vsix/obj/
 .vs/
 CodeRefactoringsForVisualStudio.Tests/obj/
 CodeRefactoringsForVisualStudio.Tests/bin/
+CodeRefactoringsForVisualStudio.Extensions/bin/
+CodeRefactoringsForVisualStudio.Extensions/obj/
+InvertAssignmentDirection/InvertAssignmentDirection.Vsix/bin/
+InvertAssignmentDirection/InvertAssignmentDirection.Vsix/obj/
+InvertAssignmentDirection/InvertAssignmentDirection/obj/
+InvertAssignmentDirection/InvertAssignmentDirection/bin/

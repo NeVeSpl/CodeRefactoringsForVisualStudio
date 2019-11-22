@@ -1,4 +1,4 @@
-using CodeRefactoringsForVisualStudio.Refactorings.InvertAssignmentDirection;
+using InvertAssignmentDirection;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using NUnit.Framework;
 

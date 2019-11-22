@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Threading;
@@ -8,11 +8,14 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Rename;
+using Microsoft.CodeAnalysis.Text;
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.InvertAssignmentDirection
+namespace InvertAssignmentDirection
 {
+
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(InvertAssignmentDirectionRefactoringProvider)), Shared]
-    public class InvertAssignmentDirectionRefactoringProvider :CodeRefactoringProvider
+    public class InvertAssignmentDirectionRefactoringProvider : CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
@@ -30,7 +33,7 @@ namespace CodeRefactoringsForVisualStudio.Refactorings.InvertAssignmentDirection
         private async Task<Document> InvertAssignments(Document document, IEnumerable<AssignmentExpressionSyntax> assignmentExpressions, CancellationToken cancellationToken)
         {
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            rootNode = rootNode.ReplaceNodes(assignmentExpressions, InvertAssignmentExpression); 
+            rootNode = rootNode.ReplaceNodes(assignmentExpressions, InvertAssignmentExpression);
             return document.WithSyntaxRoot(rootNode);
         }
 

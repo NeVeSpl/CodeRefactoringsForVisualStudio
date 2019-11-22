@@ -11,8 +11,4 @@
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Refactorings\InvertAssignmentDirection\" />
-  </ItemGroup>
-
 </Project>
