@@ -1,11 +1,17 @@
-#### Invert assignment direction
-[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection)
+
+1. [Invert assignment direction](#InvertAssignmentDirection)
+2. [Convert to full WPF property](#ConvertToFullWPFProperty)
+3. [Encapsulate field for WPF](#EncapsulateFieldForWPF)
+
+
+#### <a name="InvertAssignmentDirection"></a>1. Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
+
 <img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="678">
 
-#### Convert to full WPF Property
-[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
+#### <a name="ConvertToFullWPFProperty"></a>2. Convert to full WPF Property - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
+
 <img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
-#### Encapsulate field (WPF)
-[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+#### <a name="EncapsulateFieldForWPF"></a>3. Encapsulate field (WPF) - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+
 <img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="678">
