@@ -1,11 +1,11 @@
-You can download it as Visual Studio Extension from [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.CodeRefactoringsForVisualStudio).
+#### Invert assignment direction
+[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection)
+<img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="678">
 
 #### Convert to full WPF Property
-<img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="871">
+[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
+<img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
 #### Encapsulate field (WPF)
-<img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="871">
-
-#### Invert assignment direction
-<img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="871">
-
+[download from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+<img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="678">
