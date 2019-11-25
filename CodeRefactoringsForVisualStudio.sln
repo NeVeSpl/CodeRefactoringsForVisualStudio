@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualStudio", "CodeRefactoringsForVisualStudio\CodeRefactoringsForVisualStudio.csproj", "{B90228EF-8802-4FF9-B810-E28CAD2B6B97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeRefactoringsForVisualStudio.Vsix", "CodeRefactoringsForVisualStudio.Vsix\CodeRefactoringsForVisualStudio.Vsix.csproj", "{64D1FB0E-AAA4-479A-A93C-959A8E1BAAC1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualStudio.Tests", "CodeRefactoringsForVisualStudio.Tests\CodeRefactoringsForVisualStudio.Tests.csproj", "{EB11AB11-96C0-4FAA-A242-D14BB278F1C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertAssignmentDirection", "InvertAssignmentDirection\InvertAssignmentDirection\InvertAssignmentDirection.csproj", "{FE114F42-D022-481A-94E3-2BB98766A936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvertAssignmentDirection", "InvertAssignmentDirection\InvertAssignmentDirection.csproj", "{FE114F42-D022-481A-94E3-2BB98766A936}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertAssignmentDirection.Vsix", "InvertAssignmentDirection\InvertAssignmentDirection.Vsix\InvertAssignmentDirection.Vsix.csproj", "{BF68B22E-4D1C-4B5F-800A-4536D9B48F0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertAssignmentDirection.Vsix", "InvertAssignmentDirection.Vsix\InvertAssignmentDirection.Vsix.csproj", "{BF68B22E-4D1C-4B5F-800A-4536D9B48F0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeRefactoringsForVisualStudio.Extensions", "CodeRefactoringsForVisualStudio.Extensions\CodeRefactoringsForVisualStudio.Extensions.csproj", "{BCD6821B-3A83-495F-B798-343F7182769B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualStudio.Extensions", "CodeRefactoringsForVisualStudio.Extensions\CodeRefactoringsForVisualStudio.Extensions.csproj", "{BCD6821B-3A83-495F-B798-343F7182769B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvertToFullWPFProperty", "ConvertToFullWPFProperty\ConvertToFullWPFProperty.csproj", "{81838463-3976-45D8-9B45-6B4C63464C4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncapsulateFieldForWPF", "EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj", "{2AD133BA-740F-45E3-9096-EE891435840C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToFullWPFProperty.Vsix", "ConvertToFullWPFProperty.Vsix\ConvertToFullWPFProperty.Vsix.csproj", "{AF0791D0-E054-4E6F-97C7-670B9C2886EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncapsulateFieldForWPF.Vsix", "EncapsulateFieldForWPF.Vsix\EncapsulateFieldForWPF.Vsix.csproj", "{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B90228EF-8802-4FF9-B810-E28CAD2B6B97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B90228EF-8802-4FF9-B810-E28CAD2B6B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B90228EF-8802-4FF9-B810-E28CAD2B6B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B90228EF-8802-4FF9-B810-E28CAD2B6B97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64D1FB0E-AAA4-479A-A93C-959A8E1BAAC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64D1FB0E-AAA4-479A-A93C-959A8E1BAAC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64D1FB0E-AAA4-479A-A93C-959A8E1BAAC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64D1FB0E-AAA4-479A-A93C-959A8E1BAAC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB11AB11-96C0-4FAA-A242-D14BB278F1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB11AB11-96C0-4FAA-A242-D14BB278F1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB11AB11-96C0-4FAA-A242-D14BB278F1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,22 @@ Global
 		{BCD6821B-3A83-495F-B798-343F7182769B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCD6821B-3A83-495F-B798-343F7182769B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCD6821B-3A83-495F-B798-343F7182769B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81838463-3976-45D8-9B45-6B4C63464C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81838463-3976-45D8-9B45-6B4C63464C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81838463-3976-45D8-9B45-6B4C63464C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81838463-3976-45D8-9B45-6B4C63464C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD133BA-740F-45E3-9096-EE891435840C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD133BA-740F-45E3-9096-EE891435840C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD133BA-740F-45E3-9096-EE891435840C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD133BA-740F-45E3-9096-EE891435840C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF0791D0-E054-4E6F-97C7-670B9C2886EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF0791D0-E054-4E6F-97C7-670B9C2886EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF0791D0-E054-4E6F-97C7-670B9C2886EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF0791D0-E054-4E6F-97C7-670B9C2886EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

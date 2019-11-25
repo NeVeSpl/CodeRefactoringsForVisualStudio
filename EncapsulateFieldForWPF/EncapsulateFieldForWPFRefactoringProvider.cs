@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.EncapsulateFieldForWPF
+namespace EncapsulateFieldForWPF
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(EncapsulateFieldForWPFRefactoringProvider)), Shared]
     public class EncapsulateFieldForWPFRefactoringProvider :CodeRefactoringProvider

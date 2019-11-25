@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
+namespace ConvertToFullWPFProperty
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(ConvertToFullWPFPropertyRefactoringProvider)), Shared]
     public class ConvertToFullWPFPropertyRefactoringProvider : CodeRefactoringProvider

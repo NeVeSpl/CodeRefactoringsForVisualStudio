@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty;
+using ConvertToFullWPFProperty;
 using NUnit.Framework;
 
 namespace CodeRefactoringsForVisualStudio.Tests.ConvertToFullWPFProperty

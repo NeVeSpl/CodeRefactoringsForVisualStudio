@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeRefactoringsForVisualStudio.Refactorings.ConvertToFullWPFProperty
+namespace ConvertToFullWPFProperty
 {
     public static class FieldNameGenerator
     {
