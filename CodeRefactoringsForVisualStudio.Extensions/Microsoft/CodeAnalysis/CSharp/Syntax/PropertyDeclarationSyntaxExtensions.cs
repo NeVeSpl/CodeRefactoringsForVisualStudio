@@ -10,7 +10,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
     {
         public static bool IsAutoProperty(this PropertyDeclarationSyntax property)
         {
-            return property.AccessorList.Accessors.All(x => x.Body == null);
+            return property?.AccessorList?.Accessors.All(x => x.Body == null) ?? false;
         }
     }
 }
