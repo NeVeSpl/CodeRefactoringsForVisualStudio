@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ConvertToFullWPFProperty.Vsix.12009c3f-1b64-402b-8989-29b50222923c" Version="1.2" Language="en-US" Publisher="NeVeS" />
+        <Identity Id="ConvertToFullWPFProperty.Vsix.12009c3f-1b64-402b-8989-29b50222923c" Version="1.3" Language="en-US" Publisher="NeVeS" />
         <DisplayName>Convert to full WPF property</DisplayName>
         <Description xml:space="preserve">Code refactoring that replaces auto property with full property implementation that consists invocation of OnPropertyChanged in Visual Studio</Description>
     </Metadata>
