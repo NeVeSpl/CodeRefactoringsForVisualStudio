@@ -23,6 +23,8 @@
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\Class1.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\Class1_expected.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides.cs" />
+    <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />
@@ -50,6 +52,8 @@
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine.cs" />
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides_expected.cs" />
+    <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnOneSide.cs" />

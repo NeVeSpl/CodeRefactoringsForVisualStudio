@@ -54,6 +54,7 @@ namespace InvertAssignmentDirection
             {
                 case IdentifierNameSyntax _:
                 case MemberAccessExpressionSyntax _:
+                case ElementAccessExpressionSyntax _:
                     result = true;
                     break;
             }

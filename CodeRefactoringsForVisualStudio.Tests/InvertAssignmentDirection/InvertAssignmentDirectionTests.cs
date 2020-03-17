@@ -18,6 +18,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.InvertAssignmentDirectionTests
         [TestCase("ShouldPreserveRightTrivia")]
         [TestCase("ShouldInvertAssignmentWithMemberAccessOnBothSides")]
         [TestCase("ShouldInvertAssignmentWithMemberAccessOnOneSide")]
+        [TestCase("ShouldInvertAssignmentWithElementAccessOnBothSides")]
         public void Should(string caseName)
         {
             TestCodeRefactoring("InvertAssignmentDirection.Data", caseName);

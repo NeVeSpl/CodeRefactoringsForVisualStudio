@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="InvertAssignmentDirection..547c1ad5-b84b-4417-8690-988e7fa0b118" Version="1.2" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="InvertAssignmentDirection..547c1ad5-b84b-4417-8690-988e7fa0b118" Version="1.3" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>Invert assignment direction</DisplayName>
         <Description xml:space="preserve">Code refactoring that inverts assignment direction in Visual Studio</Description>
     </Metadata>
