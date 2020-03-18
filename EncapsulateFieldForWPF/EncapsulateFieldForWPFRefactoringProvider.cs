@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,27 +32,27 @@ namespace EncapsulateFieldForWPF
 
         private async Task<Document> EncapsulateFields(Document document, IEnumerable<FieldDeclarationSyntax> fieldDeclarations, CancellationToken cancellationToken)
         {
-            var syntaxGenerator = SyntaxGenerator.GetGenerator(document.Project);
-            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;
+            var syntaxGenerator = SyntaxGenerator.GetGenerator(document.Project);         
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);       
+            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;     
             var typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
-
+          
             cancellationToken.ThrowIfCancellationRequested();
-
+          
             string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
-
+       
             cancellationToken.ThrowIfCancellationRequested();
-
+           
             List<SyntaxNode> createdProperties = CreateProperties(fieldDeclarations, syntaxGenerator, methodNameToNotifyThatPropertyWasChanged);
-
+         
             cancellationToken.ThrowIfCancellationRequested();
-
+           
             SyntaxNode insertAfterThisNode = FindNodeAfterWhichCreatedPropertiesWillBeInserted(fieldDeclarations);
-
+           
             cancellationToken.ThrowIfCancellationRequested();
-
+           
             Document newDocument = await CreateNewDocument(document, typeNode, createdProperties, insertAfterThisNode, cancellationToken).ConfigureAwait(false);
+       
             return newDocument;
         }
       
