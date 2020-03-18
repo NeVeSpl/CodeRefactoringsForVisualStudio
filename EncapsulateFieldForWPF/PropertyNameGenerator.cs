@@ -16,7 +16,7 @@ namespace EncapsulateFieldForWPF
 
             if (!String.IsNullOrWhiteSpace(fieldName))
             {
-                if (IsNamePrefixed(fieldName))
+                if (fieldName.HasPrefix())
                 {
                     propertyName = fieldName.Remove(0, 1);
                 }
@@ -27,14 +27,6 @@ namespace EncapsulateFieldForWPF
             }
 
             return propertyName;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static bool IsNamePrefixed(string name)
-        {
-            return (name.Length > 1) 
-                   && (char.IsLower(name[0]) || (name[0] =='_'))
-                   && (char.IsUpper(name[1]));
         }
     }
 }

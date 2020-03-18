@@ -51,14 +51,17 @@ namespace Microsoft.CodeAnalysis
 
             if (backingFileds.Any())
             {
-                char candidateForPrefix = backingFileds.First().Name[0];
-                if(backingFileds.All(x => x.Name[0] == candidateForPrefix))
+                if (backingFileds.First().Name?.HasPrefix() == true)
                 {
-                    result = candidateForPrefix;
+                    char candidateForPrefix = backingFileds.First().Name[0];
+                    if (backingFileds.All(x => x.Name[0] == candidateForPrefix))
+                    {
+                        result = candidateForPrefix;
+                    }
                 }
             }
 
             return result;
-        }
+        }       
     }
 }
