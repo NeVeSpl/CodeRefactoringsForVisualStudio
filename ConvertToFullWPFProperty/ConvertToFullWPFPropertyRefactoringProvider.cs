@@ -22,7 +22,7 @@ namespace ConvertToFullWPFProperty
 
             if (selectedAutoPropertyDeclarationSyntaxes.Any())
             {
-                var action = CodeAction.Create("Convert to full WPF ppoperty", cancellationToken => ConvertToFullWPFProperty(context.Document, selectedAutoPropertyDeclarationSyntaxes, cancellationToken));
+                var action = CodeAction.Create("Convert to full WPF property", cancellationToken => ConvertToFullWPFProperty(context.Document, selectedAutoPropertyDeclarationSyntaxes, cancellationToken));
                 context.RegisterRefactoring(action);
             }
         }
@@ -94,7 +94,7 @@ namespace ConvertToFullWPFProperty
 
             return result;
         }
-        private async Task<Document> CreateNewDocument(Document document, TypeDeclarationSyntax typeNode, SyntaxNode newTypeNode, CancellationToken cancellationToken)
+        private async Task<Document> CreateNewDocument(Document document, SyntaxNode typeNode, SyntaxNode newTypeNode, CancellationToken cancellationToken)
         {
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
