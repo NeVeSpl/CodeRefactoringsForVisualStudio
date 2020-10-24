@@ -12,5 +12,27 @@ namespace System
                   && (char.IsLower(text[0]) || (text[0] == '_'))
                   && (char.IsUpper(text[1]));
         }
+
+        public static string ToUpperFirst(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+            char[] a = text.ToCharArray();
+            a[0] = char.ToUpper(a[0]);
+            return new string(a);
+        }
+
+        public static string ToLowerFirst(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+            char[] a = text.ToCharArray();
+            a[0] = char.ToLower(a[0]);
+            return new string(a);
+        }
     }
 }
