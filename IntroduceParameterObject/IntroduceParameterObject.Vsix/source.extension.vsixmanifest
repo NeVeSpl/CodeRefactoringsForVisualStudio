@@ -4,6 +4,7 @@
     <Identity Id="IntroduceParameterObject.fe674834-e5d3-4b3f-8b01-0146db4f8b1c" Version="1.0" Language="en-US" Publisher="NeVeS"/>
     <DisplayName>Introduce parameter object</DisplayName>
     <Description xml:space="preserve">Code refactoring that introduce parameter object in place of method arguments</Description>
+    <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#IntroduceParameterObject</MoreInfo>
     <Icon>IntroduceParameterObject.Logo.png</Icon>
   </Metadata>
   <Installation>
