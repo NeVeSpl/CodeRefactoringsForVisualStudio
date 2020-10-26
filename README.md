@@ -28,8 +28,7 @@ arr[i] = foo[j]; //-> foo[j] = arr[i];
 
 <img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
-Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter.
-It can convert many auto-properties at once.
+Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
 
 ##### Changelog
 
@@ -55,7 +54,7 @@ version 1.5
 - icon added to vsix
 
 version 1.4
-- performance improvement, a new way of determining the name of a method that by convention is called "OnPropertyChanged "
+- performance improvement, a new way of determining the name of a method that by convention is called "OnPropertyChanged"
 
 
 ### <a name="IntroduceParameterObject"></a>4. Introduce parameter object - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)

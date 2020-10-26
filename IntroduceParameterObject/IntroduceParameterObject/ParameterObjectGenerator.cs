@@ -55,12 +55,10 @@ namespace IntroduceParameterObject
             classDeclaration = classDeclaration.AddMembers(members.ToArray());
             @namespace = @namespace.AddMembers(classDeclaration);
             syntaxFactory = syntaxFactory.AddMembers(@namespace);
-
-
             var code = syntaxFactory.NormalizeWhitespace();
+
             return code;
         }
-
 
         public class ParameterObject
         {
@@ -83,8 +81,8 @@ namespace IntroduceParameterObject
                     var propertyName = parameterName.ToUpperFirst();
                     var type = parameter.Type;
                     var typeInfo = semanticModel.GetTypeInfo(type);
-                    var typeNamespace = typeInfo.Type.ContainingNamespace.ToString();
-                    if (!Usings.Contains(typeNamespace) && typeNamespace != Namespace)
+                    var typeNamespace = typeInfo.Type.ContainingNamespace?.ToString();
+                    if (!Usings.Contains(typeNamespace) && typeNamespace != Namespace && !string.IsNullOrEmpty(typeNamespace))
                     {
                         Usings.Add(typeNamespace);
                     }

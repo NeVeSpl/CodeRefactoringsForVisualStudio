@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,10 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace IntroduceParameterObject
 {
@@ -24,17 +19,17 @@ namespace IntroduceParameterObject
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             var rootNode = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var parameters = rootNode.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span);
+            //var parameters = rootNode.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span);
             var methodDeclarations = rootNode.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span);
 
-            if (parameters.Any() == false)
-            {
+            //if (parameters.Any() == false)
+            //{
                 if (methodDeclarations.Any() == false)
                 {
                     return;
                 }
-                parameters = methodDeclarations.First().ParameterList.Parameters;
-            }
+                var parameters = methodDeclarations.First().ParameterList.Parameters;
+            //}
 
             var action = CodeAction.Create("Introduce parameter object", c => IntroduceParameterObject(context.Document, methodDeclarations.First(), parameters, c));
             context.RegisterRefactoring(action);
@@ -43,7 +38,7 @@ namespace IntroduceParameterObject
         private async Task<Solution> IntroduceParameterObject(Document document, MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, CancellationToken cancellationToken)
         {
             IEnumerable<string> folders = null;
-            if (document.Folders != null)
+            if ((document.Folders != null) && (document.Folders.Any()))
             {
                 folders = new[] { document.Folders.First() };
             }
@@ -57,35 +52,23 @@ namespace IntroduceParameterObject
             var parameterObjectSyntax = ParameterObjectGenerator.CreateParameterObjectClass(parameterObject, parameters);
 
             cancellationToken.ThrowIfCancellationRequested();
-
-            var nodesToReplace = new List<SyntaxtNodeToReplace>();
-
-            IEnumerable<SymbolCallerInfo> callers = await SymbolFinder.FindCallersAsync(methodSymbol, document.Project.Solution).ConfigureAwait(false);
-            foreach (var caller in callers)
-            {
-                foreach (var location in caller.Locations)
-                {
-                    var node = location.SourceTree.GetRoot().ExtractSelectedNodesOfType<InvocationExpressionSyntax>(location.SourceSpan).FirstOrDefault();
-                    if (node != null)
-                    {
-                        var constructorInvocation = SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(parameterObject.Name)).WithArgumentList(node.ArgumentList);
-                        var updateArgumentList = SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList<ArgumentSyntax>(SyntaxFactory.Argument(constructorInvocation)));
-                        var newNode = node.WithArgumentList(updateArgumentList);
-                        nodesToReplace.Add(new SyntaxtNodeToReplace(node, newNode));
-                    }
-                }
-            }
-
-            MethodDeclarationSyntax updatedMethod = UpdateMethodParameterList(method, parameters, parameterObject);
-            updatedMethod = UpdateMethodBody(parameters, parameterObject, updatedMethod);
-            nodesToReplace.Add(new SyntaxtNodeToReplace(method, updatedMethod));
-
-            Solution solution = await Replace(document.Project.Solution, nodesToReplace, cancellationToken).ConfigureAwait(false);
-            //document = await ReplaceMethodInDocument(document, method, updatedMethod, cancellationToken).ConfigureAwait(false);
+            
+            var updatedInvocations = await UpdateMethodInvocations(document.Project.Solution, methodSymbol, parameterObject.Name, cancellationToken).ConfigureAwait(false);
+            var nodesToReplace = new List<SyntaxNodeToReplace>(updatedInvocations);
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var project = solution.GetProject(document.Project.Id);
+            var updatedMethod = UpdateMethodParameterList(method, parameters, parameterObject.Name);
+            updatedMethod = UpdateMethodBody(updatedMethod, parameters, parameterObject.Name);
+            nodesToReplace.Add(new SyntaxNodeToReplace(method, updatedMethod));
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Solution updatedSolution = await ReplaceNodes(document.Project.Solution, nodesToReplace, cancellationToken).ConfigureAwait(false);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var project = updatedSolution.GetProject(document.Project.Id);
             var parameterObjectDocument = project.AddDocument(parameterObject.Name + ".cs", parameterObjectSyntax, folders);
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -93,55 +76,30 @@ namespace IntroduceParameterObject
             return parameterObjectDocument.Project.Solution;
         }
 
-        private async Task<Solution> Replace(Solution solution, List<SyntaxtNodeToReplace> nodesToReplace, CancellationToken cancellationToken)
+        private async Task<List<SyntaxNodeToReplace>> UpdateMethodInvocations(Solution solution, IMethodSymbol methodSymbol, string parameterObjectName, CancellationToken cancellationToken)
         {
-            foreach (var toReplace in nodesToReplace)
+            var nodesToReplace = new List<SyntaxNodeToReplace>();
+            IEnumerable<SymbolCallerInfo> callers = await SymbolFinder.FindCallersAsync(methodSymbol, solution, cancellationToken).ConfigureAwait(false);
+            foreach (var caller in callers)
             {
-                toReplace.DocumentId = solution.GetDocumentId(toReplace.OldNode.SyntaxTree);
-            }
-            foreach (var group in nodesToReplace.GroupBy(x => x.DocumentId))
-            {                
-                var document = solution.GetDocument(group.Key);
-                var rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-                foreach (var item in group)
+                foreach (var location in caller.Locations)
                 {
-                    var oldNodesInDocument = group.Select(x => x.OldNode);
-                    rootNode = rootNode.ReplaceNodes(oldNodesInDocument, (x, _) =>  group.Where(y => y.OldNode == x).Select(z => z.NewNode).Single());                   
+                    var node = location.SourceTree.GetRoot()?.ExtractSelectedNodesOfType<InvocationExpressionSyntax>(location.SourceSpan).FirstOrDefault();
+                    if (node != null)
+                    {
+                        var parameterObjectConstructorInvocation = SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(parameterObjectName)).WithArgumentList(node.ArgumentList);
+                        var updatedArgumentList = SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList<ArgumentSyntax>(SyntaxFactory.Argument(parameterObjectConstructorInvocation)));
+                        var updatedNode = node.WithArgumentList(updatedArgumentList);
+                        nodesToReplace.Add(new SyntaxNodeToReplace(node, updatedNode));
+                    }
                 }
-                document = document.WithSyntaxRoot(rootNode);
-                solution = document.Project.Solution;
             }
-            return solution;
+            return nodesToReplace;
         }
-
-        private MethodDeclarationSyntax UpdateMethodBody(IEnumerable<ParameterSyntax> parameters, ParameterObjectGenerator.ParameterObject parameterObject, MethodDeclarationSyntax newMethod)
-        {
-            var identifiers = newMethod.Body.DescendantTokens().OfType<SyntaxToken>().Where(x => x.Kind() == SyntaxKind.IdentifierToken);
-            newMethod = newMethod.WithBody(newMethod.Body.ReplaceTokens(identifiers, (x, _) => AddPrefixToIdentifier(x, parameters, parameterObject.Name.ToLowerFirst())));
-            return newMethod;
-        }
-
-        private SyntaxToken AddPrefixToIdentifier(SyntaxToken originalIdentifier, IEnumerable<ParameterSyntax> parameters, string prefix)
-        {
-            if (!parameters.Any(x => x.Identifier.ValueText == originalIdentifier.ValueText))
-            {
-                return originalIdentifier;
-            }
-            return SyntaxFactory.Identifier($"{prefix}.{originalIdentifier.ValueText.ToUpperFirst()}");
-        }
-
-        private static async Task<Document> ReplaceMethodInDocument(Document document, MethodDeclarationSyntax method, MethodDeclarationSyntax newMethod, CancellationToken cancellationToken)
-        {
-            var rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            var newRoot = rootNode.ReplaceNode(method, newMethod);
-            document = document.WithSyntaxRoot(newRoot);
-            return document;
-        }
-
-        private static MethodDeclarationSyntax UpdateMethodParameterList(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, ParameterObjectGenerator.ParameterObject parameterObject)
+        private MethodDeclarationSyntax UpdateMethodParameterList(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName)
         {
             List<ParameterSyntax> newParameters = method.ParameterList.Parameters.Where(x => !parameters.Contains(x)).ToList();
-            newParameters.Add(SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameterObject.Name.ToLowerFirst())).WithType(SyntaxFactory.IdentifierName(parameterObject.Name)));
+            newParameters.Add(SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameterObjectName.ToLowerFirst())).WithType(SyntaxFactory.IdentifierName(parameterObjectName)));
             MethodDeclarationSyntax newMethod = method;
             if (newParameters.Count == 1)
             {
@@ -154,15 +112,46 @@ namespace IntroduceParameterObject
 
             return newMethod;
         }
+        private MethodDeclarationSyntax UpdateMethodBody(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName)
+        {
+            var identifiers = method.Body.DescendantTokens()
+                .OfType<SyntaxToken>()
+                .Where(x => x.Kind() == SyntaxKind.IdentifierToken)
+                .Where(x => parameters.Any(y => y.Identifier.ValueText == x.ValueText));
+            method = method.WithBody(method.Body.ReplaceTokens(identifiers, (x, _) => AddPrefixToIdentifier(x, parameterObjectName.ToLowerFirst())));
+            return method;
+        }
+        private SyntaxToken AddPrefixToIdentifier(SyntaxToken originalIdentifier, string prefix)
+        {            
+            return SyntaxFactory.Identifier($"{prefix}.{originalIdentifier.ValueText.ToUpperFirst()}");
+        }
 
+        private async Task<Solution> ReplaceNodes(Solution solution, List<SyntaxNodeToReplace> nodesToReplace, CancellationToken cancellationToken)
+        {
+            foreach (var item in nodesToReplace)
+            {
+                item.DocumentId = solution.GetDocumentId(item.OldNode.SyntaxTree);
+            }
+            var lookup = nodesToReplace.ToDictionary((x) => x.OldNode, (x) => x.NewNode);
+            foreach (var group in nodesToReplace.GroupBy(x => x.DocumentId))
+            {                
+                var document = solution.GetDocument(group.Key);
+                var rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false); 
+                var oldNodesInDocument = group.Select(x => x.OldNode);               
+                rootNode = rootNode.ReplaceNodes(oldNodesInDocument, (x, _) => lookup[x]);  
+                document = document.WithSyntaxRoot(rootNode);
+                solution = document.Project.Solution;
+            }
+            return solution;
+        }
 
-        private class SyntaxtNodeToReplace
+        private class SyntaxNodeToReplace
         {
             public SyntaxNode OldNode { get; }
             public SyntaxNode NewNode { get; }
             public DocumentId DocumentId {get; set; }
 
-            public SyntaxtNodeToReplace(SyntaxNode oldNode, SyntaxNode newNode)
+            public SyntaxNodeToReplace(SyntaxNode oldNode, SyntaxNode newNode)
             {
                 OldNode = oldNode;
                 NewNode = newNode;
