@@ -19,9 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToFullWPFProperty.Vs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncapsulateFieldForWPF.Vsix", "EncapsulateFieldForWPF.Vsix\EncapsulateFieldForWPF.Vsix.csproj", "{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroduceParameterObject", "IntroduceParameterObject\IntroduceParameterObject\IntroduceParameterObject.csproj", "{349C2D32-16F2-456F-A7D5-85C504CB3352}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroduceParameterObject", "IntroduceParameterObject\IntroduceParameterObject\IntroduceParameterObject.csproj", "{349C2D32-16F2-456F-A7D5-85C504CB3352}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroduceParameterObject.Vsix", "IntroduceParameterObject\IntroduceParameterObject.Vsix\IntroduceParameterObject.Vsix.csproj", "{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroduceParameterObject.Vsix", "IntroduceParameterObject\IntroduceParameterObject.Vsix\IntroduceParameterObject.Vsix.csproj", "{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A4A4741D-A0A1-44AD-8F3C-1CD73DF63D37}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
