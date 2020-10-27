@@ -82,7 +82,7 @@ version 1.1
 
 <img src="Documentation/MediatRAddRequest.sampleusecase.gif" width="800">
 
-<img src="Documentation/MediatRAddRequestHandler.sampleusecase.gif" width="880">
+<img src="Documentation/MediatRAddRequestHandler.sampleusecase.gif" width="800">
 
 Visual Studio code refactoring that adds Command class which implements [MediatR](https://github.com/jbogard/MediatR) IRequest<> interface and handler class which implements [MediatR](https://github.com/jbogard/MediatR) IRequestHandler<> interface.
 It only creates empty boilerplate code required by MediatR based on the selected method name and return type.
