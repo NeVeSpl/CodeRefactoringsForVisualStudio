@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="IntroduceParameterObject.fe674834-e5d3-4b3f-8b01-0146db4f8b1c" Version="1.1" Language="en-US" Publisher="NeVeS"/>
-    <DisplayName>Introduce parameter object</DisplayName>
-    <Description xml:space="preserve">Code refactoring that introduces parameter object in place of method arguments</Description>
-    <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#IntroduceParameterObject</MoreInfo>
-    <Icon>IntroduceParameterObject.Logo.png</Icon>
+    <Identity Id="MediatRAddRequestHandlerAndRequest.c895fddc-d583-4005-82e8-c862522b036f" Version="1.0" Language="en-US" Publisher="NeVeS"/>
+    <DisplayName>MediatR add RequestHandler and Request</DisplayName>
+    <Description xml:space="preserve">Code refactoring that adds MediatR RequestHandler and Request classes based on the selected method.</Description>
+    <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#MediatRAddRequestHandlerAndRequest</MoreInfo>
+    <Icon>MediatRAddRequestHandlerAndRequest.Logo.png</Icon>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,)" />
@@ -16,7 +16,7 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="IntroduceParameterObject" Path="|IntroduceParameterObject|"/>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="MediatRAddRequestHandlerAndRequest" Path="|MediatRAddRequestHandlerAndRequest|"/>
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />

@@ -3,6 +3,7 @@
 2. [Convert to full WPF property](#ConvertToFullWPFProperty)
 3. [Encapsulate field for WPF](#EncapsulateFieldForWPF)
 4. [Introduce parameter object](#IntroduceParameterObject)
+5. [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
 
 
 ### <a name="InvertAssignmentDirection"></a>1. Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
@@ -72,3 +73,24 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 
 version 1.1
 - fixed crash caused by array parameter
+
+
+
+
+
+### <a name="MediatRAddRequestHandlerAndRequest"></a>5. MediatR add RequestHandler and Request - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
+
+<img src="Documentation/MediatRAddRequest.sampleusecase.gif" width="800">
+
+<img src="Documentation/MediatRAddRequestHandler.sampleusecase.gif" width="880">
+
+Visual Studio code refactoring that adds Command class which implements [MediatR](https://github.com/jbogard/MediatR) IRequest<> interface and handler class which implements [MediatR](https://github.com/jbogard/MediatR) IRequestHandler<> interface.
+It only creates empty boilerplate code required by MediatR based on the selected method name and return type.
+
+
+##### Limitations 
+- does not support generic type parameters
+
+
+
+

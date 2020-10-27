@@ -37,12 +37,6 @@ namespace IntroduceParameterObject
 
         private async Task<Solution> IntroduceParameterObject(Document document, MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, CancellationToken cancellationToken)
         {
-            IEnumerable<string> folders = null;
-            if ((document.Folders != null) && (document.Folders.Any()))
-            {
-                folders = new[] { document.Folders.First() };
-            }
-
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(method, cancellationToken);
 
@@ -69,7 +63,7 @@ namespace IntroduceParameterObject
             cancellationToken.ThrowIfCancellationRequested();
 
             var project = updatedSolution.GetProject(document.Project.Id);
-            var parameterObjectDocument = project.AddDocument(parameterObject.Name + ".cs", parameterObjectSyntax, folders);
+            var parameterObjectDocument = project.AddDocument(parameterObject.Name + ".cs", parameterObjectSyntax, document.Folders);
 
             cancellationToken.ThrowIfCancellationRequested();
 

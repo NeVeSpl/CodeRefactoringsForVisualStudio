@@ -4,8 +4,8 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <RootNamespace>IntroduceParameterObject.Vsix</RootNamespace>
-    <AssemblyName>IntroduceParameterObject.Vsix</AssemblyName>
+    <RootNamespace>MediatRAddRequestHandlerAndRequest.Vsix</RootNamespace>
+    <AssemblyName>MediatRAddRequestHandlerAndRequest.Vsix</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,12 +16,12 @@
     <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
     <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
     <VSSDKTargetPlatformRegRootSuffix>Roslyn</VSSDKTargetPlatformRegRootSuffix>
-  </PropertyGroup> 
+  </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Documentation\IntroduceParameterObject.Logo.png" Link="IntroduceParameterObject.Logo.png">
+    <Content Include="..\..\Documentation\MediatRAddRequestHandlerAndRequest.Logo.png" Link="MediatRAddRequestHandlerAndRequest.Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	    <IncludeInVSIX>true</IncludeInVSIX>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
 
@@ -40,7 +40,7 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" />
 
   <ItemGroup>
-    <ProjectReference Include="..\IntroduceParameterObject\IntroduceParameterObject.csproj" />
+    <ProjectReference Include="..\MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.csproj" />
   </ItemGroup>
 
   <ItemGroup>
