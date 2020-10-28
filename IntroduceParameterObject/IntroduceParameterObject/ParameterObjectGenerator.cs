@@ -11,12 +11,11 @@ namespace IntroduceParameterObject
     {
         public static CompilationUnitSyntax CreateParameterObjectClass(ParameterObject parameterObject, IEnumerable<ParameterSyntax> parameters)
         {
-            var syntaxFactory = SyntaxFactory.CompilationUnit();
+            var compilationUnit = SyntaxFactory.CompilationUnit();
 
-            syntaxFactory = syntaxFactory.AddUsings(parameterObject.Usings.Select(x => SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(x))).ToArray());
-            var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName(parameterObject.Namespace)).NormalizeWhitespace();
-            var classDeclaration = SyntaxFactory.ClassDeclaration(parameterObject.Name);
-            classDeclaration = classDeclaration.AddModifiers(SyntaxFactory.Token(SyntaxKind.InternalKeyword));
+            compilationUnit = compilationUnit.AddUsings(parameterObject.Usings);
+            var @namespace = SyntaxFactoryEx.NamespaceDeclaration(parameterObject.Namespace);
+            var classDeclaration = SyntaxFactoryEx.InternalClassDeclaration(parameterObject.Name);
 
             var members = new List<MemberDeclarationSyntax>();
             foreach (var property in parameterObject.Properties)
@@ -54,8 +53,8 @@ namespace IntroduceParameterObject
 
             classDeclaration = classDeclaration.AddMembers(members.ToArray());
             @namespace = @namespace.AddMembers(classDeclaration);
-            syntaxFactory = syntaxFactory.AddMembers(@namespace);
-            var code = syntaxFactory.NormalizeWhitespace();
+            compilationUnit = compilationUnit.AddMembers(@namespace);
+            var code = compilationUnit.NormalizeWhitespace();
 
             return code;
         }
@@ -80,14 +79,12 @@ namespace IntroduceParameterObject
                     var parameterName = parameter.Identifier.ValueText;
                     var propertyName = parameterName.ToUpperFirst();
                     var type = parameter.Type;
-                    var typeInfo = semanticModel.GetTypeInfo(type);
-                    var typeNamespace = typeInfo.Type.ContainingNamespace?.ToString();
-                    if (!Usings.Contains(typeNamespace) && typeNamespace != Namespace && !string.IsNullOrEmpty(typeNamespace))
-                    {
-                        Usings.Add(typeNamespace);
-                    }
+                    var typeInfo = semanticModel.GetTypeInfo(type);                   
+                    Usings.AddRange(typeInfo.Type.GetUsings());                    
                     Properties.Add((propertyName, parameterName, type.ToString()));
                 }
+
+                Usings = Usings.Where(x => x != Namespace).ToList();
             }
         }
     }

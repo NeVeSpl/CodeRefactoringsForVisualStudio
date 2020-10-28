@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis
                 /* Old slower implementation
                   foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.AllInterfaces)
                   {
-                      if (interfaceSymbol.Name == "INotifyPropertyChanged" && String.Equals(interfaceSymbol?.ContainingNamespace.ToString(), "System.ComponentModel"))
+                      if (interfaceSymbol.Name == "INotifyPropertyChanged" && String.Equals(interfaceSymbol?.ContainingNamespace?.ToString(), "System.ComponentModel"))
                       {                   
                           ISymbol propertyChangedEventSymbol = interfaceSymbol.GetMembers("PropertyChanged").First();
                           foreach (Location location in type.Locations)

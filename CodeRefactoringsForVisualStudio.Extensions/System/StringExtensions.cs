@@ -34,5 +34,17 @@ namespace System
             a[0] = char.ToLower(a[0]);
             return new string(a);
         }
+
+        public static string RemoveSufix(this string text, params string[] suffixes)
+        {
+            foreach (var sufix in suffixes)
+            {
+                if (text.EndsWith(sufix, StringComparison.Ordinal))
+                {
+                    return text.Substring(0, text.Length - sufix.Length);
+                }
+            }
+            return text;
+        }
     }
 }

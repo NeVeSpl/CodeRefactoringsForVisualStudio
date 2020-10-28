@@ -14,13 +14,13 @@ using Microsoft.CodeAnalysis.FindSymbols;
 namespace IntroduceParameterObject
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(IntroduceParameterObjectCodeRefactoringProvider)), Shared]
-    internal partial class IntroduceParameterObjectCodeRefactoringProvider : CodeRefactoringProvider
+    internal class IntroduceParameterObjectCodeRefactoringProvider : CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             var rootNode = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             //var parameters = rootNode.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span);
-            var methodDeclarations = rootNode.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span);
+            var methodDeclarations = rootNode.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span, true);
 
             //if (parameters.Any() == false)
             //{
