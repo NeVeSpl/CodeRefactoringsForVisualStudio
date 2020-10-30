@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis
     {
         public static IEnumerable<string> GetUsings(this ITypeSymbol typeSymbol)
         {
-            if (typeSymbol.ContainingNamespace != null)
+            if ((typeSymbol.ContainingNamespace != null) && (!typeSymbol.ContainingNamespace.IsGlobalNamespace))
             {
                 yield return typeSymbol.ContainingNamespace.ToString();
             }

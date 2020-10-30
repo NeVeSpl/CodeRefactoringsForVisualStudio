@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary
+        format that VisualStudio will consume) has the ability to run a preprocessor
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so
+        it is possible to define includes and macros with the same syntax used
+        in C++ files. Using this ability of the compiler here, we include some files
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+
+  <!--The Commands section is where commands, menus, and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidCopyPasteWithConversionPackage">
+    <!-- Inside this section we have different sub-sections: one for the menus, another
+    for the menu groups, one for the buttons (the actual commands), one for the combos
+    and the last one for the bitmaps used. Each element is identified by a command id that
+    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
+    called "command set" and is used to group different command inside a logically related
+    group; your package should define its own command set in order to avoid collisions
+    with command ids defined by other packages. -->
+
+    <!-- In this section you can define new menu groups. A menu group is a container for
+         other menus or buttons (commands); from a visual point of view you can see the
+         group as the part of a menu contained between two lines. The parent of a group
+         must be a menu. -->
+    <Groups>
+      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
+      </Group>
+
+      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" priority="0x0602">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" />
+      </Group>
+    </Groups>
+
+    <Menus>
+      <Menu guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" priority="0x0200" type="Menu">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="MyMenuGroup" />
+        <Strings>
+          <ButtonText>Copy/Paste with conversion</ButtonText>
+        </Strings>
+
+      </Menu>
+    </Menus>
+
+    <Buttons>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSeparateWordsId" priority="0x0100" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>Copy as separate words</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsCamelCase" priority="0x0101" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>copyAsCamelCase</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsPascalCase" priority="0x0102" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>CopyAsPascalCase</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSnakeCase" priority="0x0103" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>copy_as_snake_case</ButtonText>
+        </Strings>
+      </Button>
+     <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSeparateWordsId" priority="0x0104" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>Paste as separate words</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsCamelCase" priority="0x0105" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>pasteAsCamelCase</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsPascalCase" priority="0x0106" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>PasteAsPascalCase</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSnakeCase" priority="0x0107" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>past_as_snake_case</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidCopyPasteWithConversionPackage" value="{ea9007e1-a0be-45cd-97b1-b33510fbc130}" />
+
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guidCopyPasteWithConversionPackageCmdSet" value="{d1ce5fd5-aeb1-4684-b517-cb32df838c11}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="SubMenu" value="0x1001"/>
+      <IDSymbol name="SubMenuGroup" value="0x1000"/>
+      <IDSymbol name="CopyAsSeparateWordsId" value="0x0100" />
+      <IDSymbol name="CopyAsCamelCase" value="0x0110" />
+      <IDSymbol name="CopyAsPascalCase" value="0x0120" />
+      <IDSymbol name="CopyAsSnakeCase" value="0x0130" />
+      <IDSymbol name="PasteAsSeparateWordsId" value="0x0200" />
+      <IDSymbol name="PasteAsCamelCase" value="0x0210" />
+      <IDSymbol name="PasteAsPascalCase" value="0x0220" />
+      <IDSymbol name="PasteAsSnakeCase" value="0x0230" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

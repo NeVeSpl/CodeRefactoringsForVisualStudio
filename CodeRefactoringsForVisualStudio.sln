@@ -28,9 +28,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRAddRequestHandlerAndRequest", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.csproj", "{B1F72D14-61FF-434B-878C-07197DAA036C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRAddRequestHandlerAndRequest", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.csproj", "{B1F72D14-61FF-434B-878C-07197DAA036C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRAddRequestHandlerAndRequest.Vsix", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.Vsix\MediatRAddRequestHandlerAndRequest.Vsix.csproj", "{9F92A575-4D1C-4270-961A-CEA6209FBC7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRAddRequestHandlerAndRequest.Vsix", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.Vsix\MediatRAddRequestHandlerAndRequest.Vsix.csproj", "{9F92A575-4D1C-4270-961A-CEA6209FBC7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPasteWithConversionPackage", "CopyPasteWithConversion\CopyPasteWithConversion.csproj", "{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +88,10 @@ Global
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

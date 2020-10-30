@@ -46,5 +46,37 @@ namespace System
             }
             return text;
         }
+
+
+        public static IEnumerable<string> SplitStringIntoSeparateWords(this string selectedText)
+        {
+            int wordFirstIndex = 0;
+            for (int i = 0; i < selectedText.Length; ++i)
+            {
+                if (!char.IsLetterOrDigit(selectedText[i]))
+                {
+                    int wordLength = i - wordFirstIndex;
+                    if (wordLength > 0)
+                    {
+                        yield return selectedText.Substring(wordFirstIndex, wordLength);
+                    }
+                    wordFirstIndex = i + 1;
+                }
+                if (char.IsUpper(selectedText[i]))
+                {
+                    int wordLength = i - wordFirstIndex;
+                    if (wordLength > 0)
+                    {
+                        yield return selectedText.Substring(wordFirstIndex, wordLength);
+                    }
+                    wordFirstIndex = i;
+                }
+            }
+            int remainderLength = selectedText.Length - wordFirstIndex;
+            if (remainderLength > 0)
+            {
+                yield return selectedText.Substring(wordFirstIndex, remainderLength);
+            }
+        }
     }
 }
