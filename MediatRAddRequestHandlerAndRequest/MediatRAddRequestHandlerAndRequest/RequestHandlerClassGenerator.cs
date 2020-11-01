@@ -27,7 +27,7 @@ namespace MediatRAddRequestHandlerAndRequest
             {
                 HandlerName = method.Identifier.ValueText + "Handler";
                 (CommandName, CommandNameWithTypeArguments, Namespace) = GetCommandData(methodSymbol);
-                ParameterName = CommandName.RemoveSufix("Command", "Query").ToLowerFirst();
+                ParameterName = "command";
 
                 ReturnType = method.ReturnType.UnpackTypeFromTaskAndActionResult();
                 ReturnTypeWithTask = SyntaxFactory.GenericName("Task").AddTypeArgumentListArguments(ReturnType);
