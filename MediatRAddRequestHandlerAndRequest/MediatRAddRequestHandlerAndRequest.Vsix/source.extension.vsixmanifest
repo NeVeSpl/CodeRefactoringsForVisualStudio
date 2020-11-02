@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="MediatRAddRequestHandlerAndRequest.c895fddc-d583-4005-82e8-c862522b036f" Version="1.4" Language="en-US" Publisher="NeVeS"/>
+    <Identity Id="MediatRAddRequestHandlerAndRequest.c895fddc-d583-4005-82e8-c862522b036f" Version="1.5" Language="en-US" Publisher="NeVeS"/>
     <DisplayName>MediatR add RequestHandler and Request</DisplayName>
     <Description xml:space="preserve">Code refactoring that adds MediatR RequestHandler and Request boilerplate code based on the selected method name and return type.</Description>
     <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#MediatRAddRequestHandlerAndRequest</MoreInfo>

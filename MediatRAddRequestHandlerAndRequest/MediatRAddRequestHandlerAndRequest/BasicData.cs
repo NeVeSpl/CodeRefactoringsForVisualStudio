@@ -22,74 +22,81 @@ namespace MediatRAddRequestHandlerAndRequest
         public IEnumerable<string> SolutionFolders { get; set; }
 
 
-        public static async Task<BasicData> GetFromMethodDeclaration(Solution solution, MethodDeclarationSyntax method, CancellationToken token)
+        public static async Task<BasicData> GetFromMethodDeclaration(Solution solution, MemberDeclarationSyntax method, CancellationToken token)
         {
             var document = solution.GetDocument(method.SyntaxTree);
             var semanticModel = await document.GetSemanticModelAsync(token).ConfigureAwait(false);
-            var methodSymbol = semanticModel.GetDeclaredSymbol(method, token) as IMethodSymbol;
+            var symbol = semanticModel.GetDeclaredSymbol(method, token);
+            var methodSymbol = symbol as IMethodSymbol;
+            var typeSymbol = symbol as ITypeSymbol;
+
+            var existingImplementationOfIRequest = typeSymbol;
+            if (methodSymbol != null)
+            {
+                existingImplementationOfIRequest = GetParameterTypeThatImplementsIRequest(methodSymbol);
+            }
 
             var result = new BasicData();
-
             string basicName = null;
             ITypeSymbol returnTypeSymbol = null;
-            var (existingImplementationOfIRequest, implementedInterface) = GetParameterTypeThatImplementsIRequest(methodSymbol);
+            List<string> usings = new List<string>() { "MediatR" };
+            
             if (existingImplementationOfIRequest != null)
             {
                 result.CommandName = existingImplementationOfIRequest.Name;
-                if (implementedInterface.TypeArguments.Length == 1)
+                var implementedInterface = GetIRequestSymbol(existingImplementationOfIRequest.AllInterfaces);                
+                if (implementedInterface?.TypeArguments.Length == 1)
                 {
-                    returnTypeSymbol = implementedInterface.TypeArguments.First();                   
-                    result.ReturnType = SyntaxFactory.IdentifierName(returnTypeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
+                    returnTypeSymbol = implementedInterface.TypeArguments.First(); 
                 }
 
                 result.Namespace = existingImplementationOfIRequest.ContainingNamespace.ToString();
                 var documentOfExistingImplementation = solution.GetDocument(existingImplementationOfIRequest.DeclaringSyntaxReferences.First().SyntaxTree);
                 result.SolutionFolders = documentOfExistingImplementation.Folders;
-                //string fullName = existingImplementationOfIRequest.ToDisplayString(new SymbolDisplayFormat(SymbolDisplayGlobalNamespaceStyle.Omitted,
-                //                                                                              SymbolDisplayTypeQualificationStyle.NameOnly,
-                //                                                                              SymbolDisplayGenericsOptions.IncludeTypeParameters,
-                //                                                                              miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes));
+
                 string fullName = existingImplementationOfIRequest.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+                if (existingImplementationOfIRequest is INamedTypeSymbol namedTypeSymbol)
+                {
+                    foreach (var typeArgument in namedTypeSymbol.TypeArguments)
+                    {
+                        if (!(typeArgument is ITypeParameterSymbol))
+                        {
+                            usings.AddRange(typeArgument.GetUsings());
+                        }
+                    }
+                }
                 result.CommandTypeArguments = fullName.Substring(result.CommandName.Length);
                 basicName = result.CommandName.RemoveSufix("Query", "Command");
             }
             else
-            {
-                basicName = method.Identifier.ValueText;
-                returnTypeSymbol = methodSymbol.ReturnType;
-                result.ReturnType = method.ReturnType.UnpackTypeFromTaskAndActionResult();
+            {                
+                basicName = methodSymbol.Name;
+                returnTypeSymbol = methodSymbol.ReturnType.UnpackTypeFromTaskAndActionResult();                
                 result.Namespace = $"{methodSymbol.ContainingNamespace}.{basicName}";               
                 result.SolutionFolders = new List<string>(document.Folders) { basicName };
                 result.CommandName = basicName + "Command";
             }
 
-            if ((result.ReturnType is PredefinedTypeSyntax pred) && (pred.Keyword.ValueText == "void"))
+            if ((returnTypeSymbol != null) && (returnTypeSymbol.SpecialType != SpecialType.System_Void))
             {
-                result.ReturnType = null;
+                result.ReturnType = SyntaxFactory.IdentifierName(returnTypeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat));
             }
-
-            var unpackedReturnTypeSymbol = returnTypeSymbol.UnpackTypeFromTaskAndActionResult();
-            result.Usings = new List<string>(unpackedReturnTypeSymbol.GetUsings()) { "MediatR" }.Where(x => x != result.Namespace).ToList();  
+           
+            usings.AddRange(returnTypeSymbol.GetUsings());
+            result.Usings = usings.Where(x => x != result.Namespace).ToList();  
             result.HandlerName = basicName + "Handler";
             result.CommandParameterNameInHandleMethod = "command";
            
             return result;
         }
 
-        private static (ITypeSymbol type, INamedTypeSymbol interfaceType) GetParameterTypeThatImplementsIRequest(IMethodSymbol method)
+        private static ITypeSymbol GetParameterTypeThatImplementsIRequest(IMethodSymbol method)
         {
-            foreach (var parameter in method.Parameters)
-            {
-                foreach (var @interface in parameter.Type.AllInterfaces)
-                {
-                    var interfaceName = @interface.ToString();
-                    if (interfaceName.StartsWith("MediatR.IRequest"))
-                    {
-                        return (parameter.Type, @interface);
-                    }
-                }
-            }
-            return (null, null);
+            return method.Parameters.Where(x => GetIRequestSymbol(x.Type.AllInterfaces) != null).Select(x => x.Type).FirstOrDefault();           
         }       
+        private static INamedTypeSymbol GetIRequestSymbol(IEnumerable<INamedTypeSymbol> interfaces)
+        {
+            return interfaces.Where(x => x.ToString().StartsWith("MediatR.IRequest")).FirstOrDefault();
+        }
     }    
 }
