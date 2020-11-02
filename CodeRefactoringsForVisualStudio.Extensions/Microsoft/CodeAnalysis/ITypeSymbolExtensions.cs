@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Microsoft.CodeAnalysis
@@ -8,6 +9,11 @@ namespace Microsoft.CodeAnalysis
     {
         public static IEnumerable<string> GetUsings(this ITypeSymbol typeSymbol)
         {
+            if (typeSymbol == null)
+            {
+                yield break;
+            }    
+
             if ((typeSymbol.ContainingNamespace != null) && (!typeSymbol.ContainingNamespace.IsGlobalNamespace))
             {
                 yield return typeSymbol.ContainingNamespace.ToString();
@@ -31,6 +37,22 @@ namespace Microsoft.CodeAnalysis
                     yield return item;
                 }
             }
+        }
+
+
+        public static ITypeSymbol UnpackTypeFromTaskAndActionResult(this ITypeSymbol type)
+        {
+            var toRemove = new[] { "Task", "ActionResult" };
+
+            for (int i = 0; i < 2; ++i)
+            {
+                if ((type is INamedTypeSymbol namedTypeSymbol) && (toRemove.Contains(namedTypeSymbol.Name)) && namedTypeSymbol.TypeArguments.Length == 1)
+                {
+                    type = namedTypeSymbol.TypeArguments.First();
+                }
+            }
+
+            return type;
         }
     }
 }

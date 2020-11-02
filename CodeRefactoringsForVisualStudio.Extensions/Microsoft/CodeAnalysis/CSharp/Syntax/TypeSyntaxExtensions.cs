@@ -16,6 +16,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     type = generic.TypeArgumentList.Arguments.First();
                 }
             }
+
             return type;
         }
     }

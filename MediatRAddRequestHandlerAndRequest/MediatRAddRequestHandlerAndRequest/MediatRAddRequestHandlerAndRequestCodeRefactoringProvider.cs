@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -11,43 +12,48 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace MediatRAddRequestHandlerAndRequest
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(MediatRAddRequestHandlerAndRequestCodeRefactoringProvider)), Shared]
-    internal class MediatRAddRequestHandlerAndRequestCodeRefactoringProvider : CodeRefactoringProvider
+    internal partial class MediatRAddRequestHandlerAndRequestCodeRefactoringProvider : CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var methodDeclarations = root.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span, true);
+            var methodDeclarations = root.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span, true).ToArray();
             
             if (!methodDeclarations.Any())
             {
                 return;
             }
 
-            var addRequest = CodeAction.Create("Add IRequest<> (empty)", c => Add(context.Document, methodDeclarations.First(), c, Mode.AddRequest));
-            var addRequestHandler = CodeAction.Create("Add IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations.First(), c, Mode.AddRequestHandler));
-            var addBoth = CodeAction.Create("Add IRequest<> and IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations.First(), c, Mode.Both));
+            var addRequest = CodeAction.Create("Add IRequest<> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.AddRequest));
+            var addRequestHandler = CodeAction.Create("Add IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.AddRequestHandler));
+            var addBoth = CodeAction.Create("Add IRequest<> and IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.Both));
             var group = CodeAction.Create("MediatR", ImmutableArray.Create(addRequest, addRequestHandler, addBoth), false);
 
             context.RegisterRefactoring(group);
         }      
 
-        private async Task<Solution> Add(Document document, MethodDeclarationSyntax methodSyntax, CancellationToken cancellationToken, Mode whatToAdd)
+        private async Task<Solution> Add(Document document, IEnumerable<MethodDeclarationSyntax> methods, CancellationToken cancellationToken, Mode whatToAdd)
         {
-            if (whatToAdd.HasFlag(Mode.AddRequestHandler))
+            foreach (var method in methods)
             {
-                var requestHandlerDocument = await RequestHandlerClassGenerator.GenerateDocument(document.Project.Solution, methodSyntax, cancellationToken);             
-                document = document.Project.AddDocument(requestHandlerDocument);
-            }
+                var data = await BasicData.GetFromMethodDeclaration(document.Project.Solution, method, cancellationToken);
 
-            cancellationToken.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
-            if (whatToAdd.HasFlag(Mode.AddRequest))
-            {                
-                var requestClassDocument = await RequestClassGenerator.GenerateDocument(document.Project.Solution, methodSyntax, cancellationToken);
-                document = document.Project.AddDocument(requestClassDocument);
-            }
+                if (whatToAdd.HasFlag(Mode.AddRequestHandler))
+                {
+                    var requestHandlerDocument = RequestHandlerClassGenerator.GenerateDocument(data);
+                    document = document.Project.AddDocument(requestHandlerDocument);
+                }               
 
-            cancellationToken.ThrowIfCancellationRequested();
+                if (whatToAdd.HasFlag(Mode.AddRequest))
+                {
+                    var requestClassDocument = RequestClassGenerator.GenerateDocument(data);
+                    document = document.Project.AddDocument(requestClassDocument);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+            }   
 
             return document.Project.Solution;
         }
