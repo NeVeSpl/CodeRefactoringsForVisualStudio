@@ -2,11 +2,15 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
         <Identity Id="CopyPasteWithConversion.ac1dab7f-4acb-4a56-8a62-ce90afed1435" Version="1.0" Language="en-US" Publisher="NeVeS" />
-        <DisplayName>Copy/Paste with different case</DisplayName>
-        <Description xml:space="preserve">Allows to copy/paste selected text with different case</Description>
+        <DisplayName>Copy/Paste with conversion</DisplayName>
+        <Description xml:space="preserve">Allows to copy/paste selected text with a different case or split on words.</Description>
+        <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#MediatRAddRequestHandlerAndRequest</MoreInfo>
+        <Icon>CopyPasteWithConversion.Logo.png</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[16.0, 17.0)"  />
+        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[16.0, 17.0)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
