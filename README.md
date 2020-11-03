@@ -92,6 +92,11 @@ It only creates empty boilerplate code required by MediatR based on the selected
 ##### Limitations 
 - does not support generic type parameters
 
+##### Changelog 
+
+version 1.5
+- RequestHandler can also be generated from an existing Request class
+
 
 
 ### <a name="RenameVariableAfterType"></a>6. Rename variable after type - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)

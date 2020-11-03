@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace MediatRAddRequestHandlerAndRequest
@@ -20,31 +22,39 @@ namespace MediatRAddRequestHandlerAndRequest
             var methodDeclarations = root.ExtractSelectedNodesOfType<MethodDeclarationSyntax>(context.Span, true).ToArray();
             var classDeclarations = root.ExtractSelectedNodesOfType<ClassDeclarationSyntax>(context.Span, true).ToArray();
 
-            IEnumerable<MemberDeclarationSyntax> targets = methodDeclarations;
-            if (!targets.Any())
+            CodeAction[] actions = null; 
+            if (methodDeclarations.Any())
             {
-                targets = classDeclarations.Where(x => x.BaseList != null)
-                                           .Where(x => x.BaseList.Types.Any(t => t.ToString().StartsWith("IRequest")))
-                                           .ToArray();
+                var addRequest = CodeAction.Create("Add IRequest<> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.AddRequest));
+                var addRequestHandler = CodeAction.Create("Add IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.AddRequestHandler));
+                var addBoth = CodeAction.Create("Add IRequest<> and IRequestHandler<,> (empty)", c => Add(context.Document, methodDeclarations, c, Mode.Both));
+                actions = new[] { addRequest, addRequestHandler, addBoth };
             }
-            if (!targets.Any())
+            else
+            {    
+                classDeclarations = classDeclarations.Where(x => x.BaseList != null)
+                                                     .Where(x => x.BaseList.Types.Any(t => t.ToString().StartsWith("IRequest<") || t.ToString() == "IRequest"))
+                                                     .ToArray();
+                if (classDeclarations.Any())
+                {
+                    var addRequestHandler = CodeAction.Create("Add IRequestHandler<,> (empty)", c => Add(context.Document, classDeclarations, c, Mode.AddRequestHandler));
+                    actions = new[] { addRequestHandler };
+                }
+            }
+
+            if (actions != null)
             {
-                return;
+                var group = CodeAction.Create("MediatR", ImmutableArray.Create(actions), false);
+                context.RegisterRefactoring(group);
             }
+        }
 
-            var addRequest = CodeAction.Create("Add IRequest<> (empty)", c => Add(context.Document, targets, c, Mode.AddRequest));
-            var addRequestHandler = CodeAction.Create("Add IRequestHandler<,> (empty)", c => Add(context.Document, targets, c, Mode.AddRequestHandler));
-            var addBoth = CodeAction.Create("Add IRequest<> and IRequestHandler<,> (empty)", c => Add(context.Document, targets, c, Mode.Both));
-            var group = CodeAction.Create("MediatR", ImmutableArray.Create(addRequest, addRequestHandler, addBoth), false);
-
-            context.RegisterRefactoring(group);
-        }      
-
-        private async Task<Solution> Add(Document document, IEnumerable<MemberDeclarationSyntax> methods, CancellationToken cancellationToken, Mode whatToAdd)
+        private async Task<Solution> Add(Document document, IEnumerable<MemberDeclarationSyntax> members, CancellationToken cancellationToken, Mode whatToAdd)
         {
-            foreach (var method in methods)
+            foreach (var member in members)
             {
-                var data = await BasicData.GetFromMethodDeclaration(document.Project.Solution, method, cancellationToken).ConfigureAwait(false);
+                var data = await BasicData.GetFromMethodDeclaration(document.Project.Solution, member, cancellationToken).ConfigureAwait(false);
+                var contextDependecies = await DependecyData.ExtractContextDependencies(document.Project.Solution, member, cancellationToken).ConfigureAwait(false);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -56,15 +66,16 @@ namespace MediatRAddRequestHandlerAndRequest
 
                 if (whatToAdd.HasFlag(Mode.AddRequestHandler))
                 {
-                    var requestHandlerDocument = RequestHandlerClassGenerator.GenerateDocument(data);
+                    var requestHandlerDocument = RequestHandlerClassGenerator.GenerateDocument(data, contextDependecies);
                     document = document.Project.AddDocument(requestHandlerDocument);
-                }  
+                }
 
                 cancellationToken.ThrowIfCancellationRequested();
-            }   
+            }
 
             return document.Project.Solution;
-        }
+        }        
+        
 
         private enum Mode { AddRequestHandler = 1, AddRequest = 2, Both = 3 }
     }

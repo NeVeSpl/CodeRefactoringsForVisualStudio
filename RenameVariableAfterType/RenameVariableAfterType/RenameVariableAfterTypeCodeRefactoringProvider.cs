@@ -28,11 +28,11 @@ namespace RenameVariableAfterType
                 return;
             }
            
-            var action = CodeAction.Create("Rename variable after type", c => ReverseTypeNameAsync(context.Document, nodes, c));          
+            var action = CodeAction.Create("Rename variable after type", c => RenameVariablesAfterType(context.Document, nodes, c));          
             context.RegisterRefactoring(action);
         }
 
-        private async Task<Solution> ReverseTypeNameAsync(Document document, IEnumerable<VariableDeclarationSyntax> variableDeclarations, CancellationToken cancellationToken)
+        private async Task<Solution> RenameVariablesAfterType(Document document, IEnumerable<VariableDeclarationSyntax> variableDeclarations, CancellationToken cancellationToken)
         {  
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -47,7 +47,14 @@ namespace RenameVariableAfterType
                     ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableSyntax, cancellationToken);
 
                     var optionSet = solution.Workspace.Options;
-                    solution = await Renamer.RenameSymbolAsync(solution, variableSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        solution = await Renamer.RenameSymbolAsync(solution, variableSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        // if solution does not compile, the Renamer may throw exception
+                    }
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -87,6 +94,7 @@ namespace RenameVariableAfterType
                     }
                     catch
                     {
+                        // sometimes VS has problems with loading Pluralize dll
                         words[words.Count - 1] = words.Last() + "s";
                     }
                 }

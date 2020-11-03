@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Editing;
 
 namespace MediatRAddRequestHandlerAndRequest
 {
-    internal class BasicData
+    internal sealed class BasicData
     {
         public string CommandName { get; set; }
         public string CommandTypeArguments { get; set; }
