@@ -44,7 +44,7 @@ namespace MediatRAddRequestHandlerAndRequest
         {
             foreach (var method in methods)
             {
-                var data = await BasicData.GetFromMethodDeclaration(document.Project.Solution, method, cancellationToken);
+                var data = await BasicData.GetFromMethodDeclaration(document.Project.Solution, method, cancellationToken).ConfigureAwait(false);
 
                 cancellationToken.ThrowIfCancellationRequested();
 

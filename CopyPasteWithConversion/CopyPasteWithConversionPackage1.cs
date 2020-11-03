@@ -25,11 +25,13 @@ namespace CopyPasteWithConversion
     {
         public const int MyMenuGroup = 0x1020;
         public const int SubMenu = 0x1001;
-        public const int SubMenuGroup = 0x1000;
+        public const int SubMenuGroupCopy = 0x1010;
+        public const int SubMenuGroupPaste = 0x1011;
         public const int CopyAsSeparateWordsId = 0x0100;
         public const int CopyAsCamelCase = 0x0110;
         public const int CopyAsPascalCase = 0x0120;
         public const int CopyAsSnakeCase = 0x0130;
+        public const int CopyAsSentenceCase = 0x0140;
         public const int PasteAsSeparateWordsId = 0x0200;
         public const int PasteAsCamelCase = 0x0210;
         public const int PasteAsPascalCase = 0x0220;

@@ -41,7 +41,10 @@
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
       </Group>
 
-      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" priority="0x0602">
+      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" priority="0x0602">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" />
+      </Group>
+      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" priority="0x0604">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" />
       </Group>
     </Groups>
@@ -58,49 +61,55 @@
 
     <Buttons>
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSeparateWordsId" priority="0x0100" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
-          <ButtonText>Copy as separate words</ButtonText>
+          <ButtonText>Copy As Separate Words</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsCamelCase" priority="0x0101" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSentenceCase" priority="0x0101" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
+        <Strings>
+          <ButtonText>Copy as sentence case</ButtonText>
+        </Strings>
+      </Button>
+      <!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsCamelCase" priority="0x0102" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
           <ButtonText>copyAsCamelCase</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsPascalCase" priority="0x0102" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsPascalCase" priority="0x0103" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
           <ButtonText>CopyAsPascalCase</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSnakeCase" priority="0x0103" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSnakeCase" priority="0x0104" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
           <ButtonText>copy_as_snake_case</ButtonText>
         </Strings>
-      </Button>
-     <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSeparateWordsId" priority="0x0104" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+      </Button>-->
+     <!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSeparateWordsId" priority="0x0104" type="Button">
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>Paste as separate words</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsCamelCase" priority="0x0105" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>pasteAsCamelCase</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsPascalCase" priority="0x0106" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>PasteAsPascalCase</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSnakeCase" priority="0x0107" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroup" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>past_as_snake_case</ButtonText>
         </Strings>
@@ -116,11 +125,13 @@
     <GuidSymbol name="guidCopyPasteWithConversionPackageCmdSet" value="{d1ce5fd5-aeb1-4684-b517-cb32df838c11}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="SubMenu" value="0x1001"/>
-      <IDSymbol name="SubMenuGroup" value="0x1000"/>
+      <IDSymbol name="SubMenuGroupCopy" value="0x1010"/>
+      <IDSymbol name="SubMenuGroupPaste" value="0x1011"/>
       <IDSymbol name="CopyAsSeparateWordsId" value="0x0100" />
       <IDSymbol name="CopyAsCamelCase" value="0x0110" />
       <IDSymbol name="CopyAsPascalCase" value="0x0120" />
       <IDSymbol name="CopyAsSnakeCase" value="0x0130" />
+      <IDSymbol name="CopyAsSentenceCase" value="0x0140" />
       <IDSymbol name="PasteAsSeparateWordsId" value="0x0200" />
       <IDSymbol name="PasteAsCamelCase" value="0x0210" />
       <IDSymbol name="PasteAsPascalCase" value="0x0220" />

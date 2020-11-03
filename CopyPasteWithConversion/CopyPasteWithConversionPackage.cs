@@ -48,10 +48,11 @@ namespace CopyPasteWithConversion
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsSeparateWords);
-            await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsCamelCase);
-            await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsSnakeCase);
-            await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsPascalCase);
-            await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsSeparateWords);
+            //await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsCamelCase);
+            //await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsSnakeCase);
+            //await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsPascalCase);
+            await CopyCommand.InitializeAsync(this, CopyCommand.CommandMode.CopyAsSentenceCase);
+            //await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsSeparateWords);
             await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsCamelCase);
             await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsSnakeCase);
             await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsPascalCase);

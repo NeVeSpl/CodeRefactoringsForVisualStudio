@@ -4,6 +4,7 @@
 3. [Encapsulate field for WPF](#EncapsulateFieldForWPF)
 4. [Introduce parameter object](#IntroduceParameterObject)
 5. [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
+6. [Rename variable after type](#RenameVariableAfterType)
 
 
 ### <a name="InvertAssignmentDirection"></a>1. Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
@@ -93,4 +94,10 @@ It only creates empty boilerplate code required by MediatR based on the selected
 
 
 
+### <a name="RenameVariableAfterType"></a>6. Rename variable after type - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+
+<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="661">
+
+
+Visual Studio code refactoring that changes a variable name to the name of the variable type, written in camelCase, e.g. "Foo x =" => "Foo foo ="
 

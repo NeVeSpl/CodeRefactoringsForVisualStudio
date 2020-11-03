@@ -17,14 +17,15 @@ namespace Microsoft.CodeAnalysis
             {
                 do
                 {
+                    if (endOnBlockNode && currentNode is BlockSyntax) break;
+
                     if (currentNode is T singleResult)
                     {
                         result = new[] { singleResult };
                         break;
                     }
                     currentNode = currentNode.Parent;
-
-                    if (endOnBlockNode && currentNode is BlockSyntax) break;
+                    
                 } while (currentNode != null);
             }
 

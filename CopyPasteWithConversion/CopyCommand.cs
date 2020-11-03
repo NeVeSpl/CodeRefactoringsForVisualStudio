@@ -16,7 +16,8 @@ namespace CopyPasteWithConversion
             CopyAsSeparateWords = 0x0100,
             CopyAsCamelCase = 0x0110,
             CopyAsPascalCase = 0x120,
-            CopyAsSnakeCase = 0x0130
+            CopyAsSnakeCase = 0x0130,
+            CopyAsSentenceCase = 0x0140
         }
         
         private static readonly Guid CommandSet = new Guid("d1ce5fd5-aeb1-4684-b517-cb32df838c11");
@@ -75,7 +76,7 @@ namespace CopyPasteWithConversion
                     switch (mode)
                     {
                         case CommandMode.CopyAsSeparateWords:
-                            result = String.Join(" ", words);
+                            result = string.Join(" ", words);
                             break;
                         case CommandMode.CopyAsCamelCase:
                             result = string.Join("", words.Select(x => x.ToLower().ToUpperFirst())).ToLowerFirst();
@@ -85,7 +86,10 @@ namespace CopyPasteWithConversion
                             break;
                         case CommandMode.CopyAsSnakeCase:
                             result = string.Join("_", words.Select(x => x.ToLower()));
-                            break;                        
+                            break;
+                        case CommandMode.CopyAsSentenceCase:
+                            result = string.Join(" ", words.Select(x => x.ToLower())).ToUpperFirst();
+                            break;
                     }                                       
 
                     try
