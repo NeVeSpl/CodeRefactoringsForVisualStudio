@@ -108,14 +108,14 @@ version 1.5
 Visual Studio code refactoring that changes a variable name to the name of the variable type, written in camelCase, e.g. "Foo x =" => "Foo foo ="
 
 
-### <a name="CopyPasteWithConversion"></a>7. Copy/Paste with conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
+### <a name="CopyPasteWithConversion"></a>7. Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
 
 <img src="Documentation/CopyPasteWithConversion.sampleusecase.gif" width="710">
 
 
 Visual Studio extensions that adds a new position to the text editor context menu: "Copy/Paste with conversion". It allows to convert a selected text before copying it to the clipboard or before pasting it from the clipboard.
 Two kinds of conversion are available:
-- changing a text case to: pascal case, snake case, camel case
+- changing a text case to: pascal case, snake case, camel case, sentence case
 - splitting a text to separate words
 
 | conversion    | before | after |
