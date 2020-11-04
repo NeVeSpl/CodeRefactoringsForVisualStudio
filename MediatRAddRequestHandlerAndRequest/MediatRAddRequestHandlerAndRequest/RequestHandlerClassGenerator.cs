@@ -25,7 +25,7 @@ namespace MediatRAddRequestHandlerAndRequest
         private static CompilationUnitSyntax GenerateSyntax(BasicData data, IEnumerable<DependecyData> contexDependecies)
         {
             var compilationUnit = SyntaxFactory.CompilationUnit();
-            compilationUnit = compilationUnit.AddUsings(data.Usings);
+            compilationUnit = compilationUnit.AddUsings(data.Usings, data.Namespace);
 
             var @namespace = SyntaxFactoryEx.NamespaceDeclaration(data.Namespace);
             var classDeclaration = SyntaxFactoryEx.InternalClassDeclaration(data.HandlerName);

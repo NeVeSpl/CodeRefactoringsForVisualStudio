@@ -13,7 +13,7 @@ namespace IntroduceParameterObject
         {
             var compilationUnit = SyntaxFactory.CompilationUnit();
 
-            compilationUnit = compilationUnit.AddUsings(parameterObject.Usings);
+            compilationUnit = compilationUnit.AddUsings(parameterObject.Usings, parameterObject.Namespace);
             var @namespace = SyntaxFactoryEx.NamespaceDeclaration(parameterObject.Namespace);
             var classDeclaration = SyntaxFactoryEx.InternalClassDeclaration(parameterObject.Name);
 
