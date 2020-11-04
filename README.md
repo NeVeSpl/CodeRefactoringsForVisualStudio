@@ -70,6 +70,7 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 
 ##### Limitations 
 - it does not support generic type parameters
+- updating method body is done syntactically, not semantically, it means they may appear conflicts if a method parameter shares the same name with something else
 
 ##### Changelog 
 
