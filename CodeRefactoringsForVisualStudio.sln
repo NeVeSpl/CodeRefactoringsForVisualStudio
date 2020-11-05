@@ -34,9 +34,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRAddRequestHandlerAnd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPasteWithConversion", "CopyPasteWithConversion\CopyPasteWithConversion.csproj", "{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType", "RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.csproj", "{FD2F5767-429B-4A7C-BDE0-2BA593ECCBE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenameVariableAfterType", "RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.csproj", "{FD2F5767-429B-4A7C-BDE0-2BA593ECCBE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType.Vsix", "RenameVariableAfterType\RenameVariableAfterType.Vsix\RenameVariableAfterType.Vsix.csproj", "{FBD89359-1541-4FEE-947A-364176D67B06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenameVariableAfterType.Vsix", "RenameVariableAfterType\RenameVariableAfterType.Vsix\RenameVariableAfterType.Vsix.csproj", "{FBD89359-1541-4FEE-947A-364176D67B06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvertToFullPrismWpfProperty", "ConvertToFullPrismWpfProperty\ConvertToFullPrismWpfProperty.csproj", "{AABA4645-4112-44DA-8573-6E522521E96E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToFullPrismWpfProperty.Vsix", "ConvertToFullPrismWpfProperty.Vsix\ConvertToFullPrismWpfProperty.Vsix.csproj", "{13D89431-BF99-4620-8554-4DC0AF20918A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +108,14 @@ Global
 		{FBD89359-1541-4FEE-947A-364176D67B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABA4645-4112-44DA-8573-6E522521E96E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABA4645-4112-44DA-8573-6E522521E96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABA4645-4112-44DA-8573-6E522521E96E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABA4645-4112-44DA-8573-6E522521E96E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D89431-BF99-4620-8554-4DC0AF20918A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D89431-BF99-4620-8554-4DC0AF20918A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D89431-BF99-4620-8554-4DC0AF20918A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D89431-BF99-4620-8554-4DC0AF20918A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
