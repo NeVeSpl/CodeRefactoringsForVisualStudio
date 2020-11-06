@@ -128,7 +128,7 @@ Two kinds of conversion are available:
 | PasteAsPascalCase  | SampleLongText  | SampleLongText |
 | past_as_snake_case  | SampleLongText  | sample_long_text |
 
-### <a name="ConvertToFullPrismWpfProperty"></a>8. Copy/Paste with case conversion 
+### <a name="ConvertToFullPrismWpfProperty"></a>8. Convert to full Prism WPF property
 
 Same as  [Convert to full WPF property](#ConvertToFullWPFProperty), but with SetProperty.
 
