@@ -127,3 +127,37 @@ Two kinds of conversion are available:
 | pasteAsCamelCase  | SampleLongText  | sampleLongText |
 | PasteAsPascalCase  | SampleLongText  | SampleLongText |
 | past_as_snake_case  | SampleLongText  | sample_long_text |
+
+### <a name="ConvertToFullPrismWpfProperty"></a>8. Copy/Paste with case conversion 
+
+Same as  [Convert to full WPF property](#ConvertToFullWPFProperty), but with SetProperty.
+
+ToDo, what is still missing:
+- keep the annotations
+- make the output shorter
+```c#
+        private int myProperty;
+
+        public int MyProperty
+        {
+            get
+            {
+                return myProperty;
+            }
+
+            set
+            {
+                SetProperty(ref myProperty, value);
+            }
+        }
+```
+to:
+```c#
+        private int myProperty;
+
+        public int MyProperty
+        {
+            get{return myProperty;}
+            set{SetProperty(ref myProperty, value);}
+        }
+```
