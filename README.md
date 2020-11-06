@@ -6,7 +6,7 @@
 5. [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
 6. [Rename variable after type](#RenameVariableAfterType)
 7. [Copy paste with conversion](#CopyPasteWithConversion)
-8. [Convert to full Prism WPF property] (#ConvertToFullPrismWpfProperty)
+8. [Convert to full Prism WPF property](#ConvertToFullPrismWpfProperty)
 
 
 ### <a name="InvertAssignmentDirection"></a>1. Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
