@@ -10,7 +10,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         public static CompilationUnitSyntax AddUsings(this CompilationUnitSyntax unit, IEnumerable<string> usings, string currentNamespace)
         {
             usings = usings.Where(x => !currentNamespace.StartsWith(x)).OrderBy(x => x).Distinct();
-            return unit.AddUsings(usings.Select(x => SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(x))).ToArray());
+            return unit.AddUsings(usings.Select(x => SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(x))).ToArray());            
         }
     }
 }

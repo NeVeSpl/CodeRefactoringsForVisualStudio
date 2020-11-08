@@ -52,8 +52,8 @@ namespace IntroduceParameterObject
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var updatedMethod = UpdateMethodParameterList(method, parameters, parameterObject.Name);
-            updatedMethod = UpdateMethodBody(updatedMethod, parameters, parameterObject.Name);
+            var updatedMethod = UpdateMethodBody(method, parameters, parameterObject.Name, semanticModel);
+            updatedMethod = UpdateMethodParameterList(updatedMethod, parameters, parameterObject.Name);          
             nodesToReplace.Add(new SyntaxNodeToReplace(method, updatedMethod));
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -92,7 +92,7 @@ namespace IntroduceParameterObject
         }
         private MethodDeclarationSyntax UpdateMethodParameterList(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName)
         {
-            List<ParameterSyntax> newParameters = method.ParameterList.Parameters.Where(x => !parameters.Contains(x)).ToList();
+            List<ParameterSyntax> newParameters = new List<ParameterSyntax>(); //method.ParameterList.Parameters.Where(x => !parameters.Contains(x)).ToList();
             newParameters.Add(SyntaxFactory.Parameter(SyntaxFactory.Identifier(parameterObjectName.ToLowerFirst())).WithType(SyntaxFactory.IdentifierName(parameterObjectName)));
             MethodDeclarationSyntax newMethod = method;
             if (newParameters.Count == 1)
@@ -106,13 +106,25 @@ namespace IntroduceParameterObject
 
             return newMethod;
         }
-        private MethodDeclarationSyntax UpdateMethodBody(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName)
+        private MethodDeclarationSyntax UpdateMethodBody(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName, SemanticModel semanticModel)
         {
             var identifiers = method.Body.DescendantTokens()
                 .OfType<SyntaxToken>()
                 .Where(x => x.Kind() == SyntaxKind.IdentifierToken)
                 .Where(x => parameters.Any(y => y.Identifier.ValueText == x.ValueText));
-            method = method.WithBody(method.Body.ReplaceTokens(identifiers, (x, _) => AddPrefixToIdentifier(x, parameterObjectName.ToLowerFirst())));
+           
+            var parameterIdentiferies = new List<SyntaxToken>(identifiers.Count());
+            foreach (var token in identifiers)
+            {
+                var node = method.FindNode(token.Span);
+                var symbol = semanticModel.GetSymbolInfo(node).Symbol;
+                if (symbol is IParameterSymbol)
+                {
+                    parameterIdentiferies.Add(token);
+                }
+            }
+
+            method = method.WithBody(method.Body.ReplaceTokens(parameterIdentiferies, (x, _) => AddPrefixToIdentifier(x, parameterObjectName.ToLowerFirst())));
             return method;
         }
         private SyntaxToken AddPrefixToIdentifier(SyntaxToken originalIdentifier, string prefix)

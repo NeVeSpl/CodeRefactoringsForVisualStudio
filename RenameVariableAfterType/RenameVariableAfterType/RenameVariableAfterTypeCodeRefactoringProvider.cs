@@ -21,7 +21,7 @@ namespace RenameVariableAfterType
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         { 
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).ToList();                    
+            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();                    
           
             if (!nodes.Any())
             {
