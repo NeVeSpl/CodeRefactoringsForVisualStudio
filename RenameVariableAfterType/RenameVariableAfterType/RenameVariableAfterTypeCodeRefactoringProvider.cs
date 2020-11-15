@@ -76,6 +76,12 @@ namespace RenameVariableAfterType
                 type = namedTypeSymbol.TypeArguments.First();
             }
 
+            if (type is IArrayTypeSymbol arrayTypeSymbol)
+            {
+                type = arrayTypeSymbol.ElementType;
+                isCollection = true;
+            }
+
             string name = type.Name;
 
             if ((name.Length > 1) && (name[0] == 'I') && (char.IsUpper(name[1])))
