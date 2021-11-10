@@ -53,7 +53,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeRefactoringsForVisualStudio.Extensions\CodeRefactoringsForVisualStudio.Extensions.csproj">
+    <ProjectReference Include="..\..\CodeRefactoringsForVisualStudio.Extensions\CodeRefactoringsForVisualStudio.Extensions.csproj">
       <Project>{bcd6821b-3a83-495f-b798-343f7182769b}</Project>
       <Name>CodeRefactoringsForVisualStudio.Extensions</Name>
     </ProjectReference>
@@ -63,9 +63,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InvertAssignmentDirection.Logo.png">
+    <Content Include="..\..\Documentation\InvertAssignmentDirection.Logo.png">
+      <Link>InvertAssignmentDirection.Logo.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

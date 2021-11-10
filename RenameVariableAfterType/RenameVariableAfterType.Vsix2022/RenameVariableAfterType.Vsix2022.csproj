@@ -73,6 +73,7 @@
   <ItemGroup>
     <Content Include="..\..\Documentation\RenameVariableAfterType.Logo.png">
       <Link>RenameVariableAfterType.Logo.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="..\RenameVariableAfterType\RenameVariableAfterType.projitems" Label="Shared" />

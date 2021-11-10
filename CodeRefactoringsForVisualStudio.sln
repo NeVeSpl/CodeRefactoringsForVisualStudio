@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualStudio.Tests", "CodeRefactoringsForVisualStudio.Tests\CodeRefactoringsForVisualStudio.Tests.csproj", "{EB11AB11-96C0-4FAA-A242-D14BB278F1C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvertAssignmentDirection", "InvertAssignmentDirection\InvertAssignmentDirection.csproj", "{FE114F42-D022-481A-94E3-2BB98766A936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvertAssignmentDirection", "InvertAssignmentDirection\InvertAssignmentDirection\InvertAssignmentDirection.csproj", "{FE114F42-D022-481A-94E3-2BB98766A936}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertAssignmentDirection.Vsix", "InvertAssignmentDirection.Vsix\InvertAssignmentDirection.Vsix.csproj", "{BF68B22E-4D1C-4B5F-800A-4536D9B48F0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvertAssignmentDirection.Vsix", "InvertAssignmentDirection\InvertAssignmentDirection.Vsix\InvertAssignmentDirection.Vsix.csproj", "{BF68B22E-4D1C-4B5F-800A-4536D9B48F0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualStudio.Extensions", "CodeRefactoringsForVisualStudio.Extensions\CodeRefactoringsForVisualStudio.Extensions.csproj", "{BCD6821B-3A83-495F-B798-343F7182769B}"
 EndProject
@@ -41,6 +41,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType.Vsix2022", "RenameVariableAfterType\RenameVariableAfterType.Vsix2022\RenameVariableAfterType.Vsix2022.csproj", "{4539185A-26A0-4C8F-A113-9C6EF833F601}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenameVariableAfterTypeCodeRefactoring", "RenameVariableAfterTypeCodeRefactoring", "{54B9B57C-654A-4894-B553-4DCCFEFD9A82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InvertAssignmentDirectionCodeRefactoring", "InvertAssignmentDirection\InvertAssignmentDirectionCodeRefactoring", "{53B60D45-8F1F-44EC-8522-BBEE68E74537}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -180,6 +182,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{FE114F42-D022-481A-94E3-2BB98766A936} = {53B60D45-8F1F-44EC-8522-BBEE68E74537}
+		{BF68B22E-4D1C-4B5F-800A-4536D9B48F0F} = {53B60D45-8F1F-44EC-8522-BBEE68E74537}
 		{FBD89359-1541-4FEE-947A-364176D67B06} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
 		{B66AED35-E229-4125-9A21-178FDC92D5A2} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
 		{4539185A-26A0-4C8F-A113-9C6EF833F601} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
