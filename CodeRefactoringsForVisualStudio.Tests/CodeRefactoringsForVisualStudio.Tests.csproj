@@ -79,8 +79,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConvertToFullWPFProperty\ConvertToFullWPFProperty.csproj" />
-    <ProjectReference Include="..\EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj" />
-    <ProjectReference Include="..\InvertAssignmentDirection\InvertAssignmentDirection.csproj" />
+    <ProjectReference Include="..\EncapsulateFieldForWPF\EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj" />
+    <ProjectReference Include="..\InvertAssignmentDirection\InvertAssignmentDirection\InvertAssignmentDirection.csproj" />
   </ItemGroup>
 
   <ItemGroup>
