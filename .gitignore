@@ -41,3 +41,6 @@ RenameVariableAfterType/RenameVariableAfterType.Vsix/bin/
 RenameVariableAfterType/RenameVariableAfterType.Vsix/obj/
 RenameVariableAfterType/RenameVariableAfterType/bin/
 RenameVariableAfterType/RenameVariableAfterType/obj/
+RenameVariableAfterType/RenameVariableAfterType.Vsix2022/obj/
+RenameVariableAfterType/RenameVariableAfterType.Vsix2022/bin/
+*.user
