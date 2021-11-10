@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeRefactoringsForVisualSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvertToFullWPFProperty", "ConvertToFullWPFProperty\ConvertToFullWPFProperty.csproj", "{81838463-3976-45D8-9B45-6B4C63464C4B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncapsulateFieldForWPF", "EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj", "{2AD133BA-740F-45E3-9096-EE891435840C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncapsulateFieldForWPF", "EncapsulateFieldForWPF\EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj", "{2AD133BA-740F-45E3-9096-EE891435840C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertToFullWPFProperty.Vsix", "ConvertToFullWPFProperty.Vsix\ConvertToFullWPFProperty.Vsix.csproj", "{AF0791D0-E054-4E6F-97C7-670B9C2886EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncapsulateFieldForWPF.Vsix", "EncapsulateFieldForWPF.Vsix\EncapsulateFieldForWPF.Vsix.csproj", "{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncapsulateFieldForWPF.Vsix", "EncapsulateFieldForWPF\EncapsulateFieldForWPF.Vsix\EncapsulateFieldForWPF.Vsix.csproj", "{FE6B34DD-ECA5-443D-A5AB-129C607D8C66}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroduceParameterObject", "IntroduceParameterObject\IntroduceParameterObject\IntroduceParameterObject.csproj", "{349C2D32-16F2-456F-A7D5-85C504CB3352}"
 EndProject

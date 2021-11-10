@@ -44,3 +44,7 @@ RenameVariableAfterType/RenameVariableAfterType/obj/
 RenameVariableAfterType/RenameVariableAfterType.Vsix2022/obj/
 RenameVariableAfterType/RenameVariableAfterType.Vsix2022/bin/
 *.user
+EncapsulateFieldForWPF/EncapsulateFieldForWPF/obj/
+EncapsulateFieldForWPF/EncapsulateFieldForWPF/bin/
+EncapsulateFieldForWPF/EncapsulateFieldForWPF.Vsix/obj/
+EncapsulateFieldForWPF/EncapsulateFieldForWPF.Vsix/bin/
