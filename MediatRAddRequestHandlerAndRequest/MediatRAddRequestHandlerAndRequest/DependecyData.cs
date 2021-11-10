@@ -47,7 +47,7 @@ namespace MediatRAddRequestHandlerAndRequest
                         {
                             Name = symbol.Name.ToString(),
                             Type = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
-                            Using = type.ContainingNamespace.ToString(),
+                            Using = type.ContainingNamespace?.ToString(),
                         };
 
                         result.Add(dependecyData);
