@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="EncapsulateFieldForWPF.Vsix.2e13edc9-b127-4386-9054-92aaee5c2d6b" Version="1.6" Language="en-US" Publisher="NeVeS" />
+        <Identity Id="EncapsulateFieldForWPF.Vsix.2e13edc9-b127-4386-9054-92aaee5c2d6b" Version="1.7" Language="en-US" Publisher="NeVeS" />
         <DisplayName>Encapsulate field for WPF</DisplayName>
         <Description xml:space="preserve">Code refactoring that introduces full property implementation with invocation of OnPropertyChanged in Visual Studio</Description>
         <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#EncapsulateFieldForWPF</MoreInfo>
