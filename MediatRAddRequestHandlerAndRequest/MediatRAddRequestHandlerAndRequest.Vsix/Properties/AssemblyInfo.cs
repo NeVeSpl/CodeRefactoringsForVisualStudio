@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MediatRAddRequestHandlerAndRequest.Vsix2022")]
+[assembly: AssemblyTitle("MediatRAddRequestHandlerAndRequest.Vsix")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MediatRAddRequestHandlerAndRequest.Vsix2022")]
+[assembly: AssemblyProduct("MediatRAddRequestHandlerAndRequest.Vsix")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
