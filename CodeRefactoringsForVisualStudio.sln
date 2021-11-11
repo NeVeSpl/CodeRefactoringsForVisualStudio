@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncapsulateFieldForWPF.Vsix
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroduceParameterObject", "IntroduceParameterObject\IntroduceParameterObject\IntroduceParameterObject.csproj", "{349C2D32-16F2-456F-A7D5-85C504CB3352}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntroduceParameterObject.Vsix", "IntroduceParameterObject\IntroduceParameterObject.Vsix\IntroduceParameterObject.Vsix.csproj", "{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A4A4741D-A0A1-44AD-8F3C-1CD73DF63D37}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -51,6 +49,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRAddRequestHandlerAndRequest.Vsix2022", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.Vsix2022\MediatRAddRequestHandlerAndRequest.Vsix2022.csproj", "{E3FA1C22-8ED4-489A-ABDE-1ED3070BBA65}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediatRAddRequestHandlerAndRequestCodeRefactoring", "MediatRAddRequestHandlerAndRequestCodeRefactoring", "{0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroduceParameterObject.Vsix", "IntroduceParameterObject\IntroduceParameterObject.Vsix\IntroduceParameterObject.Vsix.csproj", "{3B6DEB53-E66F-4450-A4E0-1DD647533888}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -140,14 +140,6 @@ Global
 		{349C2D32-16F2-456F-A7D5-85C504CB3352}.Release|Any CPU.Build.0 = Release|Any CPU
 		{349C2D32-16F2-456F-A7D5-85C504CB3352}.Release|x86.ActiveCfg = Release|Any CPU
 		{349C2D32-16F2-456F-A7D5-85C504CB3352}.Release|x86.Build.0 = Release|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Debug|x86.Build.0 = Debug|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Release|x86.ActiveCfg = Release|Any CPU
-		{8A61F1CD-FADF-449F-ABC2-EDBDF04B22F7}.Release|x86.Build.0 = Release|Any CPU
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F92A575-4D1C-4270-961A-CEA6209FBC7C}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -188,6 +180,14 @@ Global
 		{E3FA1C22-8ED4-489A-ABDE-1ED3070BBA65}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3FA1C22-8ED4-489A-ABDE-1ED3070BBA65}.Release|x86.ActiveCfg = Release|x86
 		{E3FA1C22-8ED4-489A-ABDE-1ED3070BBA65}.Release|x86.Build.0 = Release|x86
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|x86.ActiveCfg = Debug|x86
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|x86.Build.0 = Debug|x86
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Release|x86.ActiveCfg = Release|x86
+		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

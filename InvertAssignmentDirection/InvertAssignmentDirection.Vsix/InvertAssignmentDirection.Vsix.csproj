@@ -66,6 +66,7 @@
     <Content Include="..\..\Documentation\InvertAssignmentDirection.Logo.png">
       <Link>InvertAssignmentDirection.Logo.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

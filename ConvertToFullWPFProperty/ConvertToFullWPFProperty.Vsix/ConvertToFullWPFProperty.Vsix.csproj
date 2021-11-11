@@ -69,6 +69,7 @@
     <Content Include="..\..\Documentation\ConvertToFullWPFProperty.Logo.png">
       <Link>ConvertToFullWPFProperty.Logo.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

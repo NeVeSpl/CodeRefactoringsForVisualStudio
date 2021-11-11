@@ -69,6 +69,7 @@
     <Content Include="..\..\Documentation\EncapsulateFieldForWPF.Logo.png">
       <Link>EncapsulateFieldForWPF.Logo.png</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
