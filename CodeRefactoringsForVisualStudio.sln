@@ -28,12 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPasteWithConversion", "CopyPasteWithConversion\CopyPasteWithConversion.csproj", "{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenameVariableAfterType.Vsix", "RenameVariableAfterType\RenameVariableAfterType.Vsix\RenameVariableAfterType.Vsix.csproj", "{FBD89359-1541-4FEE-947A-364176D67B06}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RenameVariableAfterType", "RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.shproj", "{B66AED35-E229-4125-9A21-178FDC92D5A2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType.Vsix2022", "RenameVariableAfterType\RenameVariableAfterType.Vsix2022\RenameVariableAfterType.Vsix2022.csproj", "{4539185A-26A0-4C8F-A113-9C6EF833F601}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenameVariableAfterTypeCodeRefactoring", "RenameVariableAfterTypeCodeRefactoring", "{54B9B57C-654A-4894-B553-4DCCFEFD9A82}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InvertAssignmentDirectionCodeRefactoring", "InvertAssignmentDirectionCodeRefactoring", "{53B60D45-8F1F-44EC-8522-BBEE68E74537}"
@@ -52,12 +46,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRAddRequestHandlerAnd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRAddRequestHandlerAndRequest.Vsix", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.Vsix\MediatRAddRequestHandlerAndRequest.Vsix.csproj", "{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenameVariableAfterType", "RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.csproj", "{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType.Vsix", "RenameVariableAfterType\RenameVariableAfterType.Vsix\RenameVariableAfterType.Vsix.csproj", "{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.projitems*{4539185a-26a0-4c8f-a113-9c6ef833f601}*SharedItemsImports = 4
-		RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.projitems*{b66aed35-e229-4125-9a21-178fdc92d5a2}*SharedItemsImports = 13
-		RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.projitems*{fbd89359-1541-4fee-947a-364176d67b06}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -145,22 +138,6 @@ Global
 		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{4BBE8AE0-91B8-41A4-A3F1-A09CF18C73F3}.Release|x86.Build.0 = Release|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Debug|x86.Build.0 = Debug|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|x86.ActiveCfg = Release|Any CPU
-		{FBD89359-1541-4FEE-947A-364176D67B06}.Release|x86.Build.0 = Release|Any CPU
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Debug|x86.ActiveCfg = Debug|x86
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Debug|x86.Build.0 = Debug|x86
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Release|x86.ActiveCfg = Release|x86
-		{4539185A-26A0-4C8F-A113-9C6EF833F601}.Release|x86.Build.0 = Release|x86
 		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B6DEB53-E66F-4450-A4E0-1DD647533888}.Debug|x86.ActiveCfg = Debug|x86
@@ -185,6 +162,22 @@ Global
 		{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1}.Release|x86.ActiveCfg = Release|x86
 		{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1}.Release|x86.Build.0 = Release|x86
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Debug|x86.Build.0 = Debug|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Release|x86.ActiveCfg = Release|Any CPU
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F}.Release|x86.Build.0 = Release|Any CPU
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Debug|x86.ActiveCfg = Debug|x86
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Debug|x86.Build.0 = Debug|x86
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Release|x86.ActiveCfg = Release|x86
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,12 +190,11 @@ Global
 		{AF0791D0-E054-4E6F-97C7-670B9C2886EE} = {712F0CBB-F153-45FE-84B2-0DC5D86DD7C0}
 		{FE6B34DD-ECA5-443D-A5AB-129C607D8C66} = {167FD632-921F-4EDE-A4A9-2BBEE6567A47}
 		{349C2D32-16F2-456F-A7D5-85C504CB3352} = {77C278D1-09E9-4E98-9C08-1B7EABD9738B}
-		{FBD89359-1541-4FEE-947A-364176D67B06} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
-		{B66AED35-E229-4125-9A21-178FDC92D5A2} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
-		{4539185A-26A0-4C8F-A113-9C6EF833F601} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
 		{3B6DEB53-E66F-4450-A4E0-1DD647533888} = {77C278D1-09E9-4E98-9C08-1B7EABD9738B}
 		{3C2D415B-C81B-4F4F-914B-50BEBEA357FE} = {0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}
 		{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1} = {0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}
+		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
+		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A50F08E-66E4-4984-97AF-44448614F406}
