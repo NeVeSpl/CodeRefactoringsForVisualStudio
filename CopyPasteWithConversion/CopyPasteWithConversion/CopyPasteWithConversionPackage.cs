@@ -55,7 +55,7 @@ namespace CopyPasteWithConversion
             //await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsSeparateWords);
             await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsCamelCase);
             await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsSnakeCase);
-            await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsPascalCase);
+            await PasteCommand.InitializeAsync(this, PasteCommand.CommandMode.PasteAsPascalCase);        
         }
 
         #endregion
