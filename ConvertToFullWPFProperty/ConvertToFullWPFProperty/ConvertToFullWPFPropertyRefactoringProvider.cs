@@ -33,17 +33,17 @@ namespace ConvertToFullWPFProperty
             var syntaxGenerator = SyntaxGenerator.GetGenerator(document);
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var typeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
-            INamedTypeSymbol typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+            var containingTypeNode = selectedAutoPropertyDeclarationSyntaxes.First().Parent as TypeDeclarationSyntax;
+            INamedTypeSymbol containingTypeSymbol = semanticModel.GetDeclaredSymbol(containingTypeNode);
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
-            char? backingFiledPrefix = typeSymbol.DetermineBackingFiledPrefix();
+            string methodNameToNotifyThatPropertyWasChanged = await containingTypeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
+            char? backingFiledPrefix = containingTypeSymbol.DetermineBackingFiledPrefix();
 
             cancellationToken.ThrowIfCancellationRequested();
             
-            SyntaxNode newTypeNode = typeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, (x, _) => CreateFullProperty(x, backingFiledPrefix, methodNameToNotifyThatPropertyWasChanged, syntaxGenerator));            
+            SyntaxNode newTypeNode = containingTypeNode.ReplaceNodes(selectedAutoPropertyDeclarationSyntaxes, (x, _) => CreateFullProperty(x, backingFiledPrefix, methodNameToNotifyThatPropertyWasChanged, syntaxGenerator));            
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -52,7 +52,7 @@ namespace ConvertToFullWPFProperty
 
             cancellationToken.ThrowIfCancellationRequested();
             
-            Document newDocument = await CreateNewDocument(document, typeNode, newTypeNode, cancellationToken).ConfigureAwait(false);
+            Document newDocument = await CreateNewDocument(document, containingTypeNode, newTypeNode, cancellationToken).ConfigureAwait(false);
             return newDocument;
         }
 
@@ -61,13 +61,16 @@ namespace ConvertToFullWPFProperty
             string propertyName = property.Identifier.ValueText;
             string fieldName = FieldNameGenerator.Generate(propertyName, backingFiledPrefix);
 
-            return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
+            var leadingTrivia = property.GetLeadingTrivia();
+            var trailingTrivia = property.GetTrailingTrivia();
+
+            return syntaxGenerator.FullPropertyDeclaration(propertyName, property.Type, property.AttributeLists, leadingTrivia, trailingTrivia, fieldName, methodNameToNotifyThatPropertyWasChanged);
         }
         private List<SyntaxNode> CreateBackingFields(IEnumerable<PropertyDeclarationSyntax> properties, char? backingFiledPrefix, SyntaxGenerator syntaxGenerator)
         {
             var createdBackingFields = new List<SyntaxNode>();
 
-            foreach(PropertyDeclarationSyntax property in properties)
+            foreach (PropertyDeclarationSyntax property in properties)
             {
                 string propertyName = property.Identifier.ValueText;
                 string fieldName = FieldNameGenerator.Generate(propertyName, backingFiledPrefix);
@@ -81,7 +84,8 @@ namespace ConvertToFullWPFProperty
         {
             SyntaxNode result = typeNode;
 
-            MemberDeclarationSyntax insertAfterThisNode = result.DescendantNodes().OfType<FieldDeclarationSyntax>().LastOrDefault();
+            MemberDeclarationSyntax insertAfterThisNode = typeNode.DescendantNodes().OfType<FieldDeclarationSyntax>().LastOrDefault();            
+
             if (insertAfterThisNode != null)
             {
                 result = result.InsertNodesAfter(insertAfterThisNode, backingFields);
@@ -94,10 +98,10 @@ namespace ConvertToFullWPFProperty
 
             return result;
         }
-        private async Task<Document> CreateNewDocument(Document document, SyntaxNode typeNode, SyntaxNode newTypeNode, CancellationToken cancellationToken)
+        private async Task<Document> CreateNewDocument(Document document, SyntaxNode oldTypeNode, SyntaxNode newTypeNode, CancellationToken cancellationToken)
         {
             SyntaxNode rootNode = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            rootNode = rootNode.ReplaceNode(typeNode, newTypeNode);
+            rootNode = rootNode.ReplaceNode(oldTypeNode, newTypeNode);
             return document.WithSyntaxRoot(rootNode);
         }
     }

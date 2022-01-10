@@ -6,7 +6,7 @@ namespace Microsoft.CodeAnalysis.Editing
 {
     public static class SyntaxGeneratorExtensions
     {
-        public static SyntaxNode FullPropertyDeclaration(this SyntaxGenerator syntaxGenerator, string propertyName, SyntaxNode propertyType, string fieldName, string methodNameToNotifyThatPropertyWasChanged)
+        public static SyntaxNode FullPropertyDeclaration(this SyntaxGenerator syntaxGenerator, string propertyName, SyntaxNode propertyType, SyntaxList<AttributeListSyntax> attributeLists, SyntaxTriviaList leadingTrivia, SyntaxTriviaList trailingTrivia, string fieldName, string methodNameToNotifyThatPropertyWasChanged)
         {
             var getAccessorStatements = new List<StatementSyntax>()
             {
@@ -31,12 +31,14 @@ namespace Microsoft.CodeAnalysis.Editing
             accessors.Add(SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, SyntaxFactory.Block(setAccessorStatements)).WithoutTrivia());
 
             var createdProperty = SyntaxFactory.PropertyDeclaration(
-                default,
+                attributeLists,
                 SyntaxFactory.TokenList(new SyntaxToken[]{ SyntaxFactory.Token(SyntaxKind.PublicKeyword)}),
                 (TypeSyntax)propertyType,
                 default,
                 SyntaxFactory.Identifier(propertyName),
                 SyntaxFactory.AccessorList(SyntaxFactory.List(accessors))).WithoutTrivia();
+
+            createdProperty = createdProperty.WithLeadingTrivia(leadingTrivia).WithTrailingTrivia(trailingTrivia);
 
             return createdProperty;
         }
