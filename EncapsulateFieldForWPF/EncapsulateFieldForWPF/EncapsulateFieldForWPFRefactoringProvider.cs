@@ -34,12 +34,12 @@ namespace EncapsulateFieldForWPF
         {
             var syntaxGenerator = SyntaxGenerator.GetGenerator(document.Project);         
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);       
-            var typeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;     
-            var typeSymbol = semanticModel.GetDeclaredSymbol(typeNode);
+            var containingTypeNode = fieldDeclarations.First().Parent as TypeDeclarationSyntax;     
+            var containingTypeSymbol = semanticModel.GetDeclaredSymbol(containingTypeNode);
           
             cancellationToken.ThrowIfCancellationRequested();
           
-            string methodNameToNotifyThatPropertyWasChanged = await typeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
+            string methodNameToNotifyThatPropertyWasChanged = await containingTypeSymbol.DetermineMethodNameUsedToNotifyThatPropertyWasChanged(document.Project.Solution).ConfigureAwait(false);
        
             cancellationToken.ThrowIfCancellationRequested();
            
@@ -51,7 +51,7 @@ namespace EncapsulateFieldForWPF
            
             cancellationToken.ThrowIfCancellationRequested();
            
-            Document newDocument = await CreateNewDocument(document, typeNode, createdProperties, insertAfterThisNode, cancellationToken).ConfigureAwait(false);
+            Document newDocument = await CreateNewDocument(document, containingTypeNode, createdProperties, insertAfterThisNode, cancellationToken).ConfigureAwait(false);
        
             return newDocument;
         }
@@ -67,7 +67,7 @@ namespace EncapsulateFieldForWPF
                     string fieldName = variableDeclarator.Identifier.ValueText;
                     string propertyName = PropertyNameGenerator.FromFieldName(fieldName);
                    
-                    SyntaxNode newProperty = syntaxGenerator.FullPropertyDeclaration(propertyName, fieldDeclaration.Declaration.Type, fieldName, methodNameToNotifyThatPropertyWasChanged);
+                    SyntaxNode newProperty = syntaxGenerator.FullPropertyDeclaration(propertyName, fieldDeclaration.Declaration.Type, default, default, default, fieldName, methodNameToNotifyThatPropertyWasChanged);
                     createdProperties.Add(newProperty);
                 }
             }
