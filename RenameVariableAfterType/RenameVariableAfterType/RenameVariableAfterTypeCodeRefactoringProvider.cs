@@ -23,19 +23,25 @@ namespace RenameVariableAfterType
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();                    
           
-            if (!nodes.Any())
+            if (nodes.Any())
             {
-                return;
+                var action = CodeAction.Create("Rename variable after type", c => RenameVariablesAfter(context.Document, nodes, c, Mode.AfterType));
+                context.RegisterRefactoring(action);
+            }   
+            
+            var nodesWithInvocation = nodes.Where(x => x.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).Any());
+
+            if (nodesWithInvocation.Any())
+            {
+                var action = CodeAction.Create("Rename variable after expression", c => RenameVariablesAfter(context.Document, nodes, c, Mode.AfterMethod));
+                context.RegisterRefactoring(action);
             }
-           
-            var action = CodeAction.Create("Rename variable after type", c => RenameVariablesAfterType(context.Document, nodes, c));          
-            context.RegisterRefactoring(action);
         }
 
-        private async Task<Solution> RenameVariablesAfterType(Document document, IEnumerable<VariableDeclarationSyntax> variableDeclarations, CancellationToken cancellationToken)
+        enum Mode { AfterType, AfterMethod }
+        private async Task<Solution> RenameVariablesAfter(Document document, IEnumerable<VariableDeclarationSyntax> variableDeclarations, CancellationToken cancellationToken, Mode mode)
         {  
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             var solution = document.Project.Solution;
 
             foreach (var variableDeclaration in variableDeclarations)
@@ -43,7 +49,9 @@ namespace RenameVariableAfterType
                 TypeInfo typeInfo = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken);
                 foreach (var variableSyntax in variableDeclaration.Variables)
                 {
-                    string newName = GenerateNewName(typeInfo.Type);
+                    string newNameAfterExpression = GenerateNewNameFromExpression(variableSyntax.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault());
+                    string newNameAfterType = GenerateNewName(typeInfo.Type);
+                    string newName = (mode  == Mode.AfterType ? newNameAfterType : newNameAfterExpression) ?? newNameAfterType;
                     ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableSyntax, cancellationToken);
 
                     var optionSet = solution.Workspace.Options;
@@ -62,6 +70,47 @@ namespace RenameVariableAfterType
 
             return solution;
         }
+
+        static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute" }; 
+
+        private string GenerateNewNameFromExpression(ExpressionSyntax expressionSyntax)
+        {
+            string expression = null;
+            if (expressionSyntax is InvocationExpressionSyntax invocationExpressionSyntax)
+            {
+                expression = invocationExpressionSyntax.Expression.ToString();
+            }
+            if (expressionSyntax is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+            {               
+                expression = memberAccessExpressionSyntax.ToString();
+            }
+            if (string.IsNullOrEmpty(expression))
+            {
+                return null;
+            }
+
+            string lastWord = expression.Split('.').Last();
+
+            foreach (var prefix in prefixes)
+            {
+                if (lastWord.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    lastWord = lastWord.Substring(prefix.Length);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(lastWord))
+            {
+                lastWord = lastWord.ToLowerFirst();
+            }else
+            {
+                lastWord = null;
+            }
+
+            return lastWord;
+        }
+
+
 
         private string GenerateNewName(ITypeSymbol typeSymbol)
         {
@@ -93,16 +142,8 @@ namespace RenameVariableAfterType
             if (words.Any())
             {
                 if (isCollection)
-                {
-                    try
-                    {
-                        words[words.Count - 1] = Pluralize(words.Last());
-                    }
-                    catch
-                    {
-                        // sometimes VS has problems with loading Pluralize dll
-                        words[words.Count - 1] = words.Last() + "s";
-                    }
+                {                    
+                     words[words.Count - 1] = Pluralize(words.Last());                    
                 }
                 words[0] = words.First().ToLowerFirst();
             }
@@ -111,11 +152,90 @@ namespace RenameVariableAfterType
 
             return newName;
         }
+        
 
         private string Pluralize(string word)
         {
-            IPluralize pluralizer = new Pluralizer();
-            return pluralizer.Pluralize(word);
+            string pluralForm = word;
+            try
+            {
+                IPluralize pluralizer = new Pluralizer();
+                pluralForm = pluralizer.Pluralize(word);
+            }
+            catch
+            {
+                // sometimes VS has problems with loading Pluralize dll
+                pluralForm = GetPlural(word);
+            }
+            return pluralForm;            
+        }
+
+        // source : https://stackoverflow.com/a/16199962/1147478
+        private string GetPlural(string singular)
+        {
+            string CONSONANTS = "bcdfghjklmnpqrstvwxz";
+
+            switch (singular)
+            {
+                case "Person":
+                    return "People";
+                case "Trash":
+                    return "Trash";
+                case "Life":
+                    return "Lives";
+                case "Man":
+                    return "Men";
+                case "Woman":
+                    return "Women";
+                case "Child":
+                    return "Children";
+                case "Foot":
+                    return "Feet";
+                case "Tooth":
+                    return "Teeth";
+                case "Dozen":
+                    return "Dozen";
+                case "Hundred":
+                    return "Hundred";
+                case "Thousand":
+                    return "Thousand";
+                case "Million":
+                    return "Million";
+                case "Datum":
+                    return "Data";
+                case "Criterion":
+                    return "Criteria";
+                case "Analysis":
+                    return "Analyses";
+                case "Fungus":
+                    return "Fungi";
+                case "Index":
+                    return "Indices";
+                case "Matrix":
+                    return "Matrices";
+                case "Settings":
+                    return "Settings";
+                case "UserSettings":
+                    return "UserSettings";
+                default:
+                    // Handle ending with "o" (if preceeded by a consonant, end with -es, otherwise -s: Potatoes and Radios)
+                    if (singular.EndsWith("o") && CONSONANTS.Contains(singular[singular.Length - 2].ToString()))
+                    {
+                        return singular + "es";
+                    }
+                    // Handle ending with "y" (if preceeded by a consonant, end with -ies, otherwise -s: Companies and Trays)
+                    if (singular.EndsWith("y") && CONSONANTS.Contains(singular[singular.Length - 2].ToString()))
+                    {
+                        return singular.Substring(0, singular.Length - 1) + "ies";
+                    }
+                    // Ends with a whistling sound: boxes, buzzes, churches, passes
+                    if (singular.EndsWith("s") || singular.EndsWith("sh") || singular.EndsWith("ch") || singular.EndsWith("x") || singular.EndsWith("z"))
+                    {
+                        return singular + "es";
+                    }
+                    return singular + "s";
+
+            }
         }
     }
 }

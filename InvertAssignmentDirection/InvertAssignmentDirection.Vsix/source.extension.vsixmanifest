@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="InvertAssignmentDirection..547c1ad5-b84b-4417-8690-988e7fa0b118" Version="1.7" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="InvertAssignmentDirection..547c1ad5-b84b-4417-8690-988e7fa0b118" Version="1.8" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>Invert assignment direction</DisplayName>
         <Description xml:space="preserve">Code refactoring that inverts assignment direction in Visual Studio</Description>
         <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#InvertAssignmentDirection</MoreInfo>
         <Icon>InvertAssignmentDirection.Logo.png</Icon>
     </Metadata>
     <Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
-			<ProductArchitecture>x86</ProductArchitecture>
-		</InstallationTarget>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
-			<ProductArchitecture>amd64</ProductArchitecture>
-		</InstallationTarget>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
+            <ProductArchitecture>x86</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
