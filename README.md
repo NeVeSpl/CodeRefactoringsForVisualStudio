@@ -4,7 +4,7 @@
 3. [Encapsulate field for WPF](#EncapsulateFieldForWPF)
 4. [Introduce parameter object](#IntroduceParameterObject)
 5. [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
-6. [Rename variable after type](#RenameVariableAfterType)
+6. [Rename variable after type/expression](#RenameVariableAfterType)
 7. [Copy paste with conversion](#CopyPasteWithConversion)
 
 
@@ -101,7 +101,7 @@ version 1.5
 
 
 
-### <a name="RenameVariableAfterType"></a>6. Rename variable after type - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+### <a name="RenameVariableAfterType"></a>6. Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
 
 <img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="661">
 
