@@ -60,12 +60,12 @@
     </Menus>
 
     <Buttons>
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSeparateWordsId" priority="0x0100" type="Button">
+      <!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSeparateWordsId" priority="0x0100" type="Button">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
           <ButtonText>Copy As Separate Words</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSentenceCase" priority="0x0101" type="Button">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
         <Strings>
@@ -96,24 +96,24 @@
           <ButtonText>Paste as separate words</ButtonText>
         </Strings>
       </Button>-->
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsCamelCase" priority="0x0105" type="Button">
+      <!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsCamelCase" priority="0x0105" type="Button">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>pasteAsCamelCase</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsPascalCase" priority="0x0106" type="Button">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>PasteAsPascalCase</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSnakeCase" priority="0x0107" type="Button">
+		<!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsSnakeCase" priority="0x0107" type="Button">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
         <Strings>
           <ButtonText>past_as_snake_case</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
     </Buttons>
   </Commands>
 

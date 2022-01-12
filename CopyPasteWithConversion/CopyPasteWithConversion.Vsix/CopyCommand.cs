@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Community.VisualStudio.Toolkit;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -40,12 +41,6 @@ namespace CopyPasteWithConversion
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);       
             commandService.AddCommand(menuItem);
-        }       
-          
-        public static DTE DteInstance
-        {
-            get;
-            private set;
         }
 
       
@@ -53,55 +48,56 @@ namespace CopyPasteWithConversion
         {            
             // Switch to the main thread - the call to AddCommand in CopyAsSeparateWords's constructor requires
             // the UI thread.
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
-            DteInstance = await package.GetServiceAsync(typeof(DTE)) as DTE;
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);         
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             new CopyCommand(package, commandService, mode);
         }
 
-      
-        private void Execute(object sender, EventArgs e)
+        private async void ExecuteAsync()
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            
-            var textDocument = DteInstance.ActiveDocument.Object("TextDocument") as TextDocument;
-            if (textDocument != null)
+            DocumentView docView = await VS.Documents.GetActiveDocumentViewAsync();
+            if (docView?.TextView == null) return; //not a text window     
+
+
+            var selection = docView?.TextView.Selection;
+            if (selection.IsEmpty == false)
             {
-                var selection = textDocument.Selection;
-                if (selection.IsEmpty == false)
+                var selectedText = selection.StreamSelectionSpan.GetText();
+                var words = selectedText.SplitStringIntoSeparateWords();
+                var result = String.Empty;
+                switch (mode)
                 {
-                    var selectedText = selection.Text;
-                    var words = selectedText.SplitStringIntoSeparateWords();
-                    var result = String.Empty;
-                    switch (mode)
-                    {
-                        case CommandMode.CopyAsSeparateWords:
-                            result = string.Join(" ", words);
-                            break;
-                        case CommandMode.CopyAsCamelCase:
-                            result = string.Join("", words.Select(x => x.ToLower().ToUpperFirst())).ToLowerFirst();
-                            break;
-                        case CommandMode.CopyAsPascalCase:
-                            result = string.Join("", words.Select(x => x.ToLower().ToUpperFirst()));
-                            break;
-                        case CommandMode.CopyAsSnakeCase:
-                            result = string.Join("_", words.Select(x => x.ToLower()));
-                            break;
-                        case CommandMode.CopyAsSentenceCase:
-                            result = string.Join(" ", words.Select(x => x.ToLower())).ToUpperFirst();
-                            break;
-                    }                                       
+                    case CommandMode.CopyAsSeparateWords:
+                        result = string.Join(" ", words);
+                        break;
+                    case CommandMode.CopyAsCamelCase:
+                        result = string.Join("", words.Select(x => x.ToLower().ToUpperFirst())).ToLowerFirst();
+                        break;
+                    case CommandMode.CopyAsPascalCase:
+                        result = string.Join("", words.Select(x => x.ToLower().ToUpperFirst()));
+                        break;
+                    case CommandMode.CopyAsSnakeCase:
+                        result = string.Join("_", words.Select(x => x.ToLower()));
+                        break;
+                    case CommandMode.CopyAsSentenceCase:
+                        result = string.Join(" ", words.Select(x => x.ToLower())).ToUpperFirst();
+                        break;
+                }
 
-                    try
-                    {
-                        Clipboard.SetDataObject(result, true, 4, 250);
-                    }
-                    catch (ExternalException)
-                    {
+                try
+                {
+                    Clipboard.SetDataObject(result, true, 4, 250);
+                }
+                catch (ExternalException)
+                {
 
-                    }
                 }
             }
+        }
+
+        private void Execute(object sender, EventArgs e)
+        {
+            ExecuteAsync();
         }       
     }
 }
