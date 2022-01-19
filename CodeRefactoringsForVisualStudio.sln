@@ -50,6 +50,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameVariableAfterType.Vsi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPasteWithConversion.Vsix", "CopyPasteWithConversion\CopyPasteWithConversion.Vsix\CopyPasteWithConversion.Vsix.csproj", "{F3B99878-F0DB-4E50-86CF-C34BC84760AE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateMapping", "GenerateMapping\GenerateMapping\GenerateMapping.csproj", "{7F671642-74D9-4834-8165-ED0F7C0436C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CopyPasteWithConversion", "CopyPasteWithConversion", "{71F24BA4-BC94-4717-83C3-A231F8AB8C7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateMapping.Vsix", "GenerateMapping\GenerateMapping.Vsix\GenerateMapping.Vsix.csproj", "{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +184,22 @@ Global
 		{F3B99878-F0DB-4E50-86CF-C34BC84760AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3B99878-F0DB-4E50-86CF-C34BC84760AE}.Release|x86.ActiveCfg = Release|x86
 		{F3B99878-F0DB-4E50-86CF-C34BC84760AE}.Release|x86.Build.0 = Release|x86
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F671642-74D9-4834-8165-ED0F7C0436C8}.Release|x86.Build.0 = Release|Any CPU
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Debug|x86.ActiveCfg = Debug|x86
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Debug|x86.Build.0 = Debug|x86
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Release|x86.ActiveCfg = Release|x86
+		{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -195,6 +217,7 @@ Global
 		{C8E3D4B9-87C4-4414-A8D5-1AD9703742D1} = {0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}
 		{54E030C6-CEEC-46F4-A4F1-45EFB6F1954F} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
 		{56D5EC48-6C03-4AC4-A415-67D2DA8FFDE3} = {54B9B57C-654A-4894-B553-4DCCFEFD9A82}
+		{F3B99878-F0DB-4E50-86CF-C34BC84760AE} = {71F24BA4-BC94-4717-83C3-A231F8AB8C7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A50F08E-66E4-4984-97AF-44448614F406}

@@ -21,8 +21,42 @@
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
     <Compile Remove="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected_expected.cs" />
-    <Compile Remove="InvertAssignmentDirection\Data\Class1.cs" />
-    <Compile Remove="InvertAssignmentDirection\Data\Class1_expected.cs" />
+    <Compile Remove="GenerateMapping\Assignment\ArrayType.cs" />
+    <Compile Remove="GenerateMapping\Assignment\ArrayType_expected.cs" />
+	<Compile Remove="GenerateMapping\Assignment\CollectionType.cs" />
+	<Compile Remove="GenerateMapping\Assignment\CollectionType_expected.cs" />
+	<Compile Remove="GenerateMapping\Assignment\ReferenceType_expected.cs" />
+	<Compile Remove="GenerateMapping\Assignment\ReferenceType.cs" />
+	<Compile Remove="GenerateMapping\Assignment\StringType.cs" />
+	<Compile Remove="GenerateMapping\Assignment\StringType_expected.cs" />
+	<Compile Remove="GenerateMapping\Assignment\ValueType.cs" />
+	<Compile Remove="GenerateMapping\Assignment\ValueType_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\Flattening.cs" />
+	<Compile Remove="GenerateMapping\Matching\Flattening_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromBase.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromBase_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromMethod.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromMethod_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromSimpleParams.cs" />
+	<Compile Remove="GenerateMapping\Matching\FromSimpleParams_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToFields.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToFieldsWhenPropIsReadOnly.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToFieldsWhenPropIsReadOnly_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToFields_expected.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToProp.cs" />
+	<Compile Remove="GenerateMapping\Matching\ToProp_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsClassNoParam.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsClassNoParam_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsToupleOneParam.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsClassOneParam.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsClassOneParam_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsVoidOneParam_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsVoidOneParam.cs" />
+	<Compile Remove="GenerateMapping\Method\MethodReturnsToupleOneParam_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\CopyConstructor_expected.cs" />
+	<Compile Remove="GenerateMapping\Method\CopyConstructor.cs" />
+	<Compile Remove="GenerateMapping\Special\Generic.cs" />
+	<Compile Remove="GenerateMapping\Special\Generic_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
@@ -52,6 +86,42 @@
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreSelected.cs" />
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine.cs" />
     <EmbeddedResource Include="EncapsulateFieldForWPF\Data\ShouldEncapsulateTwoFieldsWhenTwoFieldsAreInLine_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ArrayType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ArrayType.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\CollectionType.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\CollectionType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ReferenceType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ReferenceType.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ValueType.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\StringType.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\ValueType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Assignment\StringType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\Flattening_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\Flattening.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromBase_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromBase.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromMethod_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToFieldsWhenPropIsReadOnly_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToFieldsWhenPropIsReadOnly.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToFields.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToFields_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromMethod.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToProp.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromSimpleParams.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\ToProp_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsClassNoParam.cs" />
+    <EmbeddedResource Include="GenerateMapping\Matching\FromSimpleParams_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsClassNoParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsToupleOneParam.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsClassOneParam.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsClassOneParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsVoidOneParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsVoidOneParam.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\MethodReturnsToupleOneParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\CopyConstructor_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Method\CopyConstructor.cs" />
+    <EmbeddedResource Include="GenerateMapping\Special\Generic.cs" />
+    <EmbeddedResource Include="GenerateMapping\Special\Generic_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithElementAccessOnBothSides.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldInvertAssignmentWithMemberAccessOnBothSides.cs" />
@@ -71,8 +141,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.3.1" />
-    <PackageReference Include="nunit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="nunit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="RoslynNUnitLight.NetStandard" Version="1.2.5" />
   </ItemGroup>
@@ -80,6 +150,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ConvertToFullWPFProperty\ConvertToFullWPFProperty\ConvertToFullWPFProperty.csproj" />
     <ProjectReference Include="..\EncapsulateFieldForWPF\EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj" />
+    <ProjectReference Include="..\GenerateMapping\GenerateMapping\GenerateMapping.csproj" />
     <ProjectReference Include="..\InvertAssignmentDirection\InvertAssignmentDirection\InvertAssignmentDirection.csproj" />
   </ItemGroup>
 

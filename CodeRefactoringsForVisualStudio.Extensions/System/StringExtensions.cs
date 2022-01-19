@@ -13,6 +13,15 @@ namespace System
                   && (char.IsUpper(text[1]));
         }
 
+        public static string WithoutPrefix(this String text)
+        {
+            if (text.HasPrefix())
+            {
+                text = text.Remove(0, 1);
+            }
+            return text;
+        }
+
         public static string ToUpperFirst(this string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -35,9 +44,9 @@ namespace System
             return new string(a);
         }
 
-        public static string RemoveSufix(this string text, params string[] suffixes)
+        public static string RemovePostfix(this string text, params string[] postfixes)
         {
-            foreach (var sufix in suffixes)
+            foreach (var sufix in postfixes)
             {
                 if (text.EndsWith(sufix, StringComparison.Ordinal))
                 {
@@ -46,6 +55,8 @@ namespace System
             }
             return text;
         }
+
+
 
 
         public static IEnumerable<string> SplitStringIntoSeparateWords(this string selectedText)

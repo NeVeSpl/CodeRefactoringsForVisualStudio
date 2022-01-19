@@ -54,5 +54,16 @@ namespace Microsoft.CodeAnalysis
 
             return type;
         }
+
+        public static bool IsCollection(this ITypeSymbol type)
+        {
+            return type.AllInterfaces.Any(x => x.ToString() == "System.Collections.ICollection");
+        }
+
+
+        public static bool IsEnumerable(this ITypeSymbol type)
+        {
+            return type.AllInterfaces.Any(x => x.ToString() == "System.Collections.IEnumerable");
+        }
     }
 }

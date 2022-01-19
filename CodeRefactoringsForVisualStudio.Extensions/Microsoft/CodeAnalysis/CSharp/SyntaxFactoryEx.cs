@@ -26,5 +26,15 @@ namespace Microsoft.CodeAnalysis.CSharp
         {  
             return SyntaxFactory.Parameter(SyntaxFactory.Identifier(identifier)).WithType(SyntaxFactory.IdentifierName(type));
         }
+
+        public static ParameterSyntax Parameter(string identifier)
+        {
+            return SyntaxFactory.Parameter(SyntaxFactory.Identifier(identifier));
+        }
+
+        public static ArgumentListSyntax ArgumentListWithOneArgument(ExpressionSyntax arg)
+        {
+            return SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList<ArgumentSyntax>(SyntaxFactory.Argument(arg)));
+        }
     }
 }

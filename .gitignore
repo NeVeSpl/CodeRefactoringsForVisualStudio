@@ -59,3 +59,7 @@ CopyPasteWithConversion/CopyPasteWithConversion.Vsix/obj/
 CopyPasteWithConversion/CopyPasteWithConversion.Vsix2022/obj/
 CopyPasteWithConversion/CopyPasteWithConversion.Vsix2022/bin/
 *.bak
+GenerateMapping/GenerateMapping.Vsix/bin/
+GenerateMapping/GenerateMapping.Vsix/obj/
+GenerateMapping/GenerateMapping/bin/
+GenerateMapping/GenerateMapping/obj/

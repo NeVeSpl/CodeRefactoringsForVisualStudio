@@ -66,7 +66,7 @@ namespace MediatRAddRequestHandlerAndRequest
                     }
                 }
                 result.CommandTypeArguments = fullName.Substring(result.CommandName.Length);
-                basicName = result.CommandName.RemoveSufix("Query", "Command");
+                basicName = result.CommandName.RemovePostfix("Query", "Command");
             }
             else
             {                
