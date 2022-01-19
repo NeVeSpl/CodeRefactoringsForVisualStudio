@@ -65,5 +65,22 @@ namespace Microsoft.CodeAnalysis
         {
             return type.AllInterfaces.Any(x => x.ToString() == "System.Collections.IEnumerable");
         }
+
+        public static IEnumerable<ISymbol> GetAllMembers(this ITypeSymbol type)
+        {
+            if (type == null)
+            {
+                yield break;
+            }
+            foreach(var member in type.GetMembers())
+            {
+                yield return member;
+            }
+            foreach (var member in GetAllMembers(type.BaseType))
+            {
+                yield return member;
+            }
+        }
+        
     }
 }

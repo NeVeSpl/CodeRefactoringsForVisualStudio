@@ -28,7 +28,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
 
     class Foo2 : Foo3
     {
-       
+
     }
 
     class Foo3

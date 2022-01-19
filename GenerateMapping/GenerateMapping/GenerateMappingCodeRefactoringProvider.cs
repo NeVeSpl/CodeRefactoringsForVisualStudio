@@ -203,8 +203,8 @@ namespace GenerateMapping
 
         private IEnumerable<Accessor> GetAccessorsForType(ITypeSymbol type, bool publicOnly)
         {
-            var fields = type.GetMembers().OfType<IFieldSymbol>().OfType<ISymbol>();
-            var props = type.GetMembers().OfType<IPropertySymbol>().OfType<ISymbol>();
+            var fields = type.GetAllMembers().OfType<IFieldSymbol>().OfType<ISymbol>();
+            var props = type.GetAllMembers().OfType<IPropertySymbol>().OfType<ISymbol>();
             var all = fields.Union(props);
             var filtered = all.Where(x => !x.IsCompilerGenerated() && !x.IsStatic);
             if (publicOnly)
@@ -215,5 +215,7 @@ namespace GenerateMapping
 
             return transformed.ToList();
         }
+
+        
     }
 }
