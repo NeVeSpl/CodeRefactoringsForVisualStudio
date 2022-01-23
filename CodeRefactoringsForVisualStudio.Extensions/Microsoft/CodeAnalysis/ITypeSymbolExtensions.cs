@@ -72,15 +72,32 @@ namespace Microsoft.CodeAnalysis
             {
                 yield break;
             }
-            foreach(var member in type.GetMembers())
+            foreach (var realType in type.UnwrapGeneric())
             {
-                yield return member;
-            }
-            foreach (var member in GetAllMembers(type.BaseType))
-            {
-                yield return member;
+                foreach (var member in realType.GetMembers())
+                {
+                    yield return member;
+                }
+                foreach (var member in GetAllMembers(realType.BaseType))
+                {
+                    yield return member;
+                }
             }
         }
-        
+
+        public static IEnumerable<ITypeSymbol> UnwrapGeneric(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol is ITypeParameterSymbol namedType && namedType.Kind != SymbolKind.ErrorType)
+            {
+                foreach(var type in namedType.ConstraintTypes)
+                {
+                    yield return type;
+                }
+            }
+            else
+            {
+                yield return typeSymbol;
+            }
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping
         [TestCase("Generic")]
         public void ShouldMapSpecial(string caseName)
         {
-            TestCodeRefactoring("GenerateMapping.Generic", caseName);
+            TestCodeRefactoring("GenerateMapping.Special", caseName);
         }
     }
 }

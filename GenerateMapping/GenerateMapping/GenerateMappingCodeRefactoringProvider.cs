@@ -101,6 +101,10 @@ namespace GenerateMapping
                                 var rightName = rightAccessor.Name.WithoutPrefix();
                                 isMatch = String.Equals(leftName, rightName, StringComparison.OrdinalIgnoreCase);
                                 break;
+                            case MatchLevel.Flattening:
+                                var flattenRightName = rightAccessor.Parent?.Name + rightAccessor.Name;
+                                isMatch = String.Equals(leftAccessor.Name, flattenRightName, StringComparison.OrdinalIgnoreCase);
+                                break;
                         }
 
                         if (isMatch)
@@ -140,7 +144,7 @@ namespace GenerateMapping
         }
     }
 
-    enum MatchLevel { Perfect, IgnoreCase, WithoutPrefix, None }
+    enum MatchLevel { Perfect, IgnoreCase, WithoutPrefix, Flattening, None }
     public class Match
     {
         public Accessor LeftAccessor { get; }
@@ -168,20 +172,20 @@ namespace GenerateMapping
 
 
         public Accessor(IParameterSymbol parameter)
-        {
+        {           
             Type = new TypeData(parameter.Type);
             Name = parameter.Name;
             Children = GetAccessorsForType(parameter.Type, true);
         }
 
         public Accessor(ITypeSymbol type, string name, bool publicOnly)
-        {
+        {           
             Type = new TypeData(type);
             Name = name;
             Children = GetAccessorsForType(type, publicOnly);
         }        
 
-        public Accessor(ISymbol symbol, Accessor parent)
+        private Accessor(ISymbol symbol, Accessor parent)
         {
             if (symbol is IPropertySymbol property)
             {
@@ -196,11 +200,6 @@ namespace GenerateMapping
             Parent = parent;
         }
 
-
-
-      
-
-
         private IEnumerable<Accessor> GetAccessorsForType(ITypeSymbol type, bool publicOnly)
         {
             var fields = type.GetAllMembers().OfType<IFieldSymbol>().OfType<ISymbol>();
@@ -214,8 +213,6 @@ namespace GenerateMapping
             var transformed = filtered.Select(x => new Accessor(x, this));
 
             return transformed.ToList();
-        }
-
-        
+        }        
     }
 }

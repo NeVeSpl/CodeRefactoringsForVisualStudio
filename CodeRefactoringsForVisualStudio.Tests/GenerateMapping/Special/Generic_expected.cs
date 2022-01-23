@@ -6,7 +6,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
 {
     class Some
     {
-        static T1 Map<T1, T2>(T2 source) where T1 : FooDTO where T2 : Foo
+        static T1 Map<T1, T2>(T2 source) where T1 : new(), FooDTO where T2 : Foo
         {
             var result = new T1()
             {
