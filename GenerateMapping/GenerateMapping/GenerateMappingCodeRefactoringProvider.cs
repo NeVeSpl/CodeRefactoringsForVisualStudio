@@ -133,10 +133,11 @@ namespace GenerateMapping
             }
             foreach (var accessor in accessors)
             {
-                foreach (var child in StreamAccessors(accessor.Children))
+                if (accessor.IsMatched == false)
                 {
-                    if (accessor.IsMatched == false)
-                    { 
+                    foreach (var child in StreamAccessors(accessor.Children))
+                    {
+                    
                         yield return child;
                     }
                 }
