@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace GenerateMapping.Model
 {
-    public class TypeData
+    internal class TypeData
     {
         private readonly ITypeSymbol typeSymbol;
 

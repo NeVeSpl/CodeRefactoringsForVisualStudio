@@ -40,10 +40,11 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping
         [TestCase("MethodReturnsClassNoParam")]
         [TestCase("MethodReturnsClassOneParam")]
         [TestCase("MethodReturnsToupleOneParam")]
-        [TestCase("MethodReturnsVoidOneParam")]       
-        public void ShouldMapMethod(string caseName)
+        [TestCase("MethodReturnsVoidOneParam")]
+        [TestCase("ObjectCreationExpression")]
+        public void ShouldMapInside(string caseName)
         {
-            TestCodeRefactoring("GenerateMapping.Method", caseName);
+            TestCodeRefactoring("GenerateMapping.Context", caseName);
         }
 
         [TestCase("Generic")]

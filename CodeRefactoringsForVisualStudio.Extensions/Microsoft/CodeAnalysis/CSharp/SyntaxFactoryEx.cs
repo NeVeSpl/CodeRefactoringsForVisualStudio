@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -35,6 +36,15 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static ArgumentListSyntax ArgumentListWithOneArgument(ExpressionSyntax arg)
         {
             return SyntaxFactory.ArgumentList(SyntaxFactory.SingletonSeparatedList<ArgumentSyntax>(SyntaxFactory.Argument(arg)));
+        }
+
+        public static InitializerExpressionSyntax ObjectInitializerExpression(IEnumerable<ExpressionSyntax> expressions)
+        {
+            if (expressions.Count() > 1)
+            {
+                return SyntaxFactory.InitializerExpression(SyntaxKind.ObjectInitializerExpression, SyntaxFactory.SeparatedList<ExpressionSyntax>(expressions));
+            }
+            return SyntaxFactory.InitializerExpression(SyntaxKind.ObjectInitializerExpression, SyntaxFactory.SingletonSeparatedList<ExpressionSyntax>(expressions.FirstOrDefault()));
         }
     }
 }

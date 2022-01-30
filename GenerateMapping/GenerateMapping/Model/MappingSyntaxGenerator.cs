@@ -1,30 +1,39 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using GenerateMapping.Model;
 
-namespace GenerateMapping
+namespace GenerateMapping.Model
 {
     internal class MappingSyntaxGenerator
     {
-        public static BaseMethodDeclarationSyntax GenerateSyntax(BaseMethodDeclarationSyntax methodDeclaration, IEnumerable<Match> matches, Accessor accessor)
+        public static CSharpSyntaxNode GenerateSyntax(CSharpSyntaxNode syntaxNode, IEnumerable<Match> matches, Accessor firstOutputAccessor)
         {
             List<ExpressionSyntax> assigmentExpressions = GenerateAssigmentExpressions(matches);
-            BlockSyntax body = GenerateWrapingCode(assigmentExpressions, accessor);           
 
-            var updatedMethod = methodDeclaration.WithBody(body).WithTrailingTrivia(methodDeclaration.Body.GetTrailingTrivia());
-            return updatedMethod;
+            switch(syntaxNode)
+            {
+                case ObjectCreationExpressionSyntax objectCreation:
+                    var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions);
+                    var updatedObjectCreation = objectCreation.WithInitializer(initializerSyntax);
+                    return updatedObjectCreation;
+
+                case BaseMethodDeclarationSyntax baseMethod:
+                    BlockSyntax body = GenerateWrapingCode(assigmentExpressions, firstOutputAccessor);
+                    var updatedMethod = baseMethod.WithBody(body).WithTrailingTrivia(baseMethod.Body.GetTrailingTrivia());
+                    return updatedMethod;                   
+            }
+
+            throw new NotImplementedException();
         }
 
-        private static BlockSyntax GenerateWrapingCode(List<ExpressionSyntax> assigmentExpressions, Accessor accessor)
+        private static BlockSyntax GenerateWrapingCode(List<ExpressionSyntax> assigmentExpressions, Accessor firstOutputAccessor)
         {
             BlockSyntax body;
 
-            if (accessor.Name == "this")
+            if (firstOutputAccessor.Name == Accessor.SpecialNameThis)
             {
                 var assigmentStatements = assigmentExpressions.Select(x => SyntaxFactory.ExpressionStatement(x));
                 body = SyntaxFactory.Block(assigmentStatements);
@@ -34,16 +43,16 @@ namespace GenerateMapping
                 var statements = new List<StatementSyntax>();
 
                 // {}
-                var initializer = SyntaxFactory.InitializerExpression(SyntaxKind.CollectionInitializerExpression, SyntaxFactory.SeparatedList<ExpressionSyntax>(assigmentExpressions));
+                var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions);
 
-                // = new accessor.Type.Name() initializer
-                var initSyntaxt = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(accessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializer));
+                // = new accessor.Type.Name() initializerSyntax
+                var objectCreationSyntax = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializerSyntax));
 
-                // var result initSyntaxt
-                var resultStatement = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(initSyntaxt))));
-                statements.Add(resultStatement);
+                // var result objectCreationSyntax
+                var resultSyntax = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(objectCreationSyntax))));
+                statements.Add(resultSyntax);
 
-                //  return result;
+                //  return resultSyntax;
                 var returnResultSyntaxt = SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("result"));
                 statements.Add(returnResultSyntaxt);
 
@@ -108,7 +117,7 @@ namespace GenerateMapping
 
         private static ExpressionSyntax GenerateExpression(Accessor accessor)
         {
-            if (accessor.Parent != null && accessor.Parent.Name != "result")
+            if (accessor.Parent != null && accessor.Parent.Name != Accessor.SpecialNameReturnType)
             {
                 return SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, SyntaxFactory.IdentifierName(accessor.Parent.Name), SyntaxFactory.IdentifierName(accessor.Name));
             }

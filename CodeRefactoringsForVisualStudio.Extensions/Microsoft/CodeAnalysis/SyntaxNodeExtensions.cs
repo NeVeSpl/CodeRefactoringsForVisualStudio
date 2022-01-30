@@ -31,5 +31,19 @@ namespace Microsoft.CodeAnalysis
 
             return result;
         }
+
+
+        public static T FirstParentOrSelfOfType<T>(this SyntaxNode rootNode) where T : SyntaxNode
+        {
+            while (rootNode != null)
+            {
+                if (rootNode is T result)
+                {
+                    return result;
+                }
+                rootNode = rootNode.Parent;
+            }
+            return null;
+        }
     }
 }

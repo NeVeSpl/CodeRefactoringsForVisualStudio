@@ -26,19 +26,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenameVariableAfterTypeCodeRefactoring", "RenameVariableAfterTypeCodeRefactoring", "{54B9B57C-654A-4894-B553-4DCCFEFD9A82}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenameVariableAfterType_", "RenameVariableAfterType_", "{54B9B57C-654A-4894-B553-4DCCFEFD9A82}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InvertAssignmentDirectionCodeRefactoring", "InvertAssignmentDirectionCodeRefactoring", "{53B60D45-8F1F-44EC-8522-BBEE68E74537}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InvertAssignmentDirection_", "InvertAssignmentDirection_", "{53B60D45-8F1F-44EC-8522-BBEE68E74537}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncapsulateFieldForWPFCodeRefactoring", "EncapsulateFieldForWPFCodeRefactoring", "{167FD632-921F-4EDE-A4A9-2BBEE6567A47}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EncapsulateFieldForWPF_", "EncapsulateFieldForWPF_", "{167FD632-921F-4EDE-A4A9-2BBEE6567A47}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConvertToFullWPFPropertyCodeRefactoring", "ConvertToFullWPFPropertyCodeRefactoring", "{712F0CBB-F153-45FE-84B2-0DC5D86DD7C0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConvertToFullWPFProperty_", "ConvertToFullWPFProperty_", "{712F0CBB-F153-45FE-84B2-0DC5D86DD7C0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediatRAddRequestHandlerAndRequestCodeRefactoring", "MediatRAddRequestHandlerAndRequestCodeRefactoring", "{0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MediatRAddRequestHandlerAndRequest_", "MediatRAddRequestHandlerAndRequest_", "{0A531BC9-8BDA-4E3F-98DC-81AE8B03E924}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroduceParameterObject.Vsix", "IntroduceParameterObject\IntroduceParameterObject.Vsix\IntroduceParameterObject.Vsix.csproj", "{3B6DEB53-E66F-4450-A4E0-1DD647533888}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntroduceParameterObjectCodeRefactoring", "IntroduceParameterObjectCodeRefactoring", "{77C278D1-09E9-4E98-9C08-1B7EABD9738B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntroduceParameterObject_", "IntroduceParameterObject_", "{77C278D1-09E9-4E98-9C08-1B7EABD9738B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRAddRequestHandlerAndRequest", "MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest\MediatRAddRequestHandlerAndRequest.csproj", "{3C2D415B-C81B-4F4F-914B-50BEBEA357FE}"
 EndProject
@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyPasteWithConversion.Vsi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateMapping", "GenerateMapping\GenerateMapping\GenerateMapping.csproj", "{7F671642-74D9-4834-8165-ED0F7C0436C8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CopyPasteWithConversion", "CopyPasteWithConversion", "{71F24BA4-BC94-4717-83C3-A231F8AB8C7B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CopyPasteWithConversion_", "CopyPasteWithConversion_", "{71F24BA4-BC94-4717-83C3-A231F8AB8C7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateMapping.Vsix", "GenerateMapping\GenerateMapping.Vsix\GenerateMapping.Vsix.csproj", "{266614C7-DEFD-4789-AF1F-F7C7AE62A32C}"
 EndProject
