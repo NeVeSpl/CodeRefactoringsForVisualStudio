@@ -108,6 +108,11 @@ namespace IntroduceParameterObject
         }
         private MethodDeclarationSyntax UpdateMethodBody(MethodDeclarationSyntax method, IEnumerable<ParameterSyntax> parameters, string parameterObjectName, SemanticModel semanticModel)
         {
+            if (method.Body == null)
+            {
+                return method;
+            }
+
             var identifiers = method.Body.DescendantTokens()
                 .OfType<SyntaxToken>()
                 .Where(x => x.Kind() == SyntaxKind.IdentifierToken)

@@ -8,9 +8,12 @@ namespace System
     {
         public static bool HasPrefix(this String text)
         {
-            return (text.Length > 1)
-                  && (char.IsLower(text[0]) || (text[0] == '_'))
-                  && (char.IsUpper(text[1]));
+            if (text.Length > 1)
+            {
+                if (text[0] == '_') return true;
+                return char.IsLower(text[0]) && char.IsUpper(text[1]);
+            }
+            return false;            
         }
 
         public static string WithoutPrefix(this String text)

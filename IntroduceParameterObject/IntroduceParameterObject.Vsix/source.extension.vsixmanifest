@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="IntroduceParameterObject.fe674834-e5d3-4b3f-8b01-0146db4f8b1c" Version="1.8" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="IntroduceParameterObject.fe674834-e5d3-4b3f-8b01-0146db4f8b1c" Version="1.8.1" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>Introduce parameter object</DisplayName>
         <Description xml:space="preserve">Code refactoring that introduces parameter object in place of method arguments</Description>
         <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#IntroduceParameterObject</MoreInfo>
