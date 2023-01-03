@@ -143,12 +143,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.3.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.3.1" />
     <PackageReference Include="nunit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="RoslynNUnitLight.NetStandard" Version="1.2.5" />
+    <PackageReference Include="SmartAnalyzers.RoslynTestKit" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

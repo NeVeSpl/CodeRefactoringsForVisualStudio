@@ -4,7 +4,7 @@ using EncapsulateFieldForWPF;
 using CodeRefactoringsForVisualStudio.Tests;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using NUnit.Framework;
-using RoslynNUnitLight;
+
 
 namespace CodeRefactoringsForVisualStudio.Tests.EncapsulateFieldForWPF
 {

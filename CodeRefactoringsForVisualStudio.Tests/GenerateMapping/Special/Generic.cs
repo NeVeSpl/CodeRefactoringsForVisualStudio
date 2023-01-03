@@ -6,7 +6,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
 {
     class Some
     {
-        [|static T1 Map<T1, T2>(T2 source) where T1 : new(), FooDTO where T2 : Foo|]
+        [|static T1 Map<T1, T2>(T2 source) where T1 : FooDTO, new() where T2 : Foo|]
         {
 
         }
@@ -16,12 +16,12 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
     class Foo
     {
         public int A;
-        public string B { get; set; };
+        public string B { get; set; }
     }
 
     class FooDTO
     {
         public int A;
-        public string B { get; set; };
+        public string B { get; set; }
     }
 }

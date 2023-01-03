@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using RoslynNUnitLight;
 using System.IO;
 using System.Reflection;
+using RoslynTestKit;
 
 namespace CodeRefactoringsForVisualStudio.Tests
 {
     public abstract class BaseCodeRefactoringTestFixture : CodeRefactoringTestFixture
     {
         protected override string LanguageName { get => Microsoft.CodeAnalysis.LanguageNames.CSharp; }
+        protected override bool FailWhenInputContainsErrors => false;
 
 
         protected void TestCodeRefactoring(string folderWithData, string caseName)

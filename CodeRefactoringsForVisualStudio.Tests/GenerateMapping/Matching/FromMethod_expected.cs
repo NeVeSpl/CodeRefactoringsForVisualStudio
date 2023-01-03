@@ -20,7 +20,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
 
         void Fuu(Foo2 other)
         {
-            this.A = other.GetA();            
+            this.A = other.GetA();
         }
     }
 
