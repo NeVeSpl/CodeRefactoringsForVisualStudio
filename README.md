@@ -30,13 +30,6 @@ Visual Studio code refactoring that replaces an auto-property with full property
 
 Visual Studio code refactoring that creates full property implementation with an invocation of OnPropertyChanged in a setter for a selected set of backing fields.
 
-##### Changelog
-
-version 1.5
-- icon added to vsix
-
-version 1.4
-- performance improvement, a new way of determining the name of a method that by convention is called "OnPropertyChanged"
 
 
 ### <a name="IntroduceParameterObject"></a>4. Introduce parameter object - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)
