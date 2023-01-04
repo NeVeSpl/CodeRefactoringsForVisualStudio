@@ -14,17 +14,6 @@
 
 Visual Studio code refactoring that allows swapping arguments around the equal sign in an assignment statement. It works on single or many selected assignment statements at once.
 
-##### Changelog 
-
-version 1.5
-- icon added to vsix
-
-version 1.3
-
-- assignment expression that consists of one or two indexers can also be inverted
-``
-arr[i] = foo[j]; //-> foo[j] = arr[i];
-``
 
 
 ### <a name="ConvertToFullWPFProperty"></a>2. Convert to full WPF Property - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
@@ -111,6 +100,7 @@ Visual Studio code refactoring that changes a variable name, to an auto-generate
 - a simple heuristic, not AI based (yet)
 - works on a single or many variables at once
 - works on a single method parameter
+
 
 
 ### <a name="CopyPasteWithConversion"></a>7. Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
