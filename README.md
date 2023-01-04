@@ -44,13 +44,6 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 - it does not support generic type parameters
 - updating method body is done syntactically, not semantically, it means they may appear conflicts if a method parameter shares the same name with something else
 
-##### Changelog 
-
-version 1.1
-- fixed crash caused by array parameter
-
-
-
 
 
 ### <a name="MediatRAddRequestHandlerAndRequest"></a>5. MediatR add RequestHandler and Request - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
