@@ -22,16 +22,6 @@ Visual Studio code refactoring that allows swapping arguments around the equal s
 
 Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
 
-##### Changelog
-
-version 1.5
-- icon added to vsix
-
-version 1.4
-
-- performance improvement, a new way of determining the name of a method that usually is called "OnPropertyChanged "
-- a more robust way of determining what prefix for a backing field should be used
-
 
 
 ### <a name="EncapsulateFieldForWPF"></a>3. Encapsulate field (WPF) - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
