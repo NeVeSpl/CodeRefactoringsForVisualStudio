@@ -73,6 +73,8 @@
     <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia_expected.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia.cs" />
     <Compile Remove="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia_expected.cs" />
+    <Compile Remove="RenameVariable\Data\PassBasicSmokeTest.cs" />
+    <Compile Remove="RenameVariable\Data\PassBasicSmokeTest_expected.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -140,6 +142,8 @@
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveLeftTrivia_expected.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia.cs" />
     <EmbeddedResource Include="InvertAssignmentDirection\Data\ShouldPreserveRightTrivia_expected.cs" />
+    <EmbeddedResource Include="RenameVariable\Data\PassBasicSmokeTest.cs" />
+    <EmbeddedResource Include="RenameVariable\Data\PassBasicSmokeTest_expected.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -154,6 +158,7 @@
     <ProjectReference Include="..\EncapsulateFieldForWPF\EncapsulateFieldForWPF\EncapsulateFieldForWPF.csproj" />
     <ProjectReference Include="..\GenerateMapping\GenerateMapping\GenerateMapping.csproj" />
     <ProjectReference Include="..\InvertAssignmentDirection\InvertAssignmentDirection\InvertAssignmentDirection.csproj" />
+    <ProjectReference Include="..\RenameVariableAfterType\RenameVariableAfterType\RenameVariableAfterType.csproj" />
   </ItemGroup>
 
   <ItemGroup>

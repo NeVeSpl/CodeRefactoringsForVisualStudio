@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
@@ -10,231 +9,152 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
-using Pluralize.NET;
 
 namespace RenameVariableAfterType
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(RenameVariableAfterTypeCodeRefactoringProvider)), Shared]
-    internal class RenameVariableAfterTypeCodeRefactoringProvider : CodeRefactoringProvider
+    public class RenameVariableAfterTypeCodeRefactoringProvider : CodeRefactoringProvider
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
-        { 
+        {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();                    
-          
+            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
+
+            SemanticModel semanticModel = null;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            var nodesToRename = new List<NodeToRename>();
+
             if (nodes.Any())
             {
-                var action = CodeAction.Create("Rename variable after type", c => RenameVariablesAfter(context.Document, nodes, c, Mode.AfterType));
-                context.RegisterRefactoring(action);
-            }   
-            
-            var nodesWithInvocation = nodes.Where(x => x.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).Any());
+                semanticModel ??= await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-            if (nodesWithInvocation.Any())
+                foreach (var variableDeclaration in nodes)
+                {
+                    TypeInfo typeInfo = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken);
+
+                    foreach (var variableSyntax in variableDeclaration.Variables)
+                    {
+                        nodesToRename.Add(new(variableSyntax, typeInfo));
+                    }
+                }
+            }
+
+            if (nodesToRename.Count == 1)
             {
-                var action = CodeAction.Create("Rename variable after expression", c => RenameVariablesAfter(context.Document, nodes, c, Mode.AfterMethod));
+                var node = nodesToRename.First();
+                node.GenerateNamePropositions();
+                foreach(var name in node.NamePropositions)
+                {
+                    var action = CodeAction.Create($"Rename to: {name}", c => RenameNode(context.Document, node, name, c));
+                    context.RegisterRefactoring(action);
+                }
+            }
+            if (nodesToRename.Count > 1)
+            {
+                var action = CodeAction.Create("Rename variables after type", c => RenameNodes(context.Document, nodesToRename, Mode.AfterType, c));
+                context.RegisterRefactoring(action);
+            }
+
+            if (nodesToRename.Where(x => x.DoesItHaveExpression).Count() > 1)
+            {
+                var action = CodeAction.Create("Rename variables after expression", c => RenameNodes(context.Document, nodesToRename, Mode.AfterExpression, c));
+                context.RegisterRefactoring(action);
+            }
+
+            var parameter_nodes = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
+            if (parameter_nodes.Count == 1)
+            {
+                semanticModel ??= await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                TypeInfo typeInfo = semanticModel.GetTypeInfo(parameter_nodes.First().Type, context.CancellationToken);
+                var node = new NodeToRename(parameter_nodes.First(), typeInfo);
+                node.GenerateNamePropositions();
+               
+                var action = CodeAction.Create($"Rename to: {node.NameAfterType}", c => RenameNode(context.Document, node, node.NameAfterType, c));
                 context.RegisterRefactoring(action);
             }
         }
 
-        enum Mode { AfterType, AfterMethod }
-        private async Task<Solution> RenameVariablesAfter(Document document, IEnumerable<VariableDeclarationSyntax> variableDeclarations, CancellationToken cancellationToken, Mode mode)
-        {  
+        enum Mode { AfterType, AfterExpression }
+        private async Task<Solution> RenameNode(Document document, NodeToRename nodeToRename, string newName, CancellationToken cancellationToken)
+        {
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var solution = document.Project.Solution;
 
-            foreach (var variableDeclaration in variableDeclarations)
-            {
-                TypeInfo typeInfo = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken);
-                foreach (var variableSyntax in variableDeclaration.Variables)
-                {
-                    string newNameAfterExpression = GenerateNewNameFromExpression(variableSyntax.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault());
-                    string newNameAfterType = GenerateNewName(typeInfo.Type);
-                    string newName = (mode  == Mode.AfterType ? newNameAfterType : newNameAfterExpression) ?? newNameAfterType;
-                    ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableSyntax, cancellationToken);
+            solution = await DoRename(nodeToRename.SyntaxNode, newName, semanticModel, solution, cancellationToken).ConfigureAwait(false);
 
-                    var optionSet = solution.Workspace.Options;
-                    try
-                    {
-                        solution = await Renamer.RenameSymbolAsync(solution, variableSymbol, newName, optionSet, cancellationToken).ConfigureAwait(false);
-                    }
-                    catch
-                    {
-                        // if solution does not compile, the Renamer may throw exception
-                    }
-                }
+            return solution;
+        }
+        private async Task<Solution> RenameNodes(Document document, IEnumerable<NodeToRename> nodesToRename, Mode mode, CancellationToken cancellationToken)
+        {
+            var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            var solution = document.Project.Solution;
+
+            foreach (var nodeToRename in nodesToRename)
+            {
+                nodeToRename.GenerateNamePropositions();
+                string newName = (mode == Mode.AfterType ? nodeToRename.NameAfterType : nodeToRename.NameAfterExpression) ?? nodeToRename.NameAfterType;
+
+                solution = await DoRename(nodeToRename.SyntaxNode, newName, semanticModel, solution, cancellationToken).ConfigureAwait(false);
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
 
             return solution;
         }
-
-        static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute" }; 
-
-        private string GenerateNewNameFromExpression(ExpressionSyntax expressionSyntax)
+        private async Task<Solution> DoRename(CSharpSyntaxNode syntaxNode, string newName, SemanticModel semanticModel, Solution solution, CancellationToken cancellationToken)
         {
-            string expression = null;
-            if (expressionSyntax is InvocationExpressionSyntax invocationExpressionSyntax)
-            {
-                expression = invocationExpressionSyntax.Expression.ToString();
-            }
-            if (expressionSyntax is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-            {               
-                expression = memberAccessExpressionSyntax.ToString();
-            }
-            if (string.IsNullOrEmpty(expression))
-            {
-                return null;
-            }
-
-            string lastWord = expression.Split('.').Last();
-
-            foreach (var prefix in prefixes)
-            {
-                if (lastWord.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                {
-                    lastWord = lastWord.Substring(prefix.Length);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(lastWord))
-            {
-                lastWord = lastWord.ToLowerFirst();
-            }else
-            {
-                lastWord = null;
-            }
-
-            return lastWord;
-        }
-
-
-
-        private string GenerateNewName(ITypeSymbol typeSymbol)
-        {
-            var type = typeSymbol;
-            bool isCollection = false;           
-            while (type is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length > 0)
-            {
-                if (type.ContainingNamespace?.ToString().StartsWith("System.Collections") == true)
-                {
-                    isCollection = true;
-                }
-                type = namedTypeSymbol.TypeArguments.First();
-            }
-
-            if (type is IArrayTypeSymbol arrayTypeSymbol)
-            {
-                type = arrayTypeSymbol.ElementType;
-                isCollection = true;
-            }
-
-            string name = type.Name;
-
-            if ((name.Length > 1) && (name[0] == 'I') && (char.IsUpper(name[1])))
-            {
-                name = name.Substring(1);
-            }
-            var words = name.SplitStringIntoSeparateWords().ToList();
-
-            if (words.Any())
-            {
-                if (isCollection)
-                {                    
-                     words[words.Count - 1] = Pluralize(words.Last());                    
-                }
-                words[0] = words.First().ToLowerFirst();
-            }
-
-            string newName = string.Join("", words);
-
-            return newName;
-        }
-        
-
-        private string Pluralize(string word)
-        {
-            string pluralForm = word;
             try
             {
-                IPluralize pluralizer = new Pluralizer();
-                pluralForm = pluralizer.Pluralize(word);
+                ISymbol symbolToRename = semanticModel.GetDeclaredSymbol(syntaxNode, cancellationToken);
+                solution = await Renamer.RenameSymbolAsync(solution, symbolToRename, newName, solution.Workspace.Options, cancellationToken).ConfigureAwait(false);
             }
             catch
             {
-                // sometimes VS has problems with loading Pluralize dll
-                pluralForm = GetPlural(word);
+                // if solution does not compile, the Renamer may throw
             }
-            return pluralForm;            
+
+            return solution;
         }
+              
 
-        // source : https://stackoverflow.com/a/16199962/1147478
-        private string GetPlural(string singular)
+        class NodeToRename
         {
-            string CONSONANTS = "bcdfghjklmnpqrstvwxz";
+            private readonly TypeInfo typeInfo;
+            private bool wereNamesGenerated;
+            private ExpressionSyntax expressionSyntax;
+            public CSharpSyntaxNode SyntaxNode { get; }
+            public bool DoesItHaveExpression { get => expressionSyntax != null; }
+            public IEnumerable<string> NamePropositions { get; private set; }
+            public string NameAfterType { get; private set; }
+            public string NameAfterExpression { get; private set; }
 
-            switch (singular)
+
+            public NodeToRename(CSharpSyntaxNode syntaxNodeToRename, TypeInfo typeInfo)
             {
-                case "Person":
-                    return "People";
-                case "Trash":
-                    return "Trash";
-                case "Life":
-                    return "Lives";
-                case "Man":
-                    return "Men";
-                case "Woman":
-                    return "Women";
-                case "Child":
-                    return "Children";
-                case "Foot":
-                    return "Feet";
-                case "Tooth":
-                    return "Teeth";
-                case "Dozen":
-                    return "Dozen";
-                case "Hundred":
-                    return "Hundred";
-                case "Thousand":
-                    return "Thousand";
-                case "Million":
-                    return "Million";
-                case "Datum":
-                    return "Data";
-                case "Criterion":
-                    return "Criteria";
-                case "Analysis":
-                    return "Analyses";
-                case "Fungus":
-                    return "Fungi";
-                case "Index":
-                    return "Indices";
-                case "Matrix":
-                    return "Matrices";
-                case "Settings":
-                    return "Settings";
-                case "UserSettings":
-                    return "UserSettings";
-                default:
-                    // Handle ending with "o" (if preceeded by a consonant, end with -es, otherwise -s: Potatoes and Radios)
-                    if (singular.EndsWith("o") && CONSONANTS.Contains(singular[singular.Length - 2].ToString()))
-                    {
-                        return singular + "es";
-                    }
-                    // Handle ending with "y" (if preceeded by a consonant, end with -ies, otherwise -s: Companies and Trays)
-                    if (singular.EndsWith("y") && CONSONANTS.Contains(singular[singular.Length - 2].ToString()))
-                    {
-                        return singular.Substring(0, singular.Length - 1) + "ies";
-                    }
-                    // Ends with a whistling sound: boxes, buzzes, churches, passes
-                    if (singular.EndsWith("s") || singular.EndsWith("sh") || singular.EndsWith("ch") || singular.EndsWith("x") || singular.EndsWith("z"))
-                    {
-                        return singular + "es";
-                    }
-                    return singular + "s";
+                this.typeInfo = typeInfo;
+                this.SyntaxNode = syntaxNodeToRename;
+                this.expressionSyntax = SyntaxNode.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault();
+            }
 
+
+            public void GenerateNamePropositions()
+            {
+                if (wereNamesGenerated) return; 
+                NamePropositions = GenerateNamePropositionsInternal().ToArray();
+                wereNamesGenerated = true;
+            }
+
+            private IEnumerable<string> GenerateNamePropositionsInternal()
+            {
+                NameAfterType = NameGenerator.GenerateNewNameFromType(typeInfo.Type);
+                yield return NameAfterType;
+                NameAfterExpression = NameGenerator.GenerateNewNameFromExpression(expressionSyntax);
+                if (!string.IsNullOrEmpty(NameAfterExpression))
+                {
+                    yield return NameAfterExpression;
+                }
             }
         }
     }

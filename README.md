@@ -103,10 +103,14 @@ version 1.5
 
 ### <a name="RenameVariableAfterType"></a>6. Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
 
-<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="661">
+<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="720">
 
 
-Visual Studio code refactoring that changes a variable name to the name of the variable type, written in camelCase, e.g. "Foo x =" => "Foo foo ="
+Visual Studio Code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
+
+- a simple heuristic, not AI based (yet)
+- works on a single or many variables at once
+- works on a single method parameter
 
 
 ### <a name="CopyPasteWithConversion"></a>7. Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
