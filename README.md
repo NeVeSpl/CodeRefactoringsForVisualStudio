@@ -103,7 +103,7 @@ version 1.5
 
 ### <a name="RenameVariableAfterType"></a>6. Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
 
-<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="720">
+<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
 
 
 Visual Studio Code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
