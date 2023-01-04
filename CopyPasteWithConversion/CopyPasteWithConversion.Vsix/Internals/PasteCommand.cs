@@ -3,8 +3,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Community.VisualStudio.Toolkit;
-using EnvDTE;
+using CopyPasteWithConversion.Vsix.Internals;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Task = System.Threading.Tasks.Task;
@@ -58,8 +57,10 @@ namespace CopyPasteWithConversion
 
         private async void ExecuteAsync()
         {
-            DocumentView docView = await VS.Documents.GetActiveDocumentViewAsync();
-            if (docView?.TextView == null) return; //not a text window           
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var wpfTextView = await VSHelper.GetActiveIWpfTextView(package);
+            if (wpfTextView == null) return; //not a text window           
            
             string textFromClipboard = null;
             try
@@ -90,16 +91,16 @@ namespace CopyPasteWithConversion
                     break;
             }
 
-            SnapshotPoint position = docView.TextView.Caret.Position.BufferPosition;
+            SnapshotPoint position = wpfTextView.Caret.Position.BufferPosition;
 
-            var selection = docView?.TextView.Selection;
+            var selection = wpfTextView.Selection;
             if (selection.SelectedSpans.Any())
             {
-                docView.TextBuffer?.Replace(selection.SelectedSpans[0], result);
+                wpfTextView.TextBuffer?.Replace(selection.SelectedSpans[0], result);
             }
             else
             {
-                docView.TextBuffer?.Insert(position, result); // Inserts text at the caret
+                wpfTextView.TextBuffer?.Insert(position, result); // Inserts text at the caret
             }
         }
 

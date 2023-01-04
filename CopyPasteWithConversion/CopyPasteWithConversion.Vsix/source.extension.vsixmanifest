@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="CopyPasteWithConversion.ac1dab7f-4acb-4a56-8a62-ce90afed1435" Version="1.8" Language="en-US" Publisher="NeVeS" />
+        <Identity Id="CopyPasteWithConversion.ac1dab7f-4acb-4a56-8a62-ce90afed1435" Version="2.0" Language="en-US" Publisher="NeVeS" />
         <DisplayName>Copy/Paste with case conversion</DisplayName>
-        <Description xml:space="preserve">Allows to copy/paste a selected text with a conversion : changing the text case to: pascal case, snake case, camel case, sentence case; or splitting the text to separate words.</Description>
+        <Description xml:space="preserve">Adds two commnads to text editor context menu that do a case conversion: Copy as sentence case (also splits selected text to separate words), and PasteAsPascalCase</Description>
         <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#CopyPasteWithConversion</MoreInfo>
         <Icon>CopyPasteWithConversion.Logo.png</Icon>
     </Metadata>
 	<Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,17.0)">
 			<ProductArchitecture>x86</ProductArchitecture>
 		</InstallationTarget>
 		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">

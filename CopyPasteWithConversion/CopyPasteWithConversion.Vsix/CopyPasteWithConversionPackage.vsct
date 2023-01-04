@@ -41,15 +41,15 @@
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN"/>
       </Group>
 
-      <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" priority="0x0602">
+      <!--<Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" priority="0x0602">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" />
       </Group>
       <Group guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" priority="0x0604">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" />
-      </Group>
+      </Group>-->
     </Groups>
 
-    <Menus>
+    <!--<Menus>
       <Menu guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenu" priority="0x0200" type="Menu">
         <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="MyMenuGroup" />
         <Strings>
@@ -57,7 +57,7 @@
         </Strings>
 
       </Menu>
-    </Menus>
+    </Menus>-->
 
     <Buttons>
       <!--<Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSeparateWordsId" priority="0x0100" type="Button">
@@ -67,7 +67,7 @@
         </Strings>
       </Button>-->
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="CopyAsSentenceCase" priority="0x0101" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupCopy" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="MyMenuGroup" />
         <Strings>
           <ButtonText>Copy as sentence case</ButtonText>
         </Strings>
@@ -103,7 +103,7 @@
         </Strings>
       </Button>-->
       <Button guid="guidCopyPasteWithConversionPackageCmdSet" id="PasteAsPascalCase" priority="0x0106" type="Button">
-        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="SubMenuGroupPaste" />
+        <Parent guid="guidCopyPasteWithConversionPackageCmdSet" id="MyMenuGroup" />
         <Strings>
           <ButtonText>PasteAsPascalCase</ButtonText>
         </Strings>

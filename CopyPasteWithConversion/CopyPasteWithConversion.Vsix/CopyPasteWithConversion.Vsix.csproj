@@ -45,9 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CopyCommand.cs" />
+    <Compile Include="Internals\CopyCommand.cs" />
     <Compile Include="CopyPasteWithConversionPackage.cs" />
-    <Compile Include="PasteCommand.cs" />
+    <Compile Include="Internals\PasteCommand.cs" />
+    <Compile Include="Internals\VSHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +57,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Community.VisualStudio.Toolkit.16">
-      <Version>16.0.355</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

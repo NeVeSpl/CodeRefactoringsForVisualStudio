@@ -106,7 +106,7 @@ version 1.5
 <img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
 
 
-Visual Studio Code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
+Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
 
 - a simple heuristic, not AI based (yet)
 - works on a single or many variables at once
@@ -118,7 +118,8 @@ Visual Studio Code refactoring that changes a variable name, to an auto-generate
 <img src="Documentation/CopyPasteWithConversion.sampleusecase.gif" width="710">
 
 
-Visual Studio extensions that adds a new position to the text editor context menu: "Copy/Paste with conversion". It allows to convert a selected text before copying it to the clipboard or before pasting it from the clipboard.
+Visual Studio extension that adds two commands to the text editor context menu that do case conversion before copy/paste. 
+
 Two kinds of conversion are available:
-- Copy as sentence case
+- Copy as sentence case (also splits selected text to separate words)
 - PasteAsPascalCase
