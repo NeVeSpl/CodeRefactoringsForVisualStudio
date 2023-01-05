@@ -6,7 +6,7 @@ namespace GenerateMapping.Model
 {
     internal static class AccessorsMatcher
     {
-        enum MatchLevel { Perfect, IgnoreCase, WithoutPrefix, Flattening, None }
+        enum MatchLevel { Perfect, IgnoreCase, WithoutPrefix, TheSameWords, Flattening, None }
 
         public static IEnumerable<Match> DoMatching(IEnumerable<Accessor> leftAccessors, IEnumerable<Accessor> rightAccessors)
         {
@@ -29,9 +29,18 @@ namespace GenerateMapping.Model
                                 isMatch = String.Equals(leftAccessor.Name, rightAccessor.Name, StringComparison.OrdinalIgnoreCase);
                                 break;
                             case MatchLevel.WithoutPrefix:
-                                var leftName = leftAccessor.Name.WithoutPrefix();
-                                var rightName = rightAccessor.Name.WithoutPrefix();
-                                isMatch = String.Equals(leftName, rightName, StringComparison.OrdinalIgnoreCase);
+                                {
+                                    var leftName = leftAccessor.Name.WithoutPrefix();
+                                    var rightName = rightAccessor.Name.WithoutPrefix();
+                                    isMatch = String.Equals(leftName, rightName, StringComparison.OrdinalIgnoreCase);
+                                }
+                                break;
+                            case MatchLevel.TheSameWords:
+                                {
+                                    var leftName = string.Join("", leftAccessor.Name.WithoutPrefix().SplitStringIntoSeparateWords());
+                                    var rightName = string.Join("", rightAccessor.Name.WithoutPrefix().SplitStringIntoSeparateWords());
+                                    isMatch = String.Equals(leftName, rightName, StringComparison.OrdinalIgnoreCase);
+                                }
                                 break;
                             case MatchLevel.Flattening:
                                 var flattenRightName = rightAccessor.Parent?.Name + rightAccessor.Name;

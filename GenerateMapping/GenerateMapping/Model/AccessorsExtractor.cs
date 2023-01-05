@@ -10,12 +10,8 @@ namespace GenerateMapping.Model
 {
     internal static class AccessorsExtractor
     {
-        public static async Task<(IEnumerable<Accessor> outputs, IEnumerable<Accessor> inputs)> GetAccessors(Document document, CSharpSyntaxNode syntaxNode, CancellationToken cancellationToken)
+        public static  (IEnumerable<Accessor> outputs, IEnumerable<Accessor> inputs) GetAccessors(SemanticModel semanticModel, CSharpSyntaxNode syntaxNode, CancellationToken cancellationToken)
         {
-            var solution = document.Project.Solution;
-            var syntaxTree = syntaxNode.SyntaxTree;
-            var semanticModel = await solution.GetDocument(syntaxTree).GetSemanticModelAsync();          
-
             var methodDeclaration = syntaxNode.FirstParentOrSelfOfType<BaseMethodDeclarationSyntax>();
             var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
@@ -34,7 +30,7 @@ namespace GenerateMapping.Model
             if (syntaxNode is ObjectCreationExpressionSyntax objectCreation)
             {
                 var typeInfo = semanticModel.GetTypeInfo(objectCreation);
-                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, true) };
+                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, true, mustBeRedable: false, mustBeWritable: true) };
             }
 
             return (leftAccessors, rightAccessors);
@@ -46,11 +42,11 @@ namespace GenerateMapping.Model
         {
             if (methodSymbol.ReturnType.SpecialType == SpecialType.System_Void && methodSymbol.IsStatic == false)
             {
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false);
+                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false, mustBeRedable: false, mustBeWritable: true);
             }
             else
             {
-                yield return new Accessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, true);
+                yield return new Accessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, true, mustBeRedable: false, mustBeWritable: true);
             }
         }
         private static IEnumerable<Accessor> GetRightAccessors(IMethodSymbol methodSymbol)
@@ -59,12 +55,12 @@ namespace GenerateMapping.Model
             {
                 foreach (var parameter in methodSymbol.Parameters)
                 {
-                    yield return new Accessor(parameter);
+                    yield return new Accessor(parameter.Type, parameter.Name, true, mustBeRedable: true, mustBeWritable: false);
                 }
             }
             else
             {
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false);
+                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false, mustBeRedable: true, mustBeWritable: false);
             }
         }
     }

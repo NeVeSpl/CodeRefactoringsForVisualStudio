@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using GenerateMapping.Model;
 
 namespace GenerateMapping.Model
 {
@@ -10,29 +9,24 @@ namespace GenerateMapping.Model
         public const string SpecialNameThis = "this";
         public const string SpecialNameReturnType = "result";
 
+        public int Index { get; }
         public string Name { get; }
         public TypeData Type { get; }
         public Accessor Parent { get; }        
         public IEnumerable<Accessor> Children { get;  } = Enumerable.Empty<Accessor>();
         public bool IsMatched { get; set; }
-        
+       
 
-        public Accessor(IParameterSymbol parameter)
-        {           
-            Type = new TypeData(parameter.Type);
-            Name = parameter.Name;
-            Children = GetAccessorsForType(parameter.Type, true);
-        }
-
-        public Accessor(ITypeSymbol type, string name, bool publicOnly)
+        public Accessor(ITypeSymbol type, string name, bool publicOnly, bool mustBeRedable, bool mustBeWritable)
         {           
             Type = new TypeData(type);
             Name = name;
-            Children = GetAccessorsForType(type, publicOnly);
+            Children = GetEligibleSymbols(type, publicOnly, mustBeRedable, mustBeWritable).Select((x , i) => new Accessor(x, this, i)).ToList();
         }        
 
-        private Accessor(ISymbol symbol, Accessor parent)
+        private Accessor(ISymbol symbol, Accessor parent, int index)
         {
+            Index = index;
             if (symbol is IPropertySymbol property)
             {
                 Type = new TypeData(property.Type);
@@ -46,19 +40,29 @@ namespace GenerateMapping.Model
             Parent = parent;
         }
 
-        private IEnumerable<Accessor> GetAccessorsForType(ITypeSymbol type, bool publicOnly)
+        private IEnumerable<ISymbol> GetEligibleSymbols(ITypeSymbol type, bool publicOnly, bool mustBeRedable, bool mustBeWritable)
         {
-            var fields = type.GetAllMembers().OfType<IFieldSymbol>().OfType<ISymbol>();
-            var props = type.GetAllMembers().OfType<IPropertySymbol>().OfType<ISymbol>();
-            var all = fields.Union(props);
-            var filtered = all.Where(x => !x.IsCompilerGenerated() && !x.IsStatic);
-            if (publicOnly)
-            {
-                filtered = filtered.Where(x => x.DeclaredAccessibility == Accessibility.Public);
-            }
-            var transformed = filtered.Select(x => new Accessor(x, this));
+            var members = type.GetAllMembers().Where(x => !x.IsCompilerGenerated() && !x.IsStatic);
+            var fields = members.OfType<IFieldSymbol>();
+            var props = members.OfType<IPropertySymbol>();
 
-            return transformed.ToList();
+            foreach (var field in fields)
+            {
+                if (publicOnly && field.DeclaredAccessibility != Accessibility.Public) continue;
+                if (mustBeWritable && field.IsReadOnly) continue;
+                yield return field;
+            }
+
+            foreach (var property in props)
+            {
+                if (publicOnly && property.DeclaredAccessibility != Accessibility.Public) continue;
+                if (mustBeRedable && property.IsWriteOnly) continue;
+                if (mustBeWritable && property.IsReadOnly) continue;
+                if (publicOnly && mustBeRedable && property.GetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
+                if (publicOnly && mustBeWritable && property.SetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
+
+                yield return property;
+            }
         }        
     }
 }

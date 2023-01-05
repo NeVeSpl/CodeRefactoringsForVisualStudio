@@ -29,7 +29,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
     {
         public int GetA()
         {
-            return 7
+            return 7;
         }
 
         private double GetB()

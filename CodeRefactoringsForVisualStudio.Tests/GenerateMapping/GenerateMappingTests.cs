@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GenerateMapping;
+﻿using GenerateMapping;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using NUnit.Framework;
 
@@ -27,7 +24,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping
         [TestCase("Flattening")]
         [TestCase("FromBase")]
         [TestCase("FromSimpleParams")]
-        [TestCase("FromMethod")]
+        [TestCase("FromMethod")] // todo : it is not implemented
         [TestCase("ToFields")]
         [TestCase("ToFieldsWhenPropIsReadOnly")]
         [TestCase("ToProp")]
