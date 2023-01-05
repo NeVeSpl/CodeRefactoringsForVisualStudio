@@ -18,7 +18,7 @@ namespace RenameVariableAfterType
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
+            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).ToList();
 
             SemanticModel semanticModel = null;
             CancellationToken cancellationToken = context.CancellationToken;
@@ -62,7 +62,7 @@ namespace RenameVariableAfterType
                 context.RegisterRefactoring(action);
             }
 
-            var parameter_nodes = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
+            var parameter_nodes = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).ToList();
             if (parameter_nodes.Count == 1)
             {
                 semanticModel ??= await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
