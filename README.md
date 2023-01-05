@@ -1,38 +1,48 @@
 
-1. [Invert assignment direction](#InvertAssignmentDirection)
-2. [Convert to full WPF property](#ConvertToFullWPFProperty)
-3. [Encapsulate field for WPF](#EncapsulateFieldForWPF)
-4. [Introduce parameter object](#IntroduceParameterObject)
-5. [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
-6. [Rename variable after type/expression](#RenameVariableAfterType)
-7. [Copy paste with conversion](#CopyPasteWithConversion)
+- [Invert assignment direction](#InvertAssignmentDirection)
+- [Generate mapping](#GenerateMapping)
+- [Introduce parameter object](#IntroduceParameterObject)
+- [Rename variable after type/expression](#RenameVariableAfterType)
+- [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
+- [Convert to full WPF property](#ConvertToFullWPFProperty)
+- [Encapsulate field for WPF](#EncapsulateFieldForWPF)
+- [Copy paste with conversion](#CopyPasteWithConversion)
 
 
-### <a name="InvertAssignmentDirection"></a>1. Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
+## <a name="InvertAssignmentDirection"></a>Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
 
 <img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="678">
 
 Visual Studio code refactoring that allows swapping arguments around the equal sign in an assignment statement. It works on single or many selected assignment statements at once.
 
 
+## <a name="GenerateMapping"></a>Generate mapping - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.GenerateMapping) 
 
-### <a name="ConvertToFullWPFProperty"></a>2. Convert to full WPF Property - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
+<img src="Documentation/GenerateMapping.sampleusecase.gif" width="710">
 
-<img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
-
-Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
-
+Visual Studio code refactoring that generates mapping code, between method input parameters and method return type. If any of them is void, "this" is used instead. Design time AutoMapper alternative.
 
 
-### <a name="EncapsulateFieldForWPF"></a>3. Encapsulate field (WPF) - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+What can be generated:
 
-<img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="678">
+- mapping method
+- copy constructor
+- memento method get state
+- memento method set state
 
-Visual Studio code refactoring that creates full property implementation with an invocation of OnPropertyChanged in a setter for a selected set of backing fields.
+General rules:
+
+- mapping is available only for methods/constructors with an empty body
+- mapping can be done for more than one input parameter
+- for the left side of the assignment are considered all writable fields and properties
+- for the right side of the assignment are considered all readable fields and properties
+- for the assignment of mutable reference type, a "new" instance is always created 
+- recursive mapping is not, and will not be supported
 
 
 
-### <a name="IntroduceParameterObject"></a>4. Introduce parameter object - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)
+
+## <a name="IntroduceParameterObject"></a>Introduce parameter object - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)
 
 <img src="Documentation/IntroduceParameterObject.sampleusecase.gif" width="710">
 
@@ -46,7 +56,20 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 
 
 
-### <a name="MediatRAddRequestHandlerAndRequest"></a>5. MediatR add RequestHandler and Request - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
+## <a name="RenameVariableAfterType"></a>Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+
+<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
+
+
+Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
+
+- a simple heuristic, not AI based (yet)
+- works on a single or many variables at once
+- works on a single method parameter
+
+
+
+## <a name="MediatRAddRequestHandlerAndRequest"></a>MediatR add RequestHandler and Request - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
 
 <img src="Documentation/MediatRAddRequest.sampleusecase.gif" width="800">
 
@@ -66,20 +89,23 @@ version 1.5
 
 
 
-### <a name="RenameVariableAfterType"></a>6. Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+## <a name="ConvertToFullWPFProperty"></a>Convert to full WPF Property - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
 
-<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
+<img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
-
-Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
-
-- a simple heuristic, not AI based (yet)
-- works on a single or many variables at once
-- works on a single method parameter
+Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
 
 
 
-### <a name="CopyPasteWithConversion"></a>7. Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
+## <a name="EncapsulateFieldForWPF"></a>Encapsulate field (WPF) - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+
+<img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="678">
+
+Visual Studio code refactoring that creates full property implementation with an invocation of OnPropertyChanged in a setter for a selected set of backing fields.
+
+
+
+## <a name="CopyPasteWithConversion"></a>Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
 
 <img src="Documentation/CopyPasteWithConversion.sampleusecase.gif" width="710">
 
