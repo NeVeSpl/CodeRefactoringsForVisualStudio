@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="GenerateMapping.37e1a942-892b-4994-9b08-d1f4fcd2abdc" Version="0.7" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="GenerateMapping.37e1a942-892b-4994-9b08-d1f4fcd2abdc" Version="0.9" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>Generate mapping</DisplayName>
         <Description xml:space="preserve">Generates mapping code, between method input parameters and method return type. If any of them is void, "this" is used instead. Design time AutoMapper alternative.</Description>
-        <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#GenerateMapping</MoreInfo>
-        <Icon>GenerateMapping.Logo.png</Icon>
-        <Preview>true</Preview>
+        <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#generate-mapping</MoreInfo>
+        <Icon>GenerateMapping.Logo.png</Icon>        
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.11,17.0)">

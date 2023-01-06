@@ -7,10 +7,10 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
     class Foo
     {
         public int A { get; set; }
-        public string B { get; set; }
+        public string C { get; set; }
 
 
-        [|(int a, string b) Fuu(Foo source)|]
+        [|(int a, double b, string c) Fuu(Foo source)|]
         {            
              
         }

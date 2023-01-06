@@ -1,3 +1,4 @@
+# Code refactorings for VisualStudio
 
 - [Invert assignment direction](#invert-assignment-direction)
 - [Generate mapping](#generate-mapping)
@@ -26,13 +27,14 @@ Visual Studio code refactoring that allows swapping arguments around the equal s
 
 Visual Studio code refactoring that generates mapping code, between method input parameters and method return type. If any of them is void, "this" is used instead. Design time AutoMapper alternative.
 
-
 What can be generated:
 
 - mapping method
 - copy constructor
 - memento method get state
 - memento method set state
+
+<img src="Documentation/GenerateMapping.whatcanbegenerated.gif" width="710">
 
 General rules:
 
@@ -42,6 +44,7 @@ General rules:
 - for the right side of the assignment are considered all readable fields and properties
 - for the assignment of mutable reference type, a "new" instance is always created 
 - recursive mapping is not, and will not be supported
+- mapping to tuples is supported
 
 
 

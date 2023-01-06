@@ -24,6 +24,7 @@ namespace GenerateMapping.Model
             }
         }
         public bool IsInterface => typeSymbol.TypeKind == TypeKind.Interface;
+        public bool IsTouple => typeSymbol.IsTupleType;
         public IEnumerable<TypeData> Arguments
         {
             get
@@ -38,6 +39,19 @@ namespace GenerateMapping.Model
                 if (typeSymbol is IArrayTypeSymbol arraySymbol)
                 {
                     yield return new TypeData(arraySymbol.ElementType);
+                }
+            }
+        }
+        public IEnumerable<string> TupleElementNames
+        {
+            get
+            {
+                if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
+                {
+                    foreach (var element in namedTypeSymbol.TupleElements)
+                    {
+                        yield return element.Name;
+                    }
                 }
             }
         }

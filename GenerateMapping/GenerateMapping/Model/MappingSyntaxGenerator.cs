@@ -11,12 +11,12 @@ namespace GenerateMapping.Model
     {
         public static CSharpSyntaxNode GenerateSyntax(CSharpSyntaxNode syntaxNode, IEnumerable<Match> matches, Accessor firstOutputAccessor)
         {
-            List<ExpressionSyntax> assigmentExpressions = GenerateAssigmentExpressions(matches);
+            var assigmentExpressions = GenerateAssigmentExpressions(matches);
 
             switch(syntaxNode)
             {
                 case ObjectCreationExpressionSyntax objectCreation:
-                    var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions);
+                    var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions.Select(x => x.Assignment));
                     var updatedObjectCreation = objectCreation.WithInitializer(initializerSyntax);
                     return updatedObjectCreation;
 
@@ -29,42 +29,64 @@ namespace GenerateMapping.Model
             throw new NotImplementedException();
         }
 
-        private static BlockSyntax GenerateWrapingCode(List<ExpressionSyntax> assigmentExpressions, Accessor firstOutputAccessor)
-        {
-            BlockSyntax body;
-
+        private static BlockSyntax GenerateWrapingCode(List<GeneratedExpressionForMatch> assigmentExpressions, Accessor firstOutputAccessor)
+        {  
             if (firstOutputAccessor.Name == Accessor.SpecialNameThis)
             {
-                var assigmentStatements = assigmentExpressions.Select(x => SyntaxFactory.ExpressionStatement(x));
-                body = SyntaxFactory.Block(assigmentStatements);
+                var assigmentStatements = assigmentExpressions.Select(x => SyntaxFactory.ExpressionStatement(x.Assignment));
+                return SyntaxFactory.Block(assigmentStatements);               
             }
-            else
+
+            if (firstOutputAccessor.Type.IsTouple)
             {
-                var statements = new List<StatementSyntax>();
-
-                // {}
-                var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions);
-
-                // = new accessor.Type.Name() initializerSyntax
-                var objectCreationSyntax = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializerSyntax));
-
-                // var result objectCreationSyntax
-                var resultSyntax = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(objectCreationSyntax))));
-                statements.Add(resultSyntax);
-
-                //  return resultSyntax;
-                var returnResultSyntaxt = SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("result"));
-                statements.Add(returnResultSyntaxt);
-
-                body = SyntaxFactory.Block(statements);
+                var touple = GenerateToupleExpression(firstOutputAccessor.Type, assigmentExpressions);
+                return SyntaxFactory.Block(SyntaxFactory.ReturnStatement(touple));
             }
+            
+            var statements = new List<StatementSyntax>();
 
+            // {}
+            var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions.Select(x => x.Assignment));
+
+            // = new accessor.Type.Name() initializerSyntax
+            var objectCreationSyntax = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializerSyntax));
+
+            // var result objectCreationSyntax
+            var resultSyntax = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(objectCreationSyntax))));
+            statements.Add(resultSyntax);
+
+            //  return resultSyntax;
+            var returnResultSyntaxt = SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("result"));
+            statements.Add(returnResultSyntaxt);
+
+            BlockSyntax body = SyntaxFactory.Block(statements);
             return body;
         }
 
-        private static List<ExpressionSyntax> GenerateAssigmentExpressions(IEnumerable<Match> matches)
+        private static ExpressionSyntax GenerateToupleExpression(TypeData type, List<GeneratedExpressionForMatch> assigmentExpressions)
         {
-            var assigmentExpressions = new List<ExpressionSyntax>();
+            var arguments = new List<ArgumentSyntax>();
+
+            foreach (var name in type.TupleElementNames)
+            {
+                var generatedExpression = assigmentExpressions.Where(x => x.Match.LeftAccessor.Name == name).FirstOrDefault();
+                if (generatedExpression != null)
+                {
+                    arguments.Add(SyntaxFactory.Argument(generatedExpression.Assignment.Right));
+                }
+                else
+                {
+                    arguments.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("default")));
+                }
+            }            
+    
+            return SyntaxFactory.TupleExpression(SyntaxFactory.SeparatedList(arguments));
+            //SyntaxFactory.ParseExpression(@"(""d"", 7)");
+        }
+
+        private static List<GeneratedExpressionForMatch> GenerateAssigmentExpressions(IEnumerable<Match> matches)
+        {
+            var assigmentExpressions = new List<GeneratedExpressionForMatch>();
 
             foreach (var match in matches)
             {
@@ -109,7 +131,7 @@ namespace GenerateMapping.Model
                 }
 
 
-                assigmentExpressions.Add(SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right));
+                assigmentExpressions.Add(new GeneratedExpressionForMatch(match, SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right)));
             }
 
             return assigmentExpressions;
@@ -126,5 +148,17 @@ namespace GenerateMapping.Model
                 return SyntaxFactory.IdentifierName(accessor.Name);
             }
         }
+
+        private class GeneratedExpressionForMatch
+        {
+            public Match Match { get; }
+            public AssignmentExpressionSyntax Assignment { get; }
+
+            public GeneratedExpressionForMatch(Match match, AssignmentExpressionSyntax assignment)
+            {
+                Match = match;
+                Assignment = assignment;
+            }
+        }       
     }
 }
