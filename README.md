@@ -1,22 +1,26 @@
 
-- [Invert assignment direction](#InvertAssignmentDirection)
-- [Generate mapping](#GenerateMapping)
-- [Introduce parameter object](#IntroduceParameterObject)
-- [Rename variable after type/expression](#RenameVariableAfterType)
-- [MediatR add RequestHandler and Request](#MediatRAddRequestHandlerAndRequest)
-- [Convert to full WPF property](#ConvertToFullWPFProperty)
-- [Encapsulate field for WPF](#EncapsulateFieldForWPF)
-- [Copy paste with conversion](#CopyPasteWithConversion)
+- [Invert assignment direction](#invert-assignment-direction)
+- [Generate mapping](#generate-mapping)
+- [Introduce parameter object](#introduce-parameter-object)
+- [Rename variable after type/expression](#rename-variable-after-typeexpression)
+- [MediatR add RequestHandler and Request](#mediatr-add-requesthandler-and-request)
+- [Convert to full WPF property](#convert-to-full-wpf-property)
+- [Encapsulate field for WPF](#encapsulate-field-wpf)
+- [Copy paste with conversion](#copypaste-with-case-conversion)
 
 
-## <a name="InvertAssignmentDirection"></a>Invert assignment direction - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection) 
+## Invert assignment direction
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.InvertAssignmentDirection?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.InvertAssignmentDirection)
 
 <img src="Documentation/InvertAssignmentDirection.sampleusecase.gif" width="678">
 
 Visual Studio code refactoring that allows swapping arguments around the equal sign in an assignment statement. It works on single or many selected assignment statements at once.
 
 
-## <a name="GenerateMapping"></a>Generate mapping - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.GenerateMapping) 
+## Generate mapping
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.GenerateMapping?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.GenerateMapping)
 
 <img src="Documentation/GenerateMapping.sampleusecase.gif" width="710">
 
@@ -42,7 +46,9 @@ General rules:
 
 
 
-## <a name="IntroduceParameterObject"></a>Introduce parameter object - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)
+## Introduce parameter object
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.IntroduceParameterObject?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.IntroduceParameterObject)
 
 <img src="Documentation/IntroduceParameterObject.sampleusecase.gif" width="710">
 
@@ -56,7 +62,9 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 
 
 
-## <a name="RenameVariableAfterType"></a>Rename variable after type/expression - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+## Rename variable after type/expression 
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.RenameVariableAfterType?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
 
 <img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
 
@@ -69,7 +77,9 @@ Visual Studio code refactoring that changes a variable name, to an auto-generate
 
 
 
-## <a name="MediatRAddRequestHandlerAndRequest"></a>MediatR add RequestHandler and Request - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
+## MediatR add RequestHandler and Request
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.MediatRAddRequestHandlerAndRequest?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.MediatRAddRequestHandlerAndRequest)
 
 <img src="Documentation/MediatRAddRequest.sampleusecase.gif" width="800">
 
@@ -89,7 +99,9 @@ version 1.5
 
 
 
-## <a name="ConvertToFullWPFProperty"></a>Convert to full WPF Property - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
+## Convert to full WPF Property
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.ConvertToFullWPFProperty?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.ConvertToFullWPFProperty)
 
 <img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
@@ -97,7 +109,9 @@ Visual Studio code refactoring that replaces an auto-property with full property
 
 
 
-## <a name="EncapsulateFieldForWPF"></a>Encapsulate field (WPF) - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
+## Encapsulate field (WPF)
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.EncapsulateFieldForWPF?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.EncapsulateFieldForWPF)
 
 <img src="Documentation/EncapsulateFieldForWPF.sampleusecase.gif" width="678">
 
@@ -105,10 +119,11 @@ Visual Studio code refactoring that creates full property implementation with an
 
 
 
-## <a name="CopyPasteWithConversion"></a>Copy/Paste with case conversion - [download](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
+## Copy/Paste with case conversion
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.CopyPasteWithConversion?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.CopyPasteWithConversion)
 
 <img src="Documentation/CopyPasteWithConversion.sampleusecase.gif" width="710">
-
 
 Visual Studio extension that adds two commands to the text editor context menu that do case conversion before copy/paste. 
 
