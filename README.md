@@ -2,8 +2,8 @@
 
 - [Invert assignment direction](#invert-assignment-direction)
 - [Generate mapping](#generate-mapping)
-- [Introduce parameter object](#introduce-parameter-object)
 - [Rename variable after type/expression](#rename-variable-after-typeexpression)
+- [Introduce parameter object](#introduce-parameter-object)
 - [MediatR add RequestHandler and Request](#mediatr-add-requesthandler-and-request)
 - [Convert to full WPF property](#convert-to-full-wpf-property)
 - [Encapsulate field for WPF](#encapsulate-field-wpf)
@@ -40,11 +40,26 @@ General rules:
 
 - mapping is available only for methods/constructors with an empty body
 - mapping can be done for more than one input parameter
-- for the left side of the assignment are considered all writable fields and properties
-- for the right side of the assignment are considered all readable fields and properties
+- for the left side of the assignment considered are all writable fields and properties
+- for the right side of the assignment considered are all readable fields and properties
 - for the assignment of mutable reference type, a "new" instance is always created 
 - recursive mapping is not, and will not be supported
 - mapping to tuples is supported
+
+
+
+## Rename variable after type/expression 
+
+[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.RenameVariableAfterType?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
+
+<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
+
+
+Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
+
+- a simple heuristic, not AI based (yet)
+- works on a single or many variables at once
+- works on a single method parameter
 
 
 
@@ -62,21 +77,6 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 ##### Limitations 
 - it does not support generic type parameters
 - updating method body is done syntactically, not semantically, it means they may appear conflicts if a method parameter shares the same name with something else
-
-
-
-## Rename variable after type/expression 
-
-[![download](https://img.shields.io/visual-studio-marketplace/v/NeVeS.RenameVariableAfterType?label=download&style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=NeVeS.RenameVariableAfterType)
-
-<img src="Documentation/RenameVariableAfterType.sampleusecase.gif" width="710">
-
-
-Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
-
-- a simple heuristic, not AI based (yet)
-- works on a single or many variables at once
-- works on a single method parameter
 
 
 

@@ -14,11 +14,21 @@ namespace RenameVariableAfterType
         {
             var type = typeSymbol;
             bool isCollection = false;
+            var genericNames = new List<string>();
             while (type is INamedTypeSymbol namedTypeSymbol && namedTypeSymbol.IsGenericType && namedTypeSymbol.TypeArguments.Length > 0)
             {
+                isCollection |= type.IsCollection();
+                isCollection |= type.IsEnumerable();
                 if (type.ContainingNamespace?.ToString().StartsWith("System.Collections") == true)
                 {
-                    isCollection = true;
+                    isCollection = true;                    
+                }
+                else
+                {
+                    if (namedTypeSymbol.Name != "Task")
+                    {
+                        genericNames.Add(namedTypeSymbol.Name);
+                    }
                 }
                 type = namedTypeSymbol.TypeArguments.First();
             }
@@ -45,8 +55,14 @@ namespace RenameVariableAfterType
                 }
                 words[0] = words.First().ToLowerFirst();
             }
-
+            
             string newName = string.Join("", words);
+
+            if (genericNames.Any())
+            {
+                string prefix = string.Join("_", genericNames.Select(x => x.ToLowerFirst())) + "_";
+                newName = prefix + newName;
+            }
 
             return newName;
         }
