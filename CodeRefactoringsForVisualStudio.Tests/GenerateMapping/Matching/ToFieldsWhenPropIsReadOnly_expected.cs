@@ -14,16 +14,21 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
         {
             get { return a; }
         }
-        public double B
+        public string B
         {
             get => _B;
         }
 
 
-        void Fuu(Foo other)
+        void Fuu(Input other)
         {
             this.a = other.A;
             this._B = other.B;
         }
+    }
+    class Input
+    {
+        public int A = > 7;
+        public string B => "";
     }
 }

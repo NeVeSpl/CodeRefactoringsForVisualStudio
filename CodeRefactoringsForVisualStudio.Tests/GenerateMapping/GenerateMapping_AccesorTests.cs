@@ -34,7 +34,7 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping
             public int Prop_expresion => 7;
 
 
-            public void MyMethod()
+            public MyType()
             {
             }
         }

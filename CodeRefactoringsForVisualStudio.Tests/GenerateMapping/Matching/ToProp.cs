@@ -23,9 +23,16 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping.Data
         public string D { get; init set; }
 
 
-        [|void Fuu(Foo other)|]
+        [|void Fuu(Input other)|]
         {
              
         }
+    }
+    class Input
+    {
+        public int A { get; set; }
+        public double B { get; set; }
+        public string C { get; set; }
+        public string D { get; set; }
     }
 }

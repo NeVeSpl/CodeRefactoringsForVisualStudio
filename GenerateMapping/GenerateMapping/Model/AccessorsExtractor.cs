@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GenerateMapping.Model
 {
+    enum WriteLevel { Constructor, Init, Ordinary, NotApplicable }
+    enum AccessLevel { Private, Public }
+    enum Side { Left, Right }
+
     internal static class AccessorsExtractor
     {
         public static  (IEnumerable<Accessor> outputs, IEnumerable<Accessor> inputs) GetAccessors(SemanticModel semanticModel, CSharpSyntaxNode syntaxNode, CancellationToken cancellationToken)
@@ -15,38 +18,36 @@ namespace GenerateMapping.Model
             var methodDeclaration = syntaxNode.FirstParentOrSelfOfType<BaseMethodDeclarationSyntax>();
             var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-            //var l = methodDeclaration.Body.GetLocation();
-            //var tt = semanticModel.LookupSymbols(l.SourceSpan.Start);
-
-            //foreach (StatementSyntax S in methodDeclaration.Body.Statements)
-            //{
-            //    var d = S.GetLeadingTrivia();
-            //    var f = S.GetTrailingTrivia();
-            //}            
-
             IEnumerable<Accessor> leftAccessors = GetLeftAccessor(methodSymbol).ToList();
             IEnumerable<Accessor> rightAccessors = GetRightAccessors(methodSymbol).ToList();
 
             if (syntaxNode is ObjectCreationExpressionSyntax objectCreation)
             {
                 var typeInfo = semanticModel.GetTypeInfo(objectCreation);
-                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, true, mustBeRedable: false, mustBeWritable: true) };
+                var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, typeInfo.Type) ? AccessLevel.Private : AccessLevel.Public;
+
+                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, accessLevel, Side.Left, WriteLevel.Init) };
             }
 
             return (leftAccessors, rightAccessors);
         }
-
        
 
         private static IEnumerable<Accessor> GetLeftAccessor(IMethodSymbol methodSymbol)
         {
             if (methodSymbol.ReturnType.SpecialType == SpecialType.System_Void && methodSymbol.IsStatic == false)
             {
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false, mustBeRedable: false, mustBeWritable: true);
+                var writeLevel = methodSymbol.MethodKind == MethodKind.Constructor ? WriteLevel.Constructor : WriteLevel.Ordinary;
+                var accessLevel = AccessLevel.Private;
+
+                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Left, writeLevel);
             }
             else
-            {
-                yield return new Accessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, true, mustBeRedable: false, mustBeWritable: true);
+            {                
+                var writeLevel = WriteLevel.Init;
+                var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, methodSymbol.ReturnType) ? AccessLevel.Private : AccessLevel.Public;
+
+                yield return new Accessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, accessLevel, Side.Left, writeLevel);
             }
         }
         private static IEnumerable<Accessor> GetRightAccessors(IMethodSymbol methodSymbol)
@@ -55,12 +56,16 @@ namespace GenerateMapping.Model
             {
                 foreach (var parameter in methodSymbol.Parameters)
                 {
-                    yield return new Accessor(parameter.Type, parameter.Name, true, mustBeRedable: true, mustBeWritable: false);
+                    var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, parameter.Type) ? AccessLevel.Private : AccessLevel.Public;
+
+                    yield return new Accessor(parameter.Type, parameter.Name, accessLevel, Side.Right, WriteLevel.NotApplicable);
                 }
             }
             else
             {
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, false, mustBeRedable: true, mustBeWritable: false);
+                var accessLevel = AccessLevel.Private;
+
+                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Right, WriteLevel.NotApplicable);
             }
         }
     }

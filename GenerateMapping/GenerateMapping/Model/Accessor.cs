@@ -17,15 +17,15 @@ namespace GenerateMapping.Model
         public bool IsMatched { get; set; }
        
 
-        public Accessor(ITypeSymbol type, string name, bool publicOnly, bool mustBeRedable, bool mustBeWritable)
+        public Accessor(ITypeSymbol type, string name, AccessLevel accessLevel, Side sideOfAssignment, WriteLevel writeLevel)
         {           
             Type = new TypeData(type);
             Name = name;
-            Children = GetEligibleSymbols(type, publicOnly, mustBeRedable, mustBeWritable).Select((x , i) => new Accessor(x, this, i)).ToList();
+            Children = GetEligibleSymbols(type, accessLevel == AccessLevel.Public, sideOfAssignment, writeLevel).Select((x , i) => new Accessor(x, this, i)).ToList();
         }        
 
         private Accessor(ISymbol symbol, Accessor parent, int index)
-        {
+        {          
             Index = index;
             if (symbol is IPropertySymbol property)
             {
@@ -40,7 +40,7 @@ namespace GenerateMapping.Model
             Parent = parent;
         }
 
-        private IEnumerable<ISymbol> GetEligibleSymbols(ITypeSymbol type, bool publicOnly, bool mustBeRedable, bool mustBeWritable)
+        private IEnumerable<ISymbol> GetEligibleSymbols(ITypeSymbol type, bool publicOnly, Side sideOfAssignment, WriteLevel writeLevel)
         {
             var members = type.GetAllMembers().Where(x => !x.IsCompilerGenerated() && !x.IsStatic);
             var fields = members.OfType<IFieldSymbol>();
@@ -49,17 +49,28 @@ namespace GenerateMapping.Model
             foreach (var field in fields)
             {
                 if (publicOnly && field.DeclaredAccessibility != Accessibility.Public) continue;
-                if (mustBeWritable && field.IsReadOnly) continue;
+                if (sideOfAssignment == Side.Left && field.IsReadOnly)
+                {
+                    if (writeLevel != WriteLevel.Constructor) continue;
+                }
                 yield return field;
             }
 
             foreach (var property in props)
             {
                 if (publicOnly && property.DeclaredAccessibility != Accessibility.Public) continue;
-                if (mustBeRedable && property.IsWriteOnly) continue;
-                if (mustBeWritable && property.IsReadOnly) continue;
-                if (publicOnly && mustBeRedable && property.GetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
-                if (publicOnly && mustBeWritable && property.SetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
+
+                if (sideOfAssignment == Side.Left)
+                {
+                    if (property.IsReadOnly && writeLevel != WriteLevel.Constructor) continue;
+                    if (publicOnly && property.SetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
+                    if (property.SetMethod?.IsInitOnly == true && writeLevel == WriteLevel.Ordinary) continue;
+                }
+                else
+                {
+                    if (property.IsWriteOnly) continue;
+                    if (publicOnly && property.GetMethod?.DeclaredAccessibility != Accessibility.Public) continue;
+                }
 
                 yield return property;
             }
