@@ -30,37 +30,37 @@ namespace GenerateMapping.Model
         }
 
         private static BlockSyntax GenerateWrapingCode(List<GeneratedExpressionForMatch> assigmentExpressions, Accessor firstOutputAccessor)
-        {  
-            if (firstOutputAccessor.Name == Accessor.SpecialNameThis)
-            {
-                var assigmentStatements = assigmentExpressions.Select(x => SyntaxFactory.ExpressionStatement(x.Assignment));
-                return SyntaxFactory.Block(assigmentStatements);               
-            }
-
+        {
             if (firstOutputAccessor.Type.IsTouple)
             {
                 var touple = GenerateToupleExpression(firstOutputAccessor.Type, assigmentExpressions);
                 return SyntaxFactory.Block(SyntaxFactory.ReturnStatement(touple));
             }
-            
-            var statements = new List<StatementSyntax>();
 
-            // {}
-            var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions.Select(x => x.Assignment));
+            if (firstOutputAccessor.Name == Accessor.SpecialNameReturnType)
+            {
+                var statements = new List<StatementSyntax>();
 
-            // = new accessor.Type.Name() initializerSyntax
-            var objectCreationSyntax = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializerSyntax));
+                // {}
+                var initializerSyntax = SyntaxFactoryEx.ObjectInitializerExpression(assigmentExpressions.Select(x => x.Assignment));
 
-            // var result objectCreationSyntax
-            var resultSyntax = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(objectCreationSyntax))));
-            statements.Add(resultSyntax);
+                // = new accessor.Type.Name() initializerSyntax
+                var objectCreationSyntax = SyntaxFactory.EqualsValueClause(SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), SyntaxFactory.ArgumentList().WithTrailingTrivia(SyntaxFactory.LineFeed), initializerSyntax));
 
-            //  return resultSyntax;
-            var returnResultSyntaxt = SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("result"));
-            statements.Add(returnResultSyntaxt);
+                // var result objectCreationSyntax
+                var resultSyntax = SyntaxFactory.LocalDeclarationStatement(SyntaxFactory.VariableDeclaration(SyntaxFactory.IdentifierName("var"), SyntaxFactory.SingletonSeparatedList<VariableDeclaratorSyntax>(SyntaxFactory.VariableDeclarator("result").WithInitializer(objectCreationSyntax))));
+                statements.Add(resultSyntax);
 
-            BlockSyntax body = SyntaxFactory.Block(statements);
-            return body;
+                //  return resultSyntax;
+                var returnResultSyntaxt = SyntaxFactory.ReturnStatement(SyntaxFactory.IdentifierName("result"));
+                statements.Add(returnResultSyntaxt);
+
+                BlockSyntax body = SyntaxFactory.Block(statements);
+                return body;
+            }
+
+            var assigmentStatements = assigmentExpressions.Select(x => SyntaxFactory.ExpressionStatement(x.Assignment));
+            return SyntaxFactory.Block(assigmentStatements); 
         }
 
         private static ExpressionSyntax GenerateToupleExpression(TypeData type, List<GeneratedExpressionForMatch> assigmentExpressions)

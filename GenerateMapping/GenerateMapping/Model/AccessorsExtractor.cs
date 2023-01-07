@@ -37,10 +37,22 @@ namespace GenerateMapping.Model
         {
             if (methodSymbol.ReturnType.SpecialType == SpecialType.System_Void && methodSymbol.IsStatic == false)
             {
-                var writeLevel = methodSymbol.MethodKind == MethodKind.Constructor ? WriteLevel.Constructor : WriteLevel.Ordinary;
-                var accessLevel = AccessLevel.Private;
+                if (methodSymbol.Parameters.Count() > 0 && methodSymbol.Parameters.All(x => x.RefKind == RefKind.Out))
+                {
+                    var outputParameters = methodSymbol.Parameters.Where(x => x.RefKind == RefKind.Out);
 
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Left, writeLevel);
+                    foreach (var parameter in outputParameters)
+                    {
+                        yield return new Accessor(parameter.Type, parameter.Name, AccessLevel.Public, Side.Left, WriteLevel.NotApplicable);
+                    }
+                }
+                else
+                {
+                    var writeLevel = methodSymbol.MethodKind == MethodKind.Constructor ? WriteLevel.Constructor : WriteLevel.Ordinary;
+                    var accessLevel = AccessLevel.Private;
+
+                    yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Left, writeLevel);
+                }                
             }
             else
             {                
@@ -52,9 +64,11 @@ namespace GenerateMapping.Model
         }
         private static IEnumerable<Accessor> GetRightAccessors(IMethodSymbol methodSymbol)
         {
-            if (methodSymbol.Parameters.Any())
+            var inputParameters = methodSymbol.Parameters.Where(x => x.RefKind != RefKind.Out);
+
+            if (inputParameters.Any())
             {
-                foreach (var parameter in methodSymbol.Parameters)
+                foreach (var parameter in inputParameters)
                 {
                     var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, parameter.Type) ? AccessLevel.Private : AccessLevel.Public;
 

@@ -31,6 +31,8 @@
 	<Compile Remove="GenerateMapping\Assignment\StringType_expected.cs" />
 	<Compile Remove="GenerateMapping\Assignment\ValueType.cs" />
 	<Compile Remove="GenerateMapping\Assignment\ValueType_expected.cs" />
+	<Compile Remove="GenerateMapping\Context\DeconstructMethod.cs" />
+	<Compile Remove="GenerateMapping\Context\DeconstructMethod_expected.cs" />
 	<Compile Remove="GenerateMapping\Context\ObjectCreationExpression.cs" />
 	<Compile Remove="GenerateMapping\Context\ObjectCreationExpression_expected.cs" />
 	<Compile Remove="GenerateMapping\Matching\Flattening.cs" />
@@ -100,6 +102,8 @@
     <EmbeddedResource Include="GenerateMapping\Assignment\StringType.cs" />
     <EmbeddedResource Include="GenerateMapping\Assignment\ValueType_expected.cs" />
     <EmbeddedResource Include="GenerateMapping\Assignment\StringType_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\DeconstructMethod_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\DeconstructMethod.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\ObjectCreationExpression_expected.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\ObjectCreationExpression.cs" />
     <EmbeddedResource Include="GenerateMapping\Matching\Flattening_expected.cs" />

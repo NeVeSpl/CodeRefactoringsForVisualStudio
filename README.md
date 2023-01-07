@@ -33,6 +33,7 @@ What can be generated:
 - copy constructor
 - memento method get state
 - memento method set state
+- deconstruct method
 
 <img src="Documentation/GenerateMapping.whatcanbegenerated.gif" width="710">
 

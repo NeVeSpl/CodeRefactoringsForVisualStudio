@@ -44,7 +44,7 @@ namespace GenerateMapping.Model
         {
             var members = type.GetAllMembers().Where(x => !x.IsCompilerGenerated() && !x.IsStatic);
             var fields = members.OfType<IFieldSymbol>();
-            var props = members.OfType<IPropertySymbol>();
+            var props = members.OfType<IPropertySymbol>().Where(x => !x.IsIndexer);
 
             foreach (var field in fields)
             {
