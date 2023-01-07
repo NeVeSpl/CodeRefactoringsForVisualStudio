@@ -7,8 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GenerateMapping.Model
 {
-    enum WriteLevel { Constructor, Init, Ordinary, NotApplicable }
-    enum AccessLevel { Private, Public }
+    enum WriteLevel { Constructor, Init, Ordinary, NotApplicable } 
     enum Side { Left, Right }
 
     internal static class AccessorsExtractor
@@ -18,22 +17,24 @@ namespace GenerateMapping.Model
             var methodDeclaration = syntaxNode.FirstParentOrSelfOfType<BaseMethodDeclarationSyntax>();
             var methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-            IEnumerable<Accessor> leftAccessors = GetLeftAccessor(methodSymbol).ToList();
-            IEnumerable<Accessor> rightAccessors = GetRightAccessors(methodSymbol).ToList();
+            var accessorFactory = new AccessorFactory(methodSymbol.ContainingType, semanticModel, methodDeclaration.SpanStart);
+            IEnumerable<Accessor> leftAccessors = GetLeftAccessor(methodSymbol, accessorFactory).ToList();
+            IEnumerable<Accessor> rightAccessors = GetRightAccessors(methodSymbol, accessorFactory).ToList();
 
             if (syntaxNode is ObjectCreationExpressionSyntax objectCreation)
-            {
+            {              
                 var typeInfo = semanticModel.GetTypeInfo(objectCreation);
-                var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, typeInfo.Type) ? AccessLevel.Private : AccessLevel.Public;
+                var publicOnly = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, typeInfo.Type) ? false : true;
+                var accessibleSymbols = semanticModel.LookupAccessibleSymbols(methodDeclaration.SpanStart, typeInfo.Type);
 
-                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, accessLevel, Side.Left, WriteLevel.Init) };
+                leftAccessors = new[] { new Accessor(typeInfo.Type, Accessor.SpecialNameReturnType, accessibleSymbols, publicOnly, Side.Left, WriteLevel.Init) };
             }
 
             return (leftAccessors, rightAccessors);
         }
        
 
-        private static IEnumerable<Accessor> GetLeftAccessor(IMethodSymbol methodSymbol)
+        private static IEnumerable<Accessor> GetLeftAccessor(IMethodSymbol methodSymbol, AccessorFactory accessorFactory)
         {
             if (methodSymbol.ReturnType.SpecialType == SpecialType.System_Void && methodSymbol.IsStatic == false)
             {
@@ -42,27 +43,22 @@ namespace GenerateMapping.Model
                     var outputParameters = methodSymbol.Parameters.Where(x => x.RefKind == RefKind.Out);
 
                     foreach (var parameter in outputParameters)
-                    {
-                        yield return new Accessor(parameter.Type, parameter.Name, AccessLevel.Public, Side.Left, WriteLevel.NotApplicable);
+                    {                       
+                        yield return accessorFactory.CreateAccessor(parameter.Type, parameter.Name, Side.Left, WriteLevel.NotApplicable);
                     }
                 }
                 else
                 {
-                    var writeLevel = methodSymbol.MethodKind == MethodKind.Constructor ? WriteLevel.Constructor : WriteLevel.Ordinary;
-                    var accessLevel = AccessLevel.Private;
-
-                    yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Left, writeLevel);
+                    var writeLevel = methodSymbol.MethodKind == MethodKind.Constructor ? WriteLevel.Constructor : WriteLevel.Ordinary;                    
+                    yield return accessorFactory.CreateAccessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, Side.Left, writeLevel);
                 }                
             }
             else
-            {                
-                var writeLevel = WriteLevel.Init;
-                var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, methodSymbol.ReturnType) ? AccessLevel.Private : AccessLevel.Public;
-
-                yield return new Accessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, accessLevel, Side.Left, writeLevel);
+            {
+                yield return accessorFactory.CreateAccessor(methodSymbol.ReturnType, Accessor.SpecialNameReturnType, Side.Left, WriteLevel.Init);
             }
         }
-        private static IEnumerable<Accessor> GetRightAccessors(IMethodSymbol methodSymbol)
+        private static IEnumerable<Accessor> GetRightAccessors(IMethodSymbol methodSymbol, AccessorFactory accessorFactory)
         {
             var inputParameters = methodSymbol.Parameters.Where(x => x.RefKind != RefKind.Out);
 
@@ -70,16 +66,34 @@ namespace GenerateMapping.Model
             {
                 foreach (var parameter in inputParameters)
                 {
-                    var accessLevel = SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, parameter.Type) ? AccessLevel.Private : AccessLevel.Public;
-
-                    yield return new Accessor(parameter.Type, parameter.Name, accessLevel, Side.Right, WriteLevel.NotApplicable);
+                    yield return accessorFactory.CreateAccessor(parameter.Type, parameter.Name, Side.Right, WriteLevel.NotApplicable);
                 }
             }
             else
-            {
-                var accessLevel = AccessLevel.Private;
+            {                
+                yield return accessorFactory.CreateAccessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, Side.Right, WriteLevel.NotApplicable);
+            }
+        }
 
-                yield return new Accessor(methodSymbol.ContainingType, Accessor.SpecialNameThis, accessLevel, Side.Right, WriteLevel.NotApplicable);
+        class AccessorFactory
+        {
+            private readonly ITypeSymbol containingType;
+            private readonly SemanticModel semanticModel;
+            private readonly int position;
+
+            public AccessorFactory(ITypeSymbol containingType, SemanticModel semanticModel, int position)
+            {
+                this.containingType = containingType;
+                this.semanticModel = semanticModel;
+                this.position = position;
+            }
+
+
+            public Accessor CreateAccessor(ITypeSymbol type, string name, Side sideOfAssignment, WriteLevel writeLevel)
+            {
+                var publicOnly = SymbolEqualityComparer.Default.Equals(containingType, type) ? false : true;
+                var accessibleSymbols = semanticModel.LookupAccessibleSymbols(position, type);
+                return new Accessor(type, name, accessibleSymbols, publicOnly, sideOfAssignment, writeLevel);
             }
         }
     }
