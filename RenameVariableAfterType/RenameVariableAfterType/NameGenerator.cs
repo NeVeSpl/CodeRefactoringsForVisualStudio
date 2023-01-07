@@ -155,7 +155,7 @@ namespace RenameVariableAfterType
 
 
         static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute" };
-
+        static string[] genericNames = new string[] { "ToList", "ToArray" };
         public static string GenerateNewNameFromExpression(ExpressionSyntax expressionSyntax)
         {
             string expression = null;
@@ -172,7 +172,10 @@ namespace RenameVariableAfterType
                 return null;
             }
 
-            string lastWord = expression.Split('.').Last();
+            string[] words = expression.Split('.').Where(x => !string.IsNullOrEmpty(x)).Select(x => ExtractName(x)).ToArray();
+            string lastWord = words.Reverse().Where(x => genericNames.Contains(x) == false ).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(lastWord)) return null;
 
             foreach (var prefix in prefixes)
             {
@@ -182,16 +185,19 @@ namespace RenameVariableAfterType
                 }
             }
 
-            if (!string.IsNullOrEmpty(lastWord))
-            {
-                lastWord = lastWord.ToLowerFirst();
-            }
-            else
-            {
-                lastWord = null;
-            }
+            if (string.IsNullOrEmpty(lastWord)) return null;
+           
+             return lastWord.ToLowerFirst();           
+        }
 
-            return lastWord;
+        private static string ExtractName(string text)
+        {
+            var index = text.IndexOf('(');
+            if (index > -1)
+            {
+                return text.Substring(0, index);
+            }
+            return text;
         }
     }
 }
