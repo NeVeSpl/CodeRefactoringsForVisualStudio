@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pluralize.NET;
@@ -155,24 +157,10 @@ namespace RenameVariableAfterType
 
 
         static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute" };
-        static string[] genericNames = new string[] { "ToList", "ToArray" };
+        static string[] genericNames = new string[] { "ToList", "ToArray", "OfType" };
         public static string GenerateNewNameFromExpression(ExpressionSyntax expressionSyntax)
         {
-            string expression = null;
-            if (expressionSyntax is InvocationExpressionSyntax invocationExpressionSyntax)
-            {
-                expression = invocationExpressionSyntax.Expression.ToString();
-            }
-            if (expressionSyntax is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
-            {
-                expression = memberAccessExpressionSyntax.ToString();
-            }
-            if (string.IsNullOrEmpty(expression))
-            {
-                return null;
-            }
-
-            string[] words = expression.Split('.').Where(x => !string.IsNullOrEmpty(x)).Select(x => ExtractName(x)).ToArray();
+            string[] words = StreamNames(expressionSyntax).Where(x => !string.IsNullOrEmpty(x)).ToArray();
             string lastWord = words.Reverse().Where(x => genericNames.Contains(x) == false ).FirstOrDefault();
 
             if (string.IsNullOrEmpty(lastWord)) return null;
@@ -190,14 +178,32 @@ namespace RenameVariableAfterType
              return lastWord.ToLowerFirst();           
         }
 
-        private static string ExtractName(string text)
+        private static IEnumerable<string> StreamNames(ExpressionSyntax expressionSyntax)
         {
-            var index = text.IndexOf('(');
-            if (index > -1)
+            if (expressionSyntax == null) yield break;
+
+            if (expressionSyntax is IdentifierNameSyntax identifier)
             {
-                return text.Substring(0, index);
+                yield return identifier.ToString();
             }
-            return text;
+
+            if (expressionSyntax is InvocationExpressionSyntax invocationExpressionSyntax)
+            {
+                foreach (var name in StreamNames(invocationExpressionSyntax.Expression))
+                {
+                    yield return name;
+                }
+            }
+
+            if (expressionSyntax is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+            {
+                foreach (var name in StreamNames(memberAccessExpressionSyntax.Expression))
+                {
+                    yield return name;
+                }
+
+                yield return memberAccessExpressionSyntax.Name.Identifier.ToString();
+            }
         }
     }
 }
