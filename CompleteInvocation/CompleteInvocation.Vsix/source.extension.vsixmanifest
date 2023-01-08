@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Id="CompleteInvocation.8d6f4357-598f-4fb9-9b68-cd8fd953b2f0" Version="0.2" Language="en-US" Publisher="NeVeS"/>
+		<DisplayName>Complete invocation</DisplayName>
+		<Description xml:space="preserve">Complete invocation with available variables.</Description>
+		<MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#complete-invocation</MoreInfo>
+		<Icon>CompleteInvocation.Logo.png</Icon>
+	</Metadata>
+	<Installation>
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.11,17.0)">
+			<ProductArchitecture>x86</ProductArchitecture>
+		</InstallationTarget>
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
+			<ProductArchitecture>amd64</ProductArchitecture>
+		</InstallationTarget>
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+	</Dependencies>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CompleteInvocation" Path="|CompleteInvocation|"/>
+	</Assets>
+	<Prerequisites>
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+		<Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0,)" DisplayName="Roslyn Language Services" />
+	</Prerequisites>
+</PackageManifest>

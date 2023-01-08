@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace System
@@ -92,5 +93,27 @@ namespace System
                 yield return selectedText.Substring(wordFirstIndex, remainderLength);
             }
         }
+
+
+
+
+
+        public static double ApproximatelyEquals(this string a, string b)
+        {
+            if (string.Equals(a, b)) return 1.0;
+
+            if (string.Equals(a, b, StringComparison.OrdinalIgnoreCase)) return 0.9;
+
+            var a_wp = a.WithoutPrefix();
+            var b_wp = b.WithoutPrefix();
+            if (string.Equals(a_wp, b_wp, StringComparison.OrdinalIgnoreCase)) return 0.8;
+
+            var a_s = a_wp.SplitStringIntoSeparateWords();
+            var b_s = b_wp.SplitStringIntoSeparateWords();
+            if (a_s.SequenceEqual(b_s, StringComparer.OrdinalIgnoreCase)) return 0.7;
+
+            return 0.0;
+        }
+
     }
 }
