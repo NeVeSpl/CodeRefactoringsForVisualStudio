@@ -46,7 +46,7 @@ General rules:
 - for the assignment of mutable reference type, a "new" instance is always created 
 - recursive mapping is not, and will not be supported
 - mapping to tuples is supported
-
+- mapping to positional records is supported
 
 
 ## Rename variable after type/expression 
