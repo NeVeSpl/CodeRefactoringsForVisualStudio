@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace GenerateMapping.Model
@@ -24,7 +25,9 @@ namespace GenerateMapping.Model
             }
         }
         public bool IsInterface => typeSymbol.TypeKind == TypeKind.Interface;
-        public bool IsTouple => typeSymbol.IsTupleType;
+        public bool IsTuple => typeSymbol.IsTupleType;
+        public bool IsRecord => typeSymbol.IsRecord;
+        public bool IsPositionalRecord => IsRecord && (((typeSymbol is INamedTypeSymbol namedType) && namedType.Constructors.Any(x => x.Parameters.Length == 0)) == false);
         public IEnumerable<TypeData> Arguments
         {
             get
@@ -52,6 +55,21 @@ namespace GenerateMapping.Model
                     {
                         yield return element.Name;
                     }
+                }
+            }
+        }
+
+
+        public IEnumerable<string> GetNamesFromMostSpecificConstructor()
+        {
+            if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
+            {
+                var max = namedTypeSymbol.Constructors.Max(x => x.Parameters.Length);
+                var mostSpecificConstructor = namedTypeSymbol.Constructors.Where(x => x.Parameters.Length == max).FirstOrDefault();
+
+                foreach (var param in mostSpecificConstructor.Parameters)
+                {
+                    yield return param.Name;
                 }
             }
         }

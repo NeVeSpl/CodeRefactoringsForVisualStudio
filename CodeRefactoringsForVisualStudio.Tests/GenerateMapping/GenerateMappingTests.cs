@@ -37,6 +37,8 @@ namespace CodeRefactoringsForVisualStudio.Tests.GenerateMapping
         [TestCase("DeconstructMethod")]
         [TestCase("MethodReturnsClassNoParam")]
         [TestCase("MethodReturnsClassOneParam")]
+        [TestCase("MethodReturnsOrdinalRecordNoParam")]
+        [TestCase("MethodReturnsPositionalRecordNoParam")]
         [TestCase("MethodReturnsToupleOneParam")]
         [TestCase("MethodReturnsVoidOneParam")]
         [TestCase("ObjectCreationExpression")]

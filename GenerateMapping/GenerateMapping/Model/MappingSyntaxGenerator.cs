@@ -31,10 +31,20 @@ namespace GenerateMapping.Model
 
         private static BlockSyntax GenerateWrapingCode(List<GeneratedExpressionForMatch> assigmentExpressions, Accessor firstOutputAccessor)
         {
-            if (firstOutputAccessor.Type.IsTouple)
+            if (firstOutputAccessor.Type.IsTuple)
             {
-                var touple = GenerateToupleExpression(firstOutputAccessor.Type, assigmentExpressions);
+                var positionalNames = firstOutputAccessor.Type.TupleElementNames;
+                var argumentList = GeneratePositionalExpressions(positionalNames, assigmentExpressions).Select(x => SyntaxFactory.Argument(x));
+                var touple = SyntaxFactory.TupleExpression(SyntaxFactory.SeparatedList(argumentList));
                 return SyntaxFactory.Block(SyntaxFactory.ReturnStatement(touple));
+            }
+
+            if (firstOutputAccessor.Type.IsPositionalRecord)
+            {
+                var positionalNames = firstOutputAccessor.Type.GetNamesFromMostSpecificConstructor();  
+                var argumentList = SyntaxFactoryEx.ArgumentList(GeneratePositionalExpressions(positionalNames, assigmentExpressions));
+                var newSyntax =  SyntaxFactory.ObjectCreationExpression(SyntaxFactory.IdentifierName(firstOutputAccessor.Type.Name), argumentList, null);                
+                return SyntaxFactory.Block(SyntaxFactory.ReturnStatement(newSyntax));
             }
 
             if (firstOutputAccessor.Name == Accessor.SpecialNameReturnType)
@@ -81,6 +91,26 @@ namespace GenerateMapping.Model
             }            
     
             return SyntaxFactory.TupleExpression(SyntaxFactory.SeparatedList(arguments));
+            //SyntaxFactory.ParseExpression(@"(""d"", 7)");
+        }
+        private static IEnumerable<ExpressionSyntax> GeneratePositionalExpressions(IEnumerable<string> positionalNames, List<GeneratedExpressionForMatch> assigmentExpressions)
+        {
+            var arguments = new List<ExpressionSyntax>();
+
+            foreach (var name in positionalNames)
+            {
+                var generatedExpression = assigmentExpressions.Where(x => x.Match.LeftAccessor.Name == name).FirstOrDefault();
+                if (generatedExpression != null)
+                {
+                    arguments.Add(generatedExpression.Assignment.Right);
+                }
+                else
+                {
+                    arguments.Add(SyntaxFactory.IdentifierName("default"));
+                }
+            }
+
+            return arguments;
             //SyntaxFactory.ParseExpression(@"(""d"", 7)");
         }
 

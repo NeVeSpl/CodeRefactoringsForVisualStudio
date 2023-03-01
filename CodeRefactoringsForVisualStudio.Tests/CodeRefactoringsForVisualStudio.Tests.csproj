@@ -33,6 +33,10 @@
 	<Compile Remove="GenerateMapping\Assignment\ValueType_expected.cs" />
 	<Compile Remove="GenerateMapping\Context\DeconstructMethod.cs" />
 	<Compile Remove="GenerateMapping\Context\DeconstructMethod_expected.cs" />
+	<Compile Remove="GenerateMapping\Context\MethodReturnsOrdinalRecordNoParam.cs" />
+	<Compile Remove="GenerateMapping\Context\MethodReturnsOrdinalRecordNoParam_expected.cs" />
+	<Compile Remove="GenerateMapping\Context\MethodReturnsPositionalRecordNoParam.cs" />
+	<Compile Remove="GenerateMapping\Context\MethodReturnsPositionalRecordNoParam_expected.cs" />
 	<Compile Remove="GenerateMapping\Context\ObjectCreationExpression.cs" />
 	<Compile Remove="GenerateMapping\Context\ObjectCreationExpression_expected.cs" />
 	<Compile Remove="GenerateMapping\Matching\Flattening.cs" />
@@ -104,6 +108,10 @@
     <EmbeddedResource Include="GenerateMapping\Assignment\StringType_expected.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\DeconstructMethod_expected.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\DeconstructMethod.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\MethodReturnsOrdinalRecordNoParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\MethodReturnsOrdinalRecordNoParam.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\MethodReturnsPositionalRecordNoParam_expected.cs" />
+    <EmbeddedResource Include="GenerateMapping\Context\MethodReturnsPositionalRecordNoParam.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\ObjectCreationExpression_expected.cs" />
     <EmbeddedResource Include="GenerateMapping\Context\ObjectCreationExpression.cs" />
     <EmbeddedResource Include="GenerateMapping\Matching\Flattening_expected.cs" />
