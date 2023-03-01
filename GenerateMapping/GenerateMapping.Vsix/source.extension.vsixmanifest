@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="GenerateMapping.37e1a942-892b-4994-9b08-d1f4fcd2abdc" Version="2.0" Language="en-US" Publisher="NeVeS"/>
+        <Identity Id="GenerateMapping.37e1a942-892b-4994-9b08-d1f4fcd2abdc" Version="2.1" Language="en-US" Publisher="NeVeS"/>
         <DisplayName>Generate mapping</DisplayName>
         <Description xml:space="preserve">Generates mapping code, between method input parameters and method return type. If any of them is void, "this" is used instead. Design time AutoMapper alternative.</Description>
         <MoreInfo>https://github.com/NeVeSpl/CodeRefactoringsForVisualStudio#generate-mapping</MoreInfo>
