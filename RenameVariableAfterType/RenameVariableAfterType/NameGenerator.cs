@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pluralize.NET;
@@ -69,7 +66,7 @@ namespace RenameVariableAfterType
             return newName;
         }
 
-        private static string Pluralize(string word)
+        public static string Pluralize(string word)
         {
             string pluralForm = word;
             try
@@ -155,8 +152,25 @@ namespace RenameVariableAfterType
 
 
 
+        public static string Singularize(string word)
+        {
+            string singularForm = word;
+            try
+            {
+                IPluralize pluralizer = new Pluralizer();
+                singularForm = pluralizer.Singularize(word);
+            }
+            catch
+            {
+                
+            }
+            return singularForm;
+        }
 
-        static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute" };
+
+
+
+        static string[] prefixes = new string[] { "get", "set", "invoke", "calculate", "compute", "find", "search" };
         static string[] genericNames = new string[] { "ToList", "ToArray", "OfType" };
         public static string GenerateNewNameFromExpression(ExpressionSyntax expressionSyntax)
         {

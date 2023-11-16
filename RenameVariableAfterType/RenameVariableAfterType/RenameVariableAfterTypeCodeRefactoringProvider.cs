@@ -17,19 +17,16 @@ namespace RenameVariableAfterType
     {
         public sealed override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-            var nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).ToList();
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+            CancellationToken cancellationToken = context.CancellationToken;            
+            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);            
 
-            SemanticModel semanticModel = null;
-            CancellationToken cancellationToken = context.CancellationToken;
-
+            var variable_nodes = root.ExtractSelectedNodesOfType<VariableDeclarationSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).ToList();
             var nodesToRename = new List<NodeToRename>();
 
-            if (nodes.Any())
+            if (variable_nodes.Any())
             {
-                semanticModel ??= await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-
-                foreach (var variableDeclaration in nodes)
+                foreach (var variableDeclaration in variable_nodes)
                 {
                     TypeInfo typeInfo = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken);
 
@@ -62,17 +59,34 @@ namespace RenameVariableAfterType
                 context.RegisterRefactoring(action);
             }
 
-            var parameter_nodes = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).ToList();
-            if (parameter_nodes.Count == 1)
+            var parameter_node = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).FirstOrDefault();
+            if (parameter_node is not null)
             {
-                semanticModel ??= await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-
-                TypeInfo typeInfo = semanticModel.GetTypeInfo(parameter_nodes.First().Type, context.CancellationToken);
-                var node = new NodeToRename(parameter_nodes.First(), typeInfo);
+                var typeInfo = semanticModel.GetTypeInfo(parameter_node.Type, context.CancellationToken);
+                var node = new NodeToRename(parameter_node, typeInfo);
                 node.GenerateNamePropositions();
                
                 var action = CodeAction.Create($"Rename to: {node.NameAfterType}", c => RenameNode(context.Document, node, node.NameAfterType, c));
                 context.RegisterRefactoring(action);
+            }
+
+            var foreach_node = root.ExtractSelectedNodesOfType<ForEachStatementSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).FirstOrDefault();
+            if (foreach_node is not null)
+            {
+                var typeInfo = semanticModel.GetTypeInfo(foreach_node.Type, context.CancellationToken);
+                var node = new NodeToRename(foreach_node, typeInfo);
+                node.GenerateNamePropositions();
+
+                foreach (var name in node.NamePropositions)
+                {
+                    var action = CodeAction.Create($"Rename to: {name}", c => RenameNode(context.Document, node, NameGenerator.Singularize(name), c));
+                    context.RegisterRefactoring(action);
+                }
+            }
+            var argument_nodes = root.ExtractSelectedNodesOfType<ArgumentSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
+            if (argument_nodes.Count == 1)
+            {
+
             }
         }
 
@@ -136,6 +150,11 @@ namespace RenameVariableAfterType
                 this.typeInfo = typeInfo;
                 this.SyntaxNode = syntaxNodeToRename;
                 this.expressionSyntax = SyntaxNode.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault();
+            
+                if (syntaxNodeToRename is ForEachStatementSyntax forEachStatementSyntax)
+                {
+                    this.expressionSyntax = forEachStatementSyntax.Expression;
+                }
             }
 
 
