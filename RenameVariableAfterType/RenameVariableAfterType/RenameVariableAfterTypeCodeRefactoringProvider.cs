@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Rename;
 
 namespace RenameVariableAfterType
@@ -43,7 +44,7 @@ namespace RenameVariableAfterType
                 node.GenerateNamePropositions();
                 foreach(var name in node.NamePropositions)
                 {
-                    var action = CodeAction.Create($"Rename to: {name}", c => RenameNode(context.Document, node, name, c));
+                    var action = CodeAction.Create($"Rename to: {name}", c => RenameNode(context.Document, node.SyntaxNode, name, c));
                     context.RegisterRefactoring(action);
                 }
             }
@@ -59,44 +60,63 @@ namespace RenameVariableAfterType
                 context.RegisterRefactoring(action);
             }
 
+            var toRegisterPropositions = new List<(CSharpSyntaxNode node, string name)>();
+
+            // Handle parameters
             var parameter_node = root.ExtractSelectedNodesOfType<ParameterSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).FirstOrDefault();
             if (parameter_node is not null)
             {
                 var typeInfo = semanticModel.GetTypeInfo(parameter_node.Type, context.CancellationToken);
-                var node = new NodeToRename(parameter_node, typeInfo);
-                node.GenerateNamePropositions();
-               
-                var action = CodeAction.Create($"Rename to: {node.NameAfterType}", c => RenameNode(context.Document, node, node.NameAfterType, c));
-                context.RegisterRefactoring(action);
-            }
 
+                var nameAfterType = NameGenerator.GenerateNewNameFromType(typeInfo.Type);
+                toRegisterPropositions.Add((parameter_node, nameAfterType));
+            }            
+
+            // Handle foreach
             var foreach_node = root.ExtractSelectedNodesOfType<ForEachStatementSyntax>(context.Span).Where(x => !x.ContainsDiagnostics && x.Type != null).FirstOrDefault();
             if (foreach_node is not null)
             {
                 var typeInfo = semanticModel.GetTypeInfo(foreach_node.Type, context.CancellationToken);
-                var node = new NodeToRename(foreach_node, typeInfo);
-                node.GenerateNamePropositions();
+                var nameAfterType = NameGenerator.Singularize(NameGenerator.GenerateNewNameFromType(typeInfo.Type));
+                toRegisterPropositions.Add((foreach_node, nameAfterType));
 
-                foreach (var name in node.NamePropositions)
+                var nameAfterExpression = NameGenerator.Singularize(NameGenerator.GenerateNewNameFromExpression(foreach_node.Expression));
+                toRegisterPropositions.Add((foreach_node, nameAfterExpression));
+            }
+
+            // Handle arguments
+            var argument_node = root.ExtractSelectedNodesOfType<ArgumentSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).FirstOrDefault();
+            if (argument_node is not null)
+            {                
+                var operation = semanticModel.GetOperation(argument_node);
+                var parameter = (operation as IArgumentOperation).Parameter;
+
+                if (parameter != null) 
                 {
-                    var action = CodeAction.Create($"Rename to: {name}", c => RenameNode(context.Document, node, NameGenerator.Singularize(name), c));
-                    context.RegisterRefactoring(action);
+                    toRegisterPropositions.Add((argument_node, parameter.Name));                    
+
+                    var nameAfterType = NameGenerator.GenerateNewNameFromType(parameter.Type);
+                    toRegisterPropositions.Add((argument_node, nameAfterType));                   
                 }
             }
-            var argument_nodes = root.ExtractSelectedNodesOfType<ArgumentSyntax>(context.Span).Where(x => !x.ContainsDiagnostics).ToList();
-            if (argument_nodes.Count == 1)
-            {
 
+            // Register refactorings
+            foreach (var proposition in toRegisterPropositions)
+            {
+                if (string.IsNullOrEmpty(proposition.name)) 
+                    continue;
+
+                context.RegisterRefactoring(CodeAction.Create($"Rename to: {proposition.name}", c => RenameNode(context.Document, proposition.node, proposition.name, c)));
             }
         }
 
         enum Mode { AfterType, AfterExpression }
-        private async Task<Solution> RenameNode(Document document, NodeToRename nodeToRename, string newName, CancellationToken cancellationToken)
+        private async Task<Solution> RenameNode(Document document, CSharpSyntaxNode cSharpSyntaxNode, string newName, CancellationToken cancellationToken)
         {
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var solution = document.Project.Solution;
 
-            solution = await DoRename(nodeToRename.SyntaxNode, newName, semanticModel, solution, cancellationToken).ConfigureAwait(false);
+            solution = await DoRename(cSharpSyntaxNode, newName, semanticModel, solution, cancellationToken).ConfigureAwait(false);
 
             return solution;
         }
@@ -149,12 +169,7 @@ namespace RenameVariableAfterType
             {
                 this.typeInfo = typeInfo;
                 this.SyntaxNode = syntaxNodeToRename;
-                this.expressionSyntax = SyntaxNode.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault();
-            
-                if (syntaxNodeToRename is ForEachStatementSyntax forEachStatementSyntax)
-                {
-                    this.expressionSyntax = forEachStatementSyntax.Expression;
-                }
+                this.expressionSyntax = SyntaxNode.DescendantNodes().Where(y => y is InvocationExpressionSyntax || y is MemberAccessExpressionSyntax).OfType<ExpressionSyntax>().FirstOrDefault();            
             }
 
 
