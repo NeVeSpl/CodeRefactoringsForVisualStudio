@@ -58,9 +58,11 @@ General rules:
 
 Visual Studio code refactoring that changes a variable name, to an auto-generated name from the variable type or expression used in the assignment, e.g. "Foo x =" => "Foo foo ="
 
-- a simple heuristic, not AI based (yet)
-- works on a single or many variables at once
-- works on a single method parameter
+- works on:
+    - single or many variables at once
+    - single method parameter
+    - single invocation argument
+    - foreach loop variable
 
 
 
