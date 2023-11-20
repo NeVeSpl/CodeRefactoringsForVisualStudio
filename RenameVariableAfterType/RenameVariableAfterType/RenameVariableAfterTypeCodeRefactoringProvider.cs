@@ -89,7 +89,7 @@ namespace RenameVariableAfterType
             if (argument_node is not null)
             {                
                 var operation = semanticModel.GetOperation(argument_node);
-                var parameter = (operation as IArgumentOperation).Parameter;
+                var parameter = (operation as IArgumentOperation)?.Parameter;
 
                 if (parameter != null) 
                 {
