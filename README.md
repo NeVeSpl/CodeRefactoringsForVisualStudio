@@ -79,7 +79,7 @@ Visual Studio implementation of code refactoring [Introduce Parameter Object](ht
 
 ##### Limitations 
 - it does not support generic type parameters
-- updating method body is done syntactically, not semantically, it means they may appear conflicts if a method parameter shares the same name with something else
+- updating a method body is done syntactically, not semantically, which means, conflicts may appear if a method parameter shares the same name with something else
 
 
 
@@ -111,7 +111,7 @@ version 1.5
 
 <img src="Documentation/ConvertToFullWPFProperty.sampleusecase.gif" width="699">
 
-Visual Studio code refactoring that replaces an auto-property with full property implementation that consists invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
+Visual Studio code refactoring that replaces an auto-property with full property implementation that consists of invocation of OnPropertyChanged in a setter. It can convert many auto-properties at once.
 
 
 
